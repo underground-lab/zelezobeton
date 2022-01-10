@@ -31,7 +31,7 @@ class Game:
 
     def process_command(self, command):
         exits = self.current_room.exits
-        if command in ('north', 'south', 'west', 'east'):
+        if command in ('north', 'south', 'west', 'east', 'up', 'down'):
             if command in exits:
                 self.player.location = exits[command]
 

@@ -10,33 +10,30 @@ texts = SimpleNamespace(
     go_south='Jdi na jih',
     go_west='Jdi na západ',
     go_east='Jdi na východ',
+    go_up='Jdi nahoru',
+    go_down='Jdi dolů',
 )
 
 room_data = {
     0: {
         'description': 'Popis místnosti 0.',
-        'exits': {'north': 1, 'south': 2, 'west': 3, 'east': 4},
-        'objects': [],
+        'exits': {'north': 1},
+        'objects': [2],
     },
     1: {
         'description': 'Popis místnosti 1.',
-        'exits': {'south': 0},
-        'objects': [0, 1, 2],
+        'exits': {'south': 0, 'east': 2},
+        'objects': [],
     },
     2: {
         'description': 'Popis místnosti 2.',
-        'exits': {'north': 0},
-        'objects': [3],
+        'exits': {'west': 1, 'down': 3},
+        'objects': [],
     },
     3: {
         'description': 'Popis místnosti 3.',
-        'exits': {'east': 0},
-        'objects': [],
-    },
-    4: {
-        'description': 'Popis místnosti 4.',
-        'exits': {'west': 0},
-        'objects': [],
+        'exits': {'up': 2},
+        'objects': [3, 4, 5],
     },
 }
 
@@ -69,5 +66,5 @@ object_data = {
 
 player_data = {
     'location': 0,
-    'inventory': [4, 5],
+    'inventory': [0, 1],
 }
