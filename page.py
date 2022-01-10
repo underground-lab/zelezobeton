@@ -13,6 +13,9 @@ left_column, right_column = st.columns([2, 1])
 with left_column:
     st.write(game.current_room.description)
 
+    if game.current_room.objects:
+        st.write(game.room_listing())
+
 with right_column:
     for command in game.current_room.exits:
         st.button(
