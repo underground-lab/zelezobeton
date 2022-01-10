@@ -35,6 +35,9 @@ class Game:
         if command in ('north', 'south', 'west', 'east', 'up', 'down'):
             if command in exits:
                 self.player.location = exits[command]
+        elif command == 'examine':
+            obj_id = params[0]
+            self.response = self.objects[obj_id].description
         elif command == 'take':
             obj_id = params[0]
             self.current_room.objects.remove(obj_id)

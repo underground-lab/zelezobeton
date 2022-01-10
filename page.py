@@ -21,6 +21,8 @@ with left_column:
     if game.player.inventory:
         write_styled(game.inventory_listing(), style=inventory)
 
+visible_objects = game.current_room.objects + game.player.inventory
+
 with right_column:
     for command in game.current_room.exits:
         st.button(
@@ -28,6 +30,9 @@ with right_column:
             on_click=game.process_command,
             args=(command,)
         )
+
+    if visible_objects:
+        st.button(texts.examine, key='examine')
 
     if game.current_room.objects:
         st.button(texts.take, key='take')
@@ -39,6 +44,14 @@ if getattr(st.session_state, 'take', None):
             game.objects[i].name,
             on_click=game.process_command,
             args=('take', i)
+        )
+elif getattr(st.session_state, 'examine', None):
+    write_styled(texts.examine_what, style=room_objects)
+    for i in visible_objects:
+        st.button(
+            game.objects[i].name,
+            on_click=game.process_command,
+            args=('examine', i)
         )
 
 message_text = game.get_response()
