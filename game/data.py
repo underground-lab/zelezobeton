@@ -6,12 +6,14 @@ texts = SimpleNamespace(
     you_see='Vidíš',
     you_have='Máš u sebe',
     and_='a',
+    take_what='Co chceš vzít?',
     go_north='Jdi na sever',
     go_south='Jdi na jih',
     go_west='Jdi na západ',
     go_east='Jdi na východ',
     go_up='Jdi nahoru',
     go_down='Jdi dolů',
+    take='Vezmi',
 )
 
 room_data = {

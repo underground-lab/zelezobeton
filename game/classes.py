@@ -29,11 +29,15 @@ class Game:
         self.objects = objects
         self.player = player
 
-    def process_command(self, command):
+    def process_command(self, command, *params):
         exits = self.current_room.exits
         if command in ('north', 'south', 'west', 'east', 'up', 'down'):
             if command in exits:
                 self.player.location = exits[command]
+        elif command == 'take':
+            obj_id = params[0]
+            self.current_room.objects.remove(obj_id)
+            self.player.inventory.append(obj_id)
 
     @property
     def current_room(self):

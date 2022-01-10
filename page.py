@@ -28,3 +28,15 @@ with right_column:
             on_click=game.process_command,
             args=(command,)
         )
+
+    if game.current_room.objects:
+        st.button(texts.take, key='take')
+
+if getattr(st.session_state, 'take', None):
+    write_styled(texts.take_what, style=room_objects)
+    for i in game.current_room.objects:
+        st.button(
+            game.objects[i].name,
+            on_click=game.process_command,
+            args=('take', i)
+        )
