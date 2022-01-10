@@ -28,6 +28,7 @@ class Game:
         self.rooms = rooms
         self.objects = objects
         self.player = player
+        self.response = None
 
     def process_command(self, command, *params):
         exits = self.current_room.exits
@@ -38,6 +39,7 @@ class Game:
             obj_id = params[0]
             self.current_room.objects.remove(obj_id)
             self.player.inventory.append(obj_id)
+            self.response = texts.ok
 
     @property
     def current_room(self):
@@ -56,3 +58,8 @@ class Game:
             for obj_id in self.player.inventory
         ]
         return f'{texts.you_have} {listing(object_names)}.'
+
+    def get_response(self):
+        value = self.response
+        self.response = None
+        return value

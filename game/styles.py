@@ -9,3 +9,4 @@ color_3 = 'color: #587e76;'
 room_description = size_150 + bold + color_1
 room_objects = size_125 + bold + color_2
 inventory = size_125 + bold + color_3
+message = size_150 + bold + color_2

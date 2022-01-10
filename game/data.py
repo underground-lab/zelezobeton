@@ -7,6 +7,7 @@ texts = SimpleNamespace(
     you_have='Máš u sebe',
     and_='a',
     take_what='Co chceš vzít?',
+    ok='O.K.',
     go_north='Jdi na sever',
     go_south='Jdi na jih',
     go_west='Jdi na západ',

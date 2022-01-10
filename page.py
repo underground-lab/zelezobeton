@@ -2,7 +2,7 @@ import streamlit as st
 
 from game import game
 from game.data import texts
-from game.styles import room_description, room_objects, inventory
+from game.styles import room_description, room_objects, inventory, message
 from game.utils import write_styled
 
 st.set_page_config(
@@ -40,3 +40,7 @@ if getattr(st.session_state, 'take', None):
             on_click=game.process_command,
             args=('take', i)
         )
+
+message_text = game.get_response()
+if message_text:
+    write_styled(message_text, style=message)
