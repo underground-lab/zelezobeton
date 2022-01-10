@@ -16,6 +16,9 @@ with left_column:
     if game.current_room.objects:
         st.write(game.room_listing())
 
+    if game.player.inventory:
+        st.write(game.inventory_listing())
+
 with right_column:
     for command in game.current_room.exits:
         st.button(

@@ -4,6 +4,7 @@ texts = SimpleNamespace(
     game_title='Název hry',
     icon_char='\N{POTATO}',
     you_see='Vidíš',
+    you_have='Máš u sebe',
     and_='a',
     go_north='Jdi na sever',
     go_south='Jdi na jih',
@@ -56,8 +57,17 @@ object_data = {
         'name': 'předmět 3',
         'description': 'Popis předmětu 3.',
     },
+    4: {
+        'name': 'předmět 4',
+        'description': 'Popis předmětu 4.',
+    },
+    5: {
+        'name': 'předmět 5',
+        'description': 'Popis předmětu 5.',
+    },
 }
 
 player_data = {
     'location': 0,
+    'inventory': [4, 5],
 }

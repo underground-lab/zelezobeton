@@ -45,3 +45,10 @@ class Game:
             for obj_id in self.current_room.objects
         ]
         return f'{texts.you_see} {listing(object_names)}.'
+
+    def inventory_listing(self):
+        object_names = [
+            self.objects[obj_id].name
+            for obj_id in self.player.inventory
+        ]
+        return f'{texts.you_have} {listing(object_names)}.'
