@@ -3,6 +3,11 @@ import streamlit as st
 from game import game
 from game.data import texts
 
+st.set_page_config(
+    page_title=texts.game_title,
+    page_icon=texts.icon_char,
+)
+
 left_column, right_column = st.columns([2, 1])
 
 with left_column:

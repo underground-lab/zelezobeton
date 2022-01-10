@@ -1,6 +1,8 @@
 from types import SimpleNamespace
 
 texts = SimpleNamespace(
+    game_title='Název hry',
+    icon_char='\N{POTATO}',
     go_north='Jdi na sever',
     go_south='Jdi na jih',
     go_west='Jdi na západ',
