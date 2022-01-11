@@ -39,19 +39,19 @@ with right_column:
 
 if getattr(st.session_state, 'take', None):
     write_styled(texts.take_what, style=message)
-    for i in game.current_room.objects:
+    for obj in game.current_room.objects:
         st.button(
-            game.objects[i].name,
+            obj.name,
             on_click=game.process_command,
-            args=('take', i)
+            args=('take', obj)
         )
 elif getattr(st.session_state, 'examine', None):
     write_styled(texts.examine_what, style=message)
-    for i in visible_objects:
+    for obj in visible_objects:
         st.button(
-            game.objects[i].name,
+            obj.name,
             on_click=game.process_command,
-            args=('examine', i)
+            args=('examine', obj)
         )
 
 message_text = game.get_response()

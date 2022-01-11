@@ -36,12 +36,12 @@ class Game:
             if command in exits:
                 self.player.location = exits[command]
         elif command == 'examine':
-            obj_id = params[0]
-            self.response = self.objects[obj_id].description
+            obj = params[0]
+            self.response = obj.description
         elif command == 'take':
-            obj_id = params[0]
-            self.current_room.objects.remove(obj_id)
-            self.player.inventory.append(obj_id)
+            obj = params[0]
+            self.current_room.objects.remove(obj)
+            self.player.inventory.append(obj)
             self.response = texts.ok
 
     @property
@@ -49,17 +49,11 @@ class Game:
         return self.rooms[self.player.location]
 
     def room_listing(self):
-        object_names = [
-            self.objects[obj_id].name
-            for obj_id in self.current_room.objects
-        ]
+        object_names = [obj.name for obj in self.current_room.objects]
         return f'{texts.you_see} {listing(object_names)}.'
 
     def inventory_listing(self):
-        object_names = [
-            self.objects[obj_id].name
-            for obj_id in self.player.inventory
-        ]
+        object_names = [obj.name for obj in self.player.inventory]
         return f'{texts.you_have} {listing(object_names)}.'
 
     def get_response(self):
