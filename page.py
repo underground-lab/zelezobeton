@@ -38,7 +38,7 @@ with right_column:
         st.button(texts.take, key='take')
 
 if getattr(st.session_state, 'take', None):
-    write_styled(texts.take_what, style=room_objects)
+    write_styled(texts.take_what, style=message)
     for i in game.current_room.objects:
         st.button(
             game.objects[i].name,
@@ -46,7 +46,7 @@ if getattr(st.session_state, 'take', None):
             args=('take', i)
         )
 elif getattr(st.session_state, 'examine', None):
-    write_styled(texts.examine_what, style=room_objects)
+    write_styled(texts.examine_what, style=message)
     for i in visible_objects:
         st.button(
             game.objects[i].name,
