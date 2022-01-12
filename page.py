@@ -5,6 +5,18 @@ from game.data import texts
 from game.styles import room_description, room_objects, inventory, message
 from game.utils import write_styled, room_listing, inventory_listing
 
+
+def show_response(response):
+    if response is None:
+        return
+
+    response, *params = response
+    if response == 'ok':
+        write_styled(texts.ok, style=message)
+    elif response == 'description':
+        write_styled(params[0].description, style=message)
+
+
 st.set_page_config(
     page_title=texts.game_title,
     page_icon=texts.icon_char,
@@ -44,6 +56,4 @@ elif examine:
         for obj in visible_objects:
             st.button(obj.name, on_click=game.process_command, args=('examine', obj))
 
-message_text = game.get_response()
-if message_text:
-    write_styled(message_text, style=message)
+show_response(game.get_response())

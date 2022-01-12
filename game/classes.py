@@ -1,7 +1,5 @@
 from dataclasses import dataclass, field
 
-from game.data import texts
-
 
 @dataclass
 class Room:
@@ -36,12 +34,12 @@ class Game:
                 self.player.location = exits[command]
         elif command == 'examine':
             obj = params[0]
-            self.response = obj.description
+            self.response = ('description', obj)
         elif command == 'take':
             obj = params[0]
             self.current_room.objects.remove(obj)
             self.player.inventory.append(obj)
-            self.response = texts.ok
+            self.response = ('ok',)
 
     @property
     def current_room(self):
