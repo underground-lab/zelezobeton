@@ -35,12 +35,14 @@ with right_column:
 
 if take:
     write_styled(texts.take_what, style=message)
-    for obj in game.current_room.objects:
-        st.button(obj.name, on_click=game.process_command, args=('take', obj))
+    with st.columns([2, 1])[1]:
+        for obj in game.current_room.objects:
+            st.button(obj.name, on_click=game.process_command, args=('take', obj))
 elif examine:
     write_styled(texts.examine_what, style=message)
-    for obj in visible_objects:
-        st.button(obj.name, on_click=game.process_command, args=('examine', obj))
+    with st.columns([2, 1])[1]:
+        for obj in visible_objects:
+            st.button(obj.name, on_click=game.process_command, args=('examine', obj))
 
 message_text = game.get_response()
 if message_text:
