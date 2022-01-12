@@ -49,7 +49,19 @@ class Game:
     def current_room(self):
         return self.rooms[self.player.location]
 
-    def get_response(self):
+    @property
+    def objects_in_room(self):
+        return self.current_room.objects
+
+    @property
+    def visible_objects(self):
+        return self.objects_in_room + self.player.inventory
+
+    @property
+    def portable_objects(self):
+        return [obj for obj in self.objects_in_room if obj.portable]
+
+    def pop_response(self):
         value = self.response
         self.response = None
         return value
