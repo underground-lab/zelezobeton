@@ -15,6 +15,7 @@ class Room:
 class Object:
     name: str
     description: str
+    portable: bool = True
 
 
 @dataclass

@@ -26,16 +26,18 @@ st.set_page_config(
 
 left_column, right_column = st.columns([2, 1])
 
+objects_in_room = game.current_room.objects
+visible_objects = objects_in_room + game.player.inventory
+portable_objects = [obj for obj in objects_in_room if obj.portable]
+
 with left_column:
     write_styled(game.current_room.description, style=room_description)
 
-    if game.current_room.objects:
+    if objects_in_room:
         write_styled(room_listing(game.current_room), style=room_objects)
 
     if game.player.inventory:
         write_styled(inventory_listing(game.player), style=inventory)
-
-visible_objects = game.current_room.objects + game.player.inventory
 
 with right_column:
     for command in game.current_room.exits:
@@ -45,17 +47,17 @@ with right_column:
             args=(command,)
         )
     examine = st.button(texts.examine, key='examine') if visible_objects else None
-    take = st.button(texts.take, key='take') if game.current_room.objects else None
+    take = st.button(texts.take, key='take') if portable_objects else None
 
-if take:
-    write_styled(texts.take_what, style=message)
-    with st.columns([2, 1])[1]:
-        for obj in game.current_room.objects:
-            st.button(obj.name, on_click=game.process_command, args=('take', obj))
-elif examine:
+if examine:
     write_styled(texts.examine_what, style=message)
     with st.columns([2, 1])[1]:
         for obj in visible_objects:
             st.button(obj.name, on_click=game.process_command, args=('examine', obj))
+elif take:
+    write_styled(texts.take_what, style=message)
+    with st.columns([2, 1])[1]:
+        for obj in portable_objects:
+            st.button(obj.name, on_click=game.process_command, args=('take', obj))
 
 show_response(game.get_response())

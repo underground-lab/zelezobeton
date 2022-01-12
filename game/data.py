@@ -37,6 +37,7 @@ object_data = {
     3: {
         'name': 'předmět 3',
         'description': 'Popis předmětu 3.',
+        'portable': False,
     },
     4: {
         'name': 'předmět 4',
