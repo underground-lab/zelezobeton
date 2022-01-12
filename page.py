@@ -3,7 +3,7 @@ import streamlit as st
 from game import game
 from game.data import texts
 from game.styles import room_description, room_objects, inventory, message
-from game.utils import write_styled
+from game.utils import write_styled, room_listing, inventory_listing
 
 st.set_page_config(
     page_title=texts.game_title,
@@ -16,10 +16,10 @@ with left_column:
     write_styled(game.current_room.description, style=room_description)
 
     if game.current_room.objects:
-        write_styled(game.room_listing(), style=room_objects)
+        write_styled(room_listing(game.current_room), style=room_objects)
 
     if game.player.inventory:
-        write_styled(game.inventory_listing(), style=inventory)
+        write_styled(inventory_listing(game.player), style=inventory)
 
 visible_objects = game.current_room.objects + game.player.inventory
 

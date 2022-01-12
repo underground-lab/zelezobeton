@@ -1,7 +1,6 @@
 from dataclasses import dataclass, field
 
 from game.data import texts
-from game.utils import listing
 
 
 @dataclass
@@ -47,14 +46,6 @@ class Game:
     @property
     def current_room(self):
         return self.rooms[self.player.location]
-
-    def room_listing(self):
-        object_names = [obj.name for obj in self.current_room.objects]
-        return f'{texts.you_see} {listing(object_names)}.'
-
-    def inventory_listing(self):
-        object_names = [obj.name for obj in self.player.inventory]
-        return f'{texts.you_have} {listing(object_names)}.'
 
     def get_response(self):
         value = self.response
