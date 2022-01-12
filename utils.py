@@ -1,6 +1,6 @@
 import streamlit as st
 
-from game.data import texts
+from data import texts
 
 
 def listing(strings):

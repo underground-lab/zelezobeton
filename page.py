@@ -1,10 +1,11 @@
 import streamlit as st
 
+from data import texts
+from styles import room_description, room_objects, inventory, message
+from utils import write_styled, room_listing, inventory_listing
+
 from game import game
 from game.classes import Response
-from game.data import texts
-from game.styles import room_description, room_objects, inventory, message
-from game.utils import write_styled, room_listing, inventory_listing
 
 
 def show_response(response):
