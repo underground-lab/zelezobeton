@@ -30,29 +30,17 @@ with right_column:
             on_click=game.process_command,
             args=(command,)
         )
+    examine = st.button(texts.examine, key='examine') if visible_objects else None
+    take = st.button(texts.take, key='take') if game.current_room.objects else None
 
-    if visible_objects:
-        st.button(texts.examine, key='examine')
-
-    if game.current_room.objects:
-        st.button(texts.take, key='take')
-
-if getattr(st.session_state, 'take', None):
+if take:
     write_styled(texts.take_what, style=message)
     for obj in game.current_room.objects:
-        st.button(
-            obj.name,
-            on_click=game.process_command,
-            args=('take', obj)
-        )
-elif getattr(st.session_state, 'examine', None):
+        st.button(obj.name, on_click=game.process_command, args=('take', obj))
+elif examine:
     write_styled(texts.examine_what, style=message)
     for obj in visible_objects:
-        st.button(
-            obj.name,
-            on_click=game.process_command,
-            args=('examine', obj)
-        )
+        st.button(obj.name, on_click=game.process_command, args=('examine', obj))
 
 message_text = game.get_response()
 if message_text:
