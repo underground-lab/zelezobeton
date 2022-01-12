@@ -1,4 +1,7 @@
 from dataclasses import dataclass, field
+from enum import Enum
+
+Response = Enum('Response', 'OK DESCRIPTION')
 
 
 @dataclass
@@ -34,12 +37,12 @@ class Game:
                 self.player.location = exits[command]
         elif command == 'examine':
             obj = params[0]
-            self.response = ('description', obj)
+            self.response = (Response.DESCRIPTION, obj)
         elif command == 'take':
             obj = params[0]
             self.current_room.objects.remove(obj)
             self.player.inventory.append(obj)
-            self.response = ('ok',)
+            self.response = (Response.OK,)
 
     @property
     def current_room(self):

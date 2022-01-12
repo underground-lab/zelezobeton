@@ -1,6 +1,7 @@
 import streamlit as st
 
 from game import game
+from game.classes import Response
 from game.data import texts
 from game.styles import room_description, room_objects, inventory, message
 from game.utils import write_styled, room_listing, inventory_listing
@@ -10,10 +11,10 @@ def show_response(response):
     if response is None:
         return
 
-    response, *params = response
-    if response == 'ok':
+    response_code, *params = response
+    if response_code is Response.OK:
         write_styled(texts.ok, style=message)
-    elif response == 'description':
+    elif response_code is Response.DESCRIPTION:
         write_styled(params[0].description, style=message)
 
 
