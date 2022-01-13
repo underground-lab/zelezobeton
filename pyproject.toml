@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "Železo, beton"
+name = "zelezobeton"
 version = "0.0.1"
 description = "Textová adventura."
 license = "MIT"
