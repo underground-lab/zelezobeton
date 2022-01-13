@@ -1,11 +1,18 @@
+import sys
+
 import streamlit as st
 
 from data import texts
 from styles import room_description, room_objects, inventory, message
 from utils import write_styled, room_listing, inventory_listing
 
-from game import game
+from game import game, __version__
 from game.classes import Response
+
+
+def restart():
+    """Force restart by simply removing `game` from imported modules."""
+    del sys.modules['game']
 
 
 def show_response(response):
@@ -23,6 +30,10 @@ st.set_page_config(
     page_title=texts.game_title,
     page_icon=texts.icon_char,
 )
+
+st.sidebar.title(texts.game_title)
+st.sidebar.caption(f'verze {__version__}')
+st.sidebar.button(texts.restart, on_click=restart)
 
 left_column, right_column = st.columns([2, 1])
 

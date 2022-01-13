@@ -3,6 +3,7 @@ from types import SimpleNamespace
 texts = SimpleNamespace(
     game_title='Název hry',
     icon_char='\N{POTATO}',
+    restart='Restartovat',
     you_see='Vidíš',
     you_have='Máš u sebe',
     and_='a',
