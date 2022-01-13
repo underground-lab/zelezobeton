@@ -32,7 +32,7 @@ st.set_page_config(
 )
 
 st.sidebar.title(texts.game_title)
-st.sidebar.caption(f'verze {__version__}')
+st.sidebar.caption(texts.version_info.format(__version__))
 st.sidebar.button(texts.restart, on_click=restart)
 
 left_column, right_column = st.columns([2, 1])

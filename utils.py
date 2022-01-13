@@ -17,9 +17,9 @@ def write_styled(text, style):
 
 def room_listing(objects):
     object_names = [obj.name for obj in objects]
-    return f'{texts.you_see} {listing(object_names)}.'
+    return texts.you_see.format(listing(object_names))
 
 
 def inventory_listing(objects):
     object_names = [obj.name for obj in objects]
-    return f'{texts.you_have} {listing(object_names)}.'
+    return texts.you_have.format(listing(object_names))
