@@ -27,3 +27,5 @@ def test_game():
     game.process_command('take', game.objects[4])
     assert game.objects[4] not in game.objects_in_room
     assert game.objects[4] in game.player.inventory
+    assert game.objects[5] not in game.visible_objects
+    assert game.objects[3] in game.objects_with_action('open')

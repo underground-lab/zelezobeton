@@ -16,6 +16,7 @@ class Object:
     name: str
     description: str
     portable: bool = True
+    actions: dict = field(default_factory=dict)
 
 
 @dataclass
@@ -60,6 +61,12 @@ class Game:
     @property
     def portable_objects(self):
         return [obj for obj in self.objects_in_room if obj.portable]
+
+    def objects_with_action(self, action):
+        return [
+            obj for obj in self.visible_objects
+            if action in obj.actions and obj.actions[action].get('enabled', True)
+        ]
 
     def pop_response(self):
         value = self.response

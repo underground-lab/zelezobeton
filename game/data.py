@@ -15,7 +15,7 @@ room_data = {
     3: {
         'description': 'Popis místnosti 3.',
         'exits': {'up': 2},
-        'objects': [3, 4, 5],
+        'objects': [3, 4],
     },
 }
 
@@ -36,6 +36,16 @@ object_data = {
         'name': 'předmět 3',
         'description': 'Popis předmětu 3.',
         'portable': False,
+        'actions': {
+            'open': {
+                'impact': [
+                    # object 5 appears in room 3
+                    ('add_to_room', dict(room=3, obj=5)),
+                    # object 3 cannot be opened anymore
+                    ('disable_action', dict(obj=3, action='open')),
+                ],
+            },
+        },
     },
     4: {
         'name': 'předmět 4',
