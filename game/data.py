@@ -7,12 +7,10 @@ room_data = {
     1: {
         'description': 'Popis místnosti 1.',
         'exits': {'south': 0, 'east': 2},
-        'objects': [],
     },
     2: {
         'description': 'Popis místnosti 2.',
         'exits': {'west': 1, 'down': 3},
-        'objects': [],
     },
     3: {
         'description': 'Popis místnosti 3.',

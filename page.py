@@ -53,8 +53,8 @@ with right_column:
             on_click=game.process_command,
             args=(command,)
         )
-    examine = st.button(texts.examine, key='examine') if game.visible_objects else None
-    take = st.button(texts.take, key='take') if game.portable_objects else None
+    examine = st.button(texts.examine) if game.visible_objects else None
+    take = st.button(texts.take) if game.portable_objects else None
 
 if examine:
     write_styled(texts.examine_what, style=message)

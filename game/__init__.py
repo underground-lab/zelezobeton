@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from pathlib import Path
 
 import toml
@@ -7,6 +9,10 @@ from game.data import room_data, object_data, player_data
 
 ROOT_DIR = Path(__file__).parent.parent
 __version__ = toml.load(ROOT_DIR / 'pyproject.toml')['tool']['poetry']['version']
+
+room_data = deepcopy(room_data)
+object_data = deepcopy(object_data)
+player_data = deepcopy(player_data)
 
 objects = {i: Object(**params) for i, params in object_data.items()}
 rooms = {i: Room(**params) for i, params in room_data.items()}

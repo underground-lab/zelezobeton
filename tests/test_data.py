@@ -31,7 +31,7 @@ def test_no_room_has_exit_to_itself():
 
 def test_all_objects_exist():
     for room_id, room in room_data.items():
-        for obj_id in room['objects']:
+        for obj_id in room.get('objects', []):
             assert obj_id in object_data, \
                 f'Unknown object {obj_id} in room {room_id}'
 
@@ -41,7 +41,7 @@ def test_all_objects_exist():
 
 def test_no_object_occurs_more_than_once():
     occurrences = chain(
-        *(room['objects'] for room in room_data.values()),
+        *(room.get('objects', []) for room in room_data.values()),
         player_data['inventory']
     )
     most_common, count = Counter(occurrences).most_common()[0]
