@@ -21,6 +21,16 @@ player = Player(**player_data)
 # replace integer ids with object references
 for room in rooms.values():
     room.objects = [objects[n] for n in room.objects]
+
 player.inventory = [objects[n] for n in player.inventory]
+
+for obj in objects.values():
+    for action in obj.actions.values():
+        for impact_spec in action['impact']:
+            _, kwargs = impact_spec
+            if 'room' in kwargs:
+                kwargs['room'] = rooms[kwargs['room']]
+            if 'obj' in kwargs:
+                kwargs['obj'] = objects[kwargs['obj']]
 
 game = Game(rooms, objects, player)
