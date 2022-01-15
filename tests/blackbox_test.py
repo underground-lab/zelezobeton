@@ -24,7 +24,7 @@ def test_game():
     assert game.objects[4] in game.objects_with_action('open')
 
     response = game.process_command('open', game.objects[4])
-    assert response is None
+    assert response == 'Otevřel jsi dveře.'
     assert game.current_room.exits['east'] is game.rooms[2]
     assert not game.objects_in_room
     assert not game.objects_with_action('open')
@@ -42,7 +42,7 @@ def test_game():
     assert game.objects[3] in game.objects_with_action('open')
 
     response = game.process_command('open', game.objects[3])
-    assert response is None
+    assert response == 'OK'
     assert game.objects[5] in game.portable_objects
     assert not game.objects_with_action('open')
 

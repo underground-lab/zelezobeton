@@ -45,9 +45,11 @@ class Game:
             return 'OK'
         else:
             obj = params[0]
-            for impact_spec in obj.actions[command]['impact']:
+            action = obj.actions[command]
+            for impact_spec in action['impact']:
                 callback_name, kwargs = impact_spec
                 getattr(callbacks, callback_name)(**kwargs)
+            return action.get('message') or 'OK'
 
     @property
     def current_room(self):

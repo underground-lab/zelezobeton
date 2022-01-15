@@ -59,6 +59,7 @@ object_data = {
                     ('open_exit', dict(room=2, direction='west', destination=1)),
                     ('remove_from_room', dict(room=1, obj=4)),
                 ],
+                'message': 'Otevřel jsi dveře.',
             },
         },
     },
