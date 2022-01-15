@@ -7,7 +7,7 @@ Textová adventura ve webovém prohlížeči.
 - Git
 - Python 3.7+
 - [Poetry](https://github.com/python-poetry/poetry)
-  (návod na instalaci [zde](https://python-poetry.org/docs/#installation))
+  (návod na instalaci [zde](https://python-poetry.org/docs/master/#installation))
 
 ## Instalace
 

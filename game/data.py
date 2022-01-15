@@ -1,3 +1,5 @@
+# coding: utf-8
+
 room_data = {
     0: {
         'description': 'Popis místnosti 0.',
