@@ -10,6 +10,7 @@ texts = SimpleNamespace(
     and_='a',
     examine_what='Co chceš prozkoumat?',
     take_what='Co chceš vzít?',
+    open_what='Co chceš otevřít?',
     ok='O.K.',
     go_north='Jdi na sever',
     go_south='Jdi na jih',
@@ -19,4 +20,5 @@ texts = SimpleNamespace(
     go_down='Jdi dolů',
     examine='Prozkoumej',
     take='Vezmi',
+    open='Otevři',
 )

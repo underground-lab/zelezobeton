@@ -1,6 +1,8 @@
 from dataclasses import dataclass, field
 from enum import Enum
 
+from game import callbacks
+
 Response = Enum('Response', 'OK DESCRIPTION')
 
 
@@ -45,6 +47,11 @@ class Game:
             self.current_room.objects.remove(obj)
             self.player.inventory.append(obj)
             self.response = (Response.OK,)
+        else:
+            obj = params[0]
+            for impact_spec in obj.actions[command]['impact']:
+                callback_name, kwargs = impact_spec
+                getattr(callbacks, callback_name)(**kwargs)
 
     @property
     def current_room(self):

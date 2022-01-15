@@ -55,6 +55,7 @@ with right_column:
         )
     examine = st.button(texts.examine) if game.visible_objects else None
     take = st.button(texts.take) if game.portable_objects else None
+    open_ = st.button(texts.open) if game.objects_with_action('open') else None
 
 if examine:
     write_styled(texts.examine_what, style=message)
@@ -66,5 +67,10 @@ elif take:
     with st.columns([2, 1])[1]:
         for obj in game.portable_objects:
             st.button(obj.name, on_click=game.process_command, args=('take', obj))
+elif open_:
+    write_styled(texts.open_what, style=message)
+    with st.columns([2, 1])[1]:
+        for obj in game.objects_with_action('open'):
+            st.button(obj.name, on_click=game.process_command, args=('open', obj))
 
 show_response(game.pop_response())
