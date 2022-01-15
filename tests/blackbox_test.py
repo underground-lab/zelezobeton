@@ -8,9 +8,12 @@ def test_game():
     assert game.objects[2] in game.portable_objects
 
     response = game.process_command('take', game.objects[2])
-    assert response[0].name == 'OK'
+    assert response == 'OK'
     assert game.objects[2] in game.player.inventory
     assert not game.objects_in_room
+
+    response = game.process_command('examine', game.objects[2])
+    assert response == 'Popis předmětu 2.'
 
     response = game.process_command('north')
     assert response is None
@@ -43,8 +46,11 @@ def test_game():
     assert game.objects[5] in game.portable_objects
     assert not game.objects_with_action('open')
 
+    response = game.process_command('examine', game.objects[5])
+    assert response == 'Popis předmětu 5.'
+
     response = game.process_command('take', game.objects[5])
-    assert response[0].name == 'OK'
+    assert response == 'OK'
     assert game.objects[5] not in game.objects_in_room
     assert game.objects[5] in game.player.inventory
     assert not game.portable_objects

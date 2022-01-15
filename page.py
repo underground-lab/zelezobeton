@@ -7,7 +7,6 @@ from styles import room_description, room_objects, inventory, message
 from utils import write_styled, room_listing, inventory_listing
 
 from game import game, __version__
-from game.classes import Response
 
 
 def restart():
@@ -17,14 +16,6 @@ def restart():
 
 def execute(*args):
     st.session_state.response = game.process_command(*args)
-
-
-def show_response(response):
-    response_code, *params = response
-    if response_code is Response.OK:
-        write_styled(texts.ok, style=message)
-    elif response_code is Response.DESCRIPTION:
-        write_styled(params[0].description, style=message)
 
 
 st.set_page_config(
@@ -71,5 +62,5 @@ elif open_:
             st.button(obj.name, on_click=execute, args=('open', obj))
 
 if getattr(st.session_state, 'response', None):
-    show_response(st.session_state.response)
+    write_styled(st.session_state.response, style=message)
     st.session_state.response = None

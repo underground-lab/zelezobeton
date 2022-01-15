@@ -1,9 +1,6 @@
 from dataclasses import dataclass, field
-from enum import Enum
 
 from game import callbacks
-
-Response = Enum('Response', 'OK DESCRIPTION')
 
 
 @dataclass
@@ -40,12 +37,12 @@ class Game:
                 self.player.location = exits[command]
         elif command == 'examine':
             obj = params[0]
-            return Response.DESCRIPTION, obj
+            return obj.description
         elif command == 'take':
             obj = params[0]
             self.current_room.objects.remove(obj)
             self.player.inventory.append(obj)
-            return Response.OK,
+            return 'OK'
         else:
             obj = params[0]
             for impact_spec in obj.actions[command]['impact']:
