@@ -6,16 +6,17 @@ room_data = {
     },
     1: {
         'description': 'Popis místnosti 1.',
-        'exits': {'south': 0, 'east': 2},
+        'exits': {'south': 0},
+        'objects': [4],
     },
     2: {
         'description': 'Popis místnosti 2.',
-        'exits': {'west': 1, 'down': 3},
+        'exits': {'down': 3},
     },
     3: {
         'description': 'Popis místnosti 3.',
         'exits': {'up': 2},
-        'objects': [3, 4],
+        'objects': [3],
     },
 }
 
@@ -48,8 +49,18 @@ object_data = {
         },
     },
     4: {
-        'name': 'předmět 4',
-        'description': 'Popis předmětu 4.',
+        'name': 'dveře',
+        'description': 'Zavřené dveře na východ.',
+        'portable': False,
+        'actions': {
+            'open': {
+                'impact': [
+                    ('open_exit', dict(room=1, direction='east', destination=2)),
+                    ('open_exit', dict(room=2, direction='west', destination=1)),
+                    ('remove_from_room', dict(room=1, obj=4)),
+                ],
+            },
+        },
     },
     5: {
         'name': 'předmět 5',
