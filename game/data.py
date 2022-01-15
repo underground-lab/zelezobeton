@@ -42,9 +42,7 @@ object_data = {
         'actions': {
             'open': {
                 'impact': [
-                    # object 5 appears in room 3
                     ('add_to_room', dict(room=3, obj=5)),
-                    # object 3 cannot be opened anymore
                     ('disable_action', dict(obj=3, action='open')),
                 ],
             },
