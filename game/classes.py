@@ -32,7 +32,6 @@ class Game:
         self.rooms = rooms
         self.objects = objects
         self.player = player
-        self.response = None
 
     def process_command(self, command, *params):
         exits = self.current_room.exits
@@ -41,12 +40,12 @@ class Game:
                 self.player.location = exits[command]
         elif command == 'examine':
             obj = params[0]
-            self.response = (Response.DESCRIPTION, obj)
+            return Response.DESCRIPTION, obj
         elif command == 'take':
             obj = params[0]
             self.current_room.objects.remove(obj)
             self.player.inventory.append(obj)
-            self.response = (Response.OK,)
+            return Response.OK,
         else:
             obj = params[0]
             for impact_spec in obj.actions[command]['impact']:
@@ -74,8 +73,3 @@ class Game:
             obj for obj in self.visible_objects
             if action in obj.actions and obj.actions[action].get('enabled', True)
         ]
-
-    def pop_response(self):
-        value = self.response
-        self.response = None
-        return value
