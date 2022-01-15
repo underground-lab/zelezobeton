@@ -19,7 +19,7 @@ def test_game():
     assert game.objects[4] in game.objects_with_action('open')
 
     game.process_command('open', game.objects[4])
-    assert game.current_room.exits['east'] == 2
+    assert game.current_room.exits['east'] is game.rooms[2]
     assert not game.objects_in_room
     assert not game.objects_with_action('open')
 

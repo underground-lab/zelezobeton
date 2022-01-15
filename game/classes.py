@@ -55,7 +55,7 @@ class Game:
 
     @property
     def current_room(self):
-        return self.rooms[self.player.location]
+        return self.player.location
 
     @property
     def objects_in_room(self):

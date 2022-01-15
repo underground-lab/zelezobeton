@@ -21,7 +21,9 @@ player = Player(**player_data)
 # replace integer ids with object references
 for room in rooms.values():
     room.objects = [objects[n] for n in room.objects]
+    room.exits = {key: rooms[room_id] for key, room_id in room.exits.items()}
 
+player.location = rooms[player.location]
 player.inventory = [objects[n] for n in player.inventory]
 
 for obj in objects.values():
@@ -30,6 +32,8 @@ for obj in objects.values():
             _, kwargs = impact_spec
             if 'room' in kwargs:
                 kwargs['room'] = rooms[kwargs['room']]
+            if 'destination' in kwargs:
+                kwargs['destination'] = rooms[kwargs['destination']]
             if 'obj' in kwargs:
                 kwargs['obj'] = objects[kwargs['obj']]
 
