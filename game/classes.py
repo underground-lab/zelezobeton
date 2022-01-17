@@ -20,9 +20,20 @@ class Object:
 
 
 class Game:
-    def __init__(self, rooms, objects, start_location_id=0):
-        self.rooms = rooms
-        self.objects = objects
+    def __init__(self, room_data, object_data, start_location_id=0):
+        self.rooms = {i: Room(**params) for i, params in room_data.items()}
+        self.objects = {i: Object(**params) for i, params in object_data.items()}
+
+        # replace integer ids with object references
+        for room in self.rooms.values():
+            room.exits = {
+                key: self.rooms[room_id]
+                for key, room_id in room.exits.items()
+            }
+        for obj in self.objects.values():
+            if obj.location is not None:
+                obj.location = self.rooms[obj.location]
+
         self.current_room = self.rooms[start_location_id]
         self.inventory = self.rooms.pop('inventory')
 

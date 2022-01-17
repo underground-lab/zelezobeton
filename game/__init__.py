@@ -12,20 +12,7 @@ __version__ = toml.load(ROOT_DIR / 'pyproject.toml')['tool']['poetry']['version'
 
 
 def new_game():
-    room_data_copy = deepcopy(room_data)
-    object_data_copy = deepcopy(object_data)
-
-    rooms = {i: Room(**params) for i, params in room_data_copy.items()}
-    objects = {i: Object(**params) for i, params in object_data_copy.items()}
-
-    # replace integer ids with object references
-    for room in rooms.values():
-        room.exits = {key: rooms[room_id] for key, room_id in room.exits.items()}
-    for obj in objects.values():
-        if obj.location is not None:
-            obj.location = rooms[obj.location]
-
-    return Game(rooms, objects)
+    return Game(deepcopy(room_data), deepcopy(object_data))
 
 
 game = new_game()
