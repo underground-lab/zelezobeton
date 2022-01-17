@@ -22,7 +22,7 @@ def new_game():
     for room in rooms.values():
         room.exits = {key: rooms[room_id] for key, room_id in room.exits.items()}
     for obj in objects.values():
-        if isinstance(obj.location, int):
+        if obj.location is not None:
             obj.location = rooms[obj.location]
 
     return Game(rooms, objects)

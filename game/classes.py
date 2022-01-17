@@ -1,12 +1,12 @@
 from dataclasses import dataclass, field
-from typing import Union
+from typing import Optional
 
 from game import callbacks
 
 
 @dataclass
 class Room:
-    description: str
+    description: Optional[str] = None
     exits: dict = field(default_factory=dict)
 
 
@@ -14,7 +14,7 @@ class Room:
 class Object:
     name: str
     description: str
-    location: Union[Room, str, None] = None
+    location: Optional[Room] = None
     portable: bool = True
     actions: dict = field(default_factory=dict)
 
@@ -24,6 +24,7 @@ class Game:
         self.rooms = rooms
         self.objects = objects
         self.current_room = self.rooms[start_location_id]
+        self.inventory = self.rooms.pop('inventory')
 
     def process_command(self, command, *params):
         exits = self.current_room.exits
@@ -35,7 +36,7 @@ class Game:
             return obj.description
         elif command == 'take':
             obj = params[0]
-            obj.location = 'inventory'
+            obj.location = self.inventory
             return 'OK'
         else:
             obj = params[0]
@@ -53,12 +54,12 @@ class Game:
         ]
 
     @property
-    def inventory(self):
-        return [obj for obj in self.objects.values() if obj.location == 'inventory']
+    def objects_in_inventory(self):
+        return [obj for obj in self.objects.values() if obj.location is self.inventory]
 
     @property
     def visible_objects(self):
-        return self.objects_in_room + self.inventory
+        return self.objects_in_room + self.objects_in_inventory
 
     @property
     def portable_objects(self):

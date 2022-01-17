@@ -17,6 +17,8 @@ room_data = {
         'description': 'Popis místnosti 3.',
         'exits': {'up': 2},
     },
+    'inventory': {
+    },
 }
 
 object_data = {

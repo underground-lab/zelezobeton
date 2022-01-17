@@ -6,7 +6,7 @@ from game.data import room_data, object_data
 
 def test_all_exits_exist():
     for room_id, room in room_data.items():
-        for target_room_id in room['exits'].values():
+        for target_room_id in room.get('exits', {}).values():
             assert target_room_id in room_data, \
                 f'Unknown room {target_room_id} in exits of room {room_id}'
 
@@ -16,16 +16,16 @@ def test_all_exit_relations_are_symmetric():
         north='south', south='north', west='east', east='west', up='down', down='up'
     )
     for room_id, room in room_data.items():
-        for direction, target_room_id in room['exits'].items():
+        for direction, target_room_id in room.get('exits', {}).items():
             target_room = room_data[target_room_id]
             opposite_direction = opposites[direction]
-            assert target_room['exits'].get(opposite_direction) == room_id, \
+            assert target_room.get('exits', {}).get(opposite_direction) == room_id, \
                 f'Asymmetric exits between rooms {room_id} and {target_room_id}'
 
 
 def test_no_room_has_exit_to_itself():
     for room_id, room in room_data.items():
-        assert room_id not in room['exits'].values(), \
+        assert room_id not in room.get('exits', {}).values(), \
             f'Room {room_id} has an exit to itself'
 
 
