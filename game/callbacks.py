@@ -1,23 +1,25 @@
-def add_to_room(room, obj):
-    room.objects.append(obj)
+def add_to_room(game, room, obj):
+    game.rooms[room].objects.append(game.objects[obj])
 
 
-def remove_from_room(room, obj):
-    room.objects.remove(obj)
+def remove_from_room(game, room, obj):
+    game.rooms[room].objects.remove(game.objects[obj])
 
 
-def enable_action(obj, action):
-    obj.actions[action]['enabled'] = True
 
 
-def disable_action(obj, action):
-    obj.actions[action]['enabled'] = False
+def enable_action(game, obj, action):
+    game.objects[obj].actions[action]['enabled'] = True
 
 
-def open_exit(room, direction, destination):
-    room.exits[direction] = destination
+def disable_action(game, obj, action):
+    game.objects[obj].actions[action]['enabled'] = False
 
 
-def close_exit(room, direction):
-    if direction in room.exits:
-        del room.exits[direction]
+def open_exit(game, room, direction, destination):
+    game.rooms[room].exits[direction] = game.rooms[destination]
+
+
+def close_exit(game, room, direction):
+    if direction in game.rooms[room].exits:
+        del game.rooms[room].exits[direction]

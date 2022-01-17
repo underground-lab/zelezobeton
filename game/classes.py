@@ -48,7 +48,7 @@ class Game:
             action = obj.actions[command]
             for impact_spec in action['impact']:
                 callback_name, kwargs = impact_spec
-                getattr(callbacks, callback_name)(**kwargs)
+                getattr(callbacks, callback_name)(self, **kwargs)
             return action.get('message') or 'OK'
 
     @property

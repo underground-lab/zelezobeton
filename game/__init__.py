@@ -26,15 +26,4 @@ for room in rooms.values():
 player.location = rooms[player.location]
 player.inventory = [objects[n] for n in player.inventory]
 
-for obj in objects.values():
-    for action in obj.actions.values():
-        for impact_spec in action['impact']:
-            _, kwargs = impact_spec
-            if 'room' in kwargs:
-                kwargs['room'] = rooms[kwargs['room']]
-            if 'destination' in kwargs:
-                kwargs['destination'] = rooms[kwargs['destination']]
-            if 'obj' in kwargs:
-                kwargs['obj'] = objects[kwargs['obj']]
-
 game = Game(rooms, objects, player)
