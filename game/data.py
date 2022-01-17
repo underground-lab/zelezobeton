@@ -4,7 +4,7 @@ room_data = {
     0: {
         'description': 'Popis místnosti 0.',
         'exits': {'north': 1},
-        'objects': [2],
+        'objects': [1],
     },
     1: {
         'description': 'Popis místnosti 1.',
@@ -23,21 +23,30 @@ room_data = {
 }
 
 object_data = {
-    0: {
-        'name': 'předmět 0',
-        'description': 'Popis předmětu 0.',
-    },
     1: {
-        'name': 'předmět 1',
-        'description': 'Popis předmětu 1.',
+        'name': 'plechovku',
+        'description': 'Přenosný předmět typu krabička, batoh atd. Po jeho otevření se'
+                       ' v místě tohoto předmětu objeví jeden nebo více nových'
+                       ' předmětů. Následně už tento předmět nelze znova otevřít.',
+        'actions': {
+            'open': {
+                'impact': [
+                    ('add_to_same_location', dict(obj_1=1, obj_2=2)),
+                    ('disable_action', dict(obj=1, action='open')),
+                ],
+                'message': 'V plechovce byl malý klíček.',
+            },
+        },
     },
     2: {
-        'name': 'předmět 2',
-        'description': 'Popis předmětu 2.',
+        'name': 'klíček',
+        'description': 'Běžný přenosný předmět.',
     },
     3: {
-        'name': 'předmět 3',
-        'description': 'Popis předmětu 3.',
+        'name': 'skříňku',
+        'description': 'Nepřenosný předmět typu skříň, bedna atd. Po jeho otevření se'
+                       ' v místnosti objeví jeden nebo více nových předmětů.'
+                       ' Následně už tento předmět nelze znova otevřít.',
         'portable': False,
         'actions': {
             'open': {
@@ -45,31 +54,34 @@ object_data = {
                     ('add_to_room', dict(room=3, obj=5)),
                     ('disable_action', dict(obj=3, action='open')),
                 ],
+                'message': 'Ve skříňce jsi našel nůžky.',
             },
         },
     },
     4: {
         'name': 'dveře',
-        'description': 'Zavřené dveře na východ.',
+        'description': 'Nepřenosný předmět typu dveře, poklop atd. Po jeho otevření se'
+                       ' objeví nový východ z místnosti. Následně už tento předmět'
+                       ' nelze znova otevřít.',
         'portable': False,
         'actions': {
             'open': {
                 'impact': [
                     ('open_exit', dict(room=1, direction='east', destination=2)),
                     ('open_exit', dict(room=2, direction='west', destination=1)),
-                    ('remove_from_room', dict(room=1, obj=4)),
+                    ('disable_action', dict(obj=4, action='open')),
                 ],
                 'message': 'Otevřel jsi dveře.',
             },
         },
     },
     5: {
-        'name': 'předmět 5',
-        'description': 'Popis předmětu 5.',
+        'name': 'nůžky',
+        'description': 'Běžný přenosný předmět.',
     },
 }
 
 player_data = {
     'location': 0,
-    'inventory': [0, 1],
+    'inventory': [],
 }
