@@ -4,12 +4,10 @@ room_data = {
     0: {
         'description': 'Popis místnosti 0.',
         'exits': {'north': 1},
-        'objects': [1],
     },
     1: {
         'description': 'Popis místnosti 1.',
         'exits': {'south': 0},
-        'objects': [4],
     },
     2: {
         'description': 'Popis místnosti 2.',
@@ -18,7 +16,6 @@ room_data = {
     3: {
         'description': 'Popis místnosti 3.',
         'exits': {'up': 2},
-        'objects': [3],
     },
 }
 
@@ -28,6 +25,7 @@ object_data = {
         'description': 'Přenosný předmět typu krabička, batoh atd. Po jeho otevření se'
                        ' v místě tohoto předmětu objeví jeden nebo více nových'
                        ' předmětů. Následně už tento předmět nelze znova otevřít.',
+        'location': 0,
         'actions': {
             'open': {
                 'impact': [
@@ -47,6 +45,7 @@ object_data = {
         'description': 'Nepřenosný předmět typu skříň, bedna atd. Po jeho otevření se'
                        ' v místnosti objeví jeden nebo více nových předmětů.'
                        ' Následně už tento předmět nelze znova otevřít.',
+        'location': 3,
         'portable': False,
         'actions': {
             'open': {
@@ -63,6 +62,7 @@ object_data = {
         'description': 'Nepřenosný předmět typu dveře, poklop atd. Po jeho otevření se'
                        ' objeví nový východ z místnosti. Následně už tento předmět'
                        ' nelze znova otevřít.',
+        'location': 1,
         'portable': False,
         'actions': {
             'open': {
@@ -79,9 +79,4 @@ object_data = {
         'name': 'nůžky',
         'description': 'Běžný přenosný předmět.',
     },
-}
-
-player_data = {
-    'location': 0,
-    'inventory': [],
 }

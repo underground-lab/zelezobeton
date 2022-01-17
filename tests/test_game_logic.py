@@ -18,7 +18,7 @@ def test_game_walk_through(game):
 
     response = game.process_command('take', game.objects[1])
     assert response == 'OK'
-    assert game.objects[1] in game.player.inventory
+    assert game.objects[1].location == 'inventory'
     assert game.objects[1] in game.objects_with_action('open')
     assert not game.objects_in_room
 
@@ -33,7 +33,7 @@ def test_game_walk_through(game):
     response = game.process_command('open', game.objects[1])
     assert response == 'V plechovce byl malý klíček.'
     assert len(game.objects_with_action('open')) == 1
-    assert game.objects[2] in game.player.inventory
+    assert game.objects[2].location == 'inventory'
 
     response = game.process_command('open', game.objects[4])
     assert response == 'Otevřel jsi dveře.'
@@ -63,16 +63,16 @@ def test_game_walk_through(game):
     response = game.process_command('take', game.objects[5])
     assert response == 'OK'
     assert game.objects[5] not in game.objects_in_room
-    assert game.objects[5] in game.player.inventory
+    assert game.objects[5].location == 'inventory'
     assert not game.portable_objects
 
 
 def test_portable_container_opened_before_taken(game):
     game.process_command('open', game.objects[1])
-    assert game.objects[2] in game.current_room.objects
+    assert game.objects[2].location is game.current_room
 
 
 def test_portable_container_opened_after_taken(game):
     game.process_command('take', game.objects[1])
     game.process_command('open', game.objects[1])
-    assert game.objects[2] in game.player.inventory
+    assert game.objects[2].location == 'inventory'

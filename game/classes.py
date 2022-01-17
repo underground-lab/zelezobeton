@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from typing import Union
 
 from game import callbacks
 
@@ -7,41 +8,34 @@ from game import callbacks
 class Room:
     description: str
     exits: dict = field(default_factory=dict)
-    objects: list = field(default_factory=list)
 
 
 @dataclass
 class Object:
     name: str
     description: str
+    location: Union[Room, str, None] = None
     portable: bool = True
     actions: dict = field(default_factory=dict)
 
 
-@dataclass
-class Player:
-    location: int
-    inventory: list = field(default_factory=list)
-
-
 class Game:
-    def __init__(self, rooms, objects, player):
+    def __init__(self, rooms, objects, start_location_id=0):
         self.rooms = rooms
         self.objects = objects
-        self.player = player
+        self.current_room = self.rooms[start_location_id]
 
     def process_command(self, command, *params):
         exits = self.current_room.exits
         if command in ('north', 'south', 'west', 'east', 'up', 'down'):
             if command in exits:
-                self.player.location = exits[command]
+                self.current_room = exits[command]
         elif command == 'examine':
             obj = params[0]
             return obj.description
         elif command == 'take':
             obj = params[0]
-            self.current_room.objects.remove(obj)
-            self.player.inventory.append(obj)
+            obj.location = 'inventory'
             return 'OK'
         else:
             obj = params[0]
@@ -52,16 +46,19 @@ class Game:
             return action.get('message') or 'OK'
 
     @property
-    def current_room(self):
-        return self.player.location
+    def objects_in_room(self):
+        return [
+            obj for obj in self.objects.values()
+            if obj.location is self.current_room
+        ]
 
     @property
-    def objects_in_room(self):
-        return self.current_room.objects
+    def inventory(self):
+        return [obj for obj in self.objects.values() if obj.location == 'inventory']
 
     @property
     def visible_objects(self):
-        return self.objects_in_room + self.player.inventory
+        return self.objects_in_room + self.inventory
 
     @property
     def portable_objects(self):

@@ -1,15 +1,15 @@
 def add_to_room(game, room, obj):
-    game.rooms[room].objects.append(game.objects[obj])
+    game.objects[obj].location = game.rooms[room]
 
 
-def remove_from_room(game, room, obj):
-    game.rooms[room].objects.remove(game.objects[obj])
+def remove_object(game, obj):
+    game.objects[obj].location = None
 
 def add_to_same_location(game, obj_1, obj_2):
-    if game.objects[obj_1] in game.current_room.objects:
-        game.current_room.objects.append(game.objects[obj_2])
+    if game.objects[obj_1].location is game.current_room:
+        game.objects[obj_2].location = game.current_room
     else:
-        game.player.inventory.append(game.objects[obj_2])
+        game.objects[obj_2].location = 'inventory'
 
 
 

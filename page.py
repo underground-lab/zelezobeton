@@ -35,8 +35,8 @@ with left_column:
     if game.objects_in_room:
         write_styled(room_listing(game.objects_in_room), style=room_objects)
 
-    if game.player.inventory:
-        write_styled(inventory_listing(game.player.inventory), style=inventory)
+    if game.inventory:
+        write_styled(inventory_listing(game.inventory), style=inventory)
 
 with right_column:
     for command in game.current_room.exits:

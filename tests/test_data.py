@@ -1,10 +1,7 @@
-from collections import Counter
-from itertools import chain
-
 import pytest
 
 import game.callbacks
-from game.data import room_data, object_data, player_data
+from game.data import room_data, object_data
 
 
 def test_all_exits_exist():
@@ -30,25 +27,6 @@ def test_no_room_has_exit_to_itself():
     for room_id, room in room_data.items():
         assert room_id not in room['exits'].values(), \
             f'Room {room_id} has an exit to itself'
-
-
-def test_all_objects_exist():
-    for room_id, room in room_data.items():
-        for obj_id in room.get('objects', []):
-            assert obj_id in object_data, \
-                f'Unknown object {obj_id} in room {room_id}'
-
-    for obj_id in player_data['inventory']:
-        assert obj_id in object_data, f'Unknown object {obj_id} in inventory'
-
-
-def test_no_object_occurs_more_than_once():
-    occurrences = chain(
-        *(room.get('objects', []) for room in room_data.values()),
-        player_data['inventory']
-    )
-    most_common, count = Counter(occurrences).most_common()[0]
-    assert count <= 1, f'Object {most_common} occurs in more than one place'
 
 
 @pytest.fixture
