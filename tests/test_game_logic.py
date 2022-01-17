@@ -1,7 +1,14 @@
-from game import game
+import pytest
+
+from game import new_game
 
 
-def test_game():
+@pytest.fixture
+def game():
+    return new_game()
+
+
+def test_game_walk_through(game):
     assert game.current_room is game.rooms[0]
     assert game.objects[1] in game.portable_objects
     assert game.objects[1] in game.objects_with_action('open')
@@ -58,3 +65,14 @@ def test_game():
     assert game.objects[5] not in game.objects_in_room
     assert game.objects[5] in game.player.inventory
     assert not game.portable_objects
+
+
+def test_portable_container_opened_before_taken(game):
+    game.process_command('open', game.objects[1])
+    assert game.objects[2] in game.current_room.objects
+
+
+def test_portable_container_opened_after_taken(game):
+    game.process_command('take', game.objects[1])
+    game.process_command('open', game.objects[1])
+    assert game.objects[2] in game.player.inventory
