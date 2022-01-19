@@ -38,24 +38,22 @@ class Game:
         self.inventory = self.rooms.pop('inventory')
 
     def process_command(self, command, *params):
-        exits = self.current_room.exits
         if command in ('north', 'south', 'west', 'east', 'up', 'down'):
-            if command in exits:
-                self.current_room = exits[command]
-        elif command == 'examine':
-            obj = params[0]
+            self.current_room = self.current_room.exits[command]
+            return 'OK'
+
+        obj = params[0]
+        if command == 'examine' and obj in self.visible_objects:
             return obj.description
-        elif command == 'take':
-            obj = params[0]
+        if command == 'take' and obj in self.portable_objects:
             obj.location = self.inventory
             return 'OK'
-        else:
-            obj = params[0]
-            action = obj.actions[command]
-            for impact_spec in action['impact']:
-                callback_name, kwargs = impact_spec
-                getattr(callbacks, callback_name)(self, **kwargs)
-            return action.get('message') or 'OK'
+
+        action = obj.actions[command]
+        for impact_spec in action['impact']:
+            callback_name, kwargs = impact_spec
+            getattr(callbacks, callback_name)(self, **kwargs)
+        return action.get('message', 'OK')
 
     @property
     def objects_in_room(self):

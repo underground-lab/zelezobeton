@@ -5,12 +5,12 @@ def add_to_room(game, room, obj):
 def remove_object(game, obj):
     game.objects[obj].location = None
 
+
 def add_to_same_location(game, obj_1, obj_2):
     if game.objects[obj_1].location is game.current_room:
         game.objects[obj_2].location = game.current_room
     else:
         game.objects[obj_2].location = game.inventory
-
 
 
 def enable_action(game, obj, action):
