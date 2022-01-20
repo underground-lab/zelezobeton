@@ -20,6 +20,8 @@ class Object:
 
 
 class Game:
+    message_ok = 'OK'
+
     def __init__(self, room_data, object_data, start_location_id=0):
         self.rooms = {i: Room(**params) for i, params in room_data.items()}
         self.objects = {i: Object(**params) for i, params in object_data.items()}
@@ -40,20 +42,20 @@ class Game:
     def process_command(self, command, *params):
         if command in ('north', 'south', 'west', 'east', 'up', 'down'):
             self.current_room = self.current_room.exits[command]
-            return 'OK'
+            return self.message_ok
 
         obj = params[0]
         if command == 'examine' and obj in self.visible_objects:
             return obj.description
         if command == 'take' and obj in self.portable_objects:
             obj.location = self.inventory
-            return 'OK'
+            return self.message_ok
 
         action = obj.actions[command]
         for impact_spec in action['impact']:
             callback_name, kwargs = impact_spec
             getattr(callbacks, callback_name)(self, **kwargs)
-        return action.get('message', 'OK')
+        return action.get('message', self.message_ok)
 
     @property
     def objects_in_room(self):

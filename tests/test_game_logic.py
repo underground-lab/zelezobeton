@@ -17,13 +17,13 @@ def test_game_walk_through(game):
     assert 'předmět typu krabička' in response
 
     response = game.process_command('take', game.objects[1])
-    assert response == 'OK'
+    assert response is game.message_ok
     assert game.objects[1].location is game.inventory
     assert game.objects[1] in game.objects_with_action('open')
     assert not game.objects_in_room
 
     response = game.process_command('north')
-    assert response == 'OK'
+    assert response is game.message_ok
     assert game.current_room is game.rooms[1]
     assert 'east' not in game.current_room.exits
     assert game.objects[4] in game.objects_in_room
@@ -41,11 +41,11 @@ def test_game_walk_through(game):
     assert not game.objects_with_action('open')
 
     response = game.process_command('east')
-    assert response == 'OK'
+    assert response is game.message_ok
     assert game.current_room is game.rooms[2]
 
     response = game.process_command('down')
-    assert response == 'OK'
+    assert response is game.message_ok
     assert game.current_room is game.rooms[3]
     assert game.objects[3] in game.objects_in_room
     assert not game.portable_objects
@@ -61,7 +61,7 @@ def test_game_walk_through(game):
     assert response == 'Běžný přenosný předmět.'
 
     response = game.process_command('take', game.objects[5])
-    assert response == 'OK'
+    assert response is game.message_ok
     assert game.objects[5] not in game.objects_in_room
     assert game.objects[5].location is game.inventory
     assert not game.portable_objects
