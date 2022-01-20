@@ -3,6 +3,7 @@
 import pytest
 
 from game import new_game
+from game.classes import InvalidCommand
 
 
 @pytest.fixture
@@ -24,10 +25,10 @@ def test_game_walk_through(game):
     assert game.objects[1] in game.objects_with_action('open')
     assert not game.objects_in_room
 
-    with pytest.raises(KeyError):
+    with pytest.raises(InvalidCommand, match=r'west'):
         game.process_command('west')
 
-    with pytest.raises(KeyError):
+    with pytest.raises(InvalidCommand, match=r'take.*plechovku'):
         game.process_command('take', game.objects[1])
 
     response = game.process_command('north')
@@ -77,7 +78,7 @@ def test_game_walk_through(game):
     assert game.objects[5].location is game.inventory
     assert not game.portable_objects
 
-    with pytest.raises(KeyError):
+    with pytest.raises(InvalidCommand, match=r'open.*nůžky'):
         game.process_command('open', game.objects[5])
 
 

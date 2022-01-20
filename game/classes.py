@@ -4,6 +4,10 @@ from typing import Optional
 from game import callbacks
 
 
+class InvalidCommand(ValueError):
+    ...
+
+
 @dataclass
 class Room:
     description: Optional[str] = None
@@ -41,7 +45,10 @@ class Game:
 
     def process_command(self, command, *params):
         if command in ('north', 'south', 'west', 'east', 'up', 'down'):
-            self.current_room = self.current_room.exits[command]
+            try:
+                self.current_room = self.current_room.exits[command]
+            except KeyError:
+                raise InvalidCommand(command) from None
             return self.message_ok
 
         obj = params[0]
@@ -51,7 +58,10 @@ class Game:
             obj.location = self.inventory
             return self.message_ok
 
-        action = obj.actions[command]
+        try:
+            action = obj.actions[command]
+        except KeyError:
+            raise InvalidCommand(command, obj.name) from None
         for impact_spec in action['impact']:
             callback_name, kwargs = impact_spec
             getattr(callbacks, callback_name)(self, **kwargs)
