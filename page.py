@@ -14,8 +14,10 @@ def restart():
     del sys.modules['game']
 
 
-def execute(*args):
-    st.session_state.response = game.process_command(*args)
+def execute(*args, store_response=True):
+    game_response = game.process_command(*args)
+    if store_response:
+        st.session_state.response = game_response
 
 
 st.set_page_config(
@@ -40,7 +42,12 @@ with left_column:
 
 with right_column:
     for command in game.current_room.exits:
-        st.button(getattr(texts, 'go_' + command), on_click=execute, args=(command,))
+        st.button(
+            getattr(texts, 'go_' + command),
+            on_click=execute,
+            args=(command,),
+            kwargs=dict(store_response=False),
+        )
     examine = st.button(texts.examine) if game.visible_objects else None
     take = st.button(texts.take) if game.portable_objects else None
     open_ = st.button(texts.open) if game.objects_with_action('open') else None
