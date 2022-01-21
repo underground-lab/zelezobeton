@@ -62,6 +62,8 @@ class Game:
             action = obj.actions[command]
         except KeyError:
             raise InvalidCommand(command, obj.name) from None
+        if not action.get('enabled', True):
+            raise InvalidCommand(command, obj.name) from None
         for impact_spec in action['impact']:
             callback_name, kwargs = impact_spec
             getattr(callbacks, callback_name)(self, **kwargs)
