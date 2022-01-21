@@ -7,6 +7,7 @@ from styles import room_description, room_objects, inventory, message
 from utils import write_styled, room_listing, inventory_listing
 
 from game import game, __version__
+from game.classes import InvalidCommand
 
 
 def restart():
@@ -15,9 +16,12 @@ def restart():
 
 
 def execute(*args, store_response=True):
-    game_response = game.process_command(*args)
+    try:
+        response = game.process_command(*args)
+    except InvalidCommand:
+        response = texts.invalid
     if store_response:
-        st.session_state.response = game_response
+        st.session_state.response = response
 
 
 st.set_page_config(

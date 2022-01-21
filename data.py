@@ -10,6 +10,7 @@ texts = SimpleNamespace(
     you_see='Vidíš {}.',
     you_have='Máš u sebe {}.',
     and_='a',
+    invalid='To nelze.',
     examine_what='Co chceš prozkoumat?',
     take_what='Co chceš vzít?',
     open_what='Co chceš otevřít?',
