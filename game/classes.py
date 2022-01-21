@@ -26,7 +26,7 @@ class Object:
 class Game:
     message_ok = 'OK'
 
-    def __init__(self, room_data, object_data, start_location_id=0):
+    def __init__(self, room_data, object_data, start_location_id='start'):
         self.rooms = {i: Room(**params) for i, params in room_data.items()}
         self.objects = {i: Object(**params) for i, params in object_data.items()}
 

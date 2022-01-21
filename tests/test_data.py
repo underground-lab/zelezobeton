@@ -52,6 +52,10 @@ def test_impact_specs_use_existing_room_ids(impact_specs):
         if 'room' in kwargs:
             room_id = kwargs['room']
             assert room_id in room_data, f'Unknown room {room_id} in {impact_spec}'
+        if 'destination' in kwargs:
+            dest_id = kwargs['destination']
+            assert dest_id in room_data, \
+                f'Unknown destination {dest_id} in {impact_spec}'
 
 
 def test_impact_specs_use_existing_object_ids(impact_specs):

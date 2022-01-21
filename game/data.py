@@ -1,24 +1,23 @@
 # coding: utf-8
 
 room_data = {
-    0: {
+    'start': {
         'description': 'Popis místnosti 0.',
-        'exits': {'north': 1},
+        'exits': {'north': 'pracovna'},
     },
-    1: {
+    'pracovna': {
         'description': 'Popis místnosti 1.',
-        'exits': {'south': 0},
+        'exits': {'south': 'start'},
     },
-    2: {
+    'sklad': {
         'description': 'Popis místnosti 2.',
-        'exits': {'down': 3},
+        'exits': {'down': 'sklep'},
     },
-    3: {
+    'sklep': {
         'description': 'Popis místnosti 3.',
-        'exits': {'up': 2},
+        'exits': {'up': 'sklad'},
     },
-    'inventory': {
-    },
+    'inventory': {},
 }
 
 object_data = {
@@ -27,7 +26,7 @@ object_data = {
         'description': 'Přenosný předmět typu krabička, batoh atd. Po jeho otevření se'
                        ' v místě tohoto předmětu objeví jeden nebo více nových'
                        ' předmětů. Následně už tento předmět nelze znova otevřít.',
-        'location': 0,
+        'location': 'pracovna',
         'actions': {
             'open': {
                 'impact': [
@@ -47,12 +46,12 @@ object_data = {
         'description': 'Nepřenosný předmět typu skříň, bedna atd. Po jeho otevření se'
                        ' v místnosti objeví jeden nebo více nových předmětů.'
                        ' Následně už tento předmět nelze znova otevřít.',
-        'location': 3,
+        'location': 'sklep',
         'portable': False,
         'actions': {
             'open': {
                 'impact': [
-                    ('add_to_room', dict(room=3, obj=5)),
+                    ('add_to_room', dict(room='sklep', obj=5)),
                     ('disable_action', dict(obj=3, action='open')),
                 ],
                 'message': 'Ve skříňce jsi našel nůžky.',
@@ -64,13 +63,13 @@ object_data = {
         'description': 'Nepřenosný předmět typu dveře, poklop atd. Po jeho otevření se'
                        ' objeví nový východ z místnosti. Následně už tento předmět'
                        ' nelze znova otevřít.',
-        'location': 1,
+        'location': 'start',
         'portable': False,
         'actions': {
             'open': {
                 'impact': [
-                    ('open_exit', dict(room=1, direction='east', destination=2)),
-                    ('open_exit', dict(room=2, direction='west', destination=1)),
+                    ('open_exit', dict(room='start', direction='east', destination='sklad')),
+                    ('open_exit', dict(room='sklad', direction='west', destination='start')),
                     ('disable_action', dict(obj=4, action='open')),
                 ],
                 'message': 'Otevřel jsi dveře.',

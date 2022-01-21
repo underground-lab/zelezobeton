@@ -12,7 +12,12 @@ def game():
 
 
 def test_game_walk_through(game):
-    assert game.current_room is game.rooms[0]
+    assert game.current_room is game.rooms['start']
+
+    response = game.process_command('north')
+    assert response is game.message_ok
+    assert game.current_room is game.rooms['pracovna']
+
     assert game.objects[1] in game.portable_objects
     assert game.objects[1] in game.objects_with_action('open')
 
@@ -31,9 +36,9 @@ def test_game_walk_through(game):
     with pytest.raises(InvalidCommand, match=r'take.*plechovku'):
         game.process_command('take', game.objects[1])
 
-    response = game.process_command('north')
+    response = game.process_command('south')
     assert response is game.message_ok
-    assert game.current_room is game.rooms[1]
+    assert game.current_room is game.rooms['start']
     assert 'east' not in game.current_room.exits
     assert game.objects[4] in game.objects_in_room
     assert not game.portable_objects
@@ -49,16 +54,16 @@ def test_game_walk_through(game):
 
     response = game.process_command('open', game.objects[4])
     assert response == 'Otevřel jsi dveře.'
-    assert game.current_room.exits['east'] is game.rooms[2]
+    assert game.current_room.exits['east'] is game.rooms['sklad']
     assert not game.objects_with_action('open')
 
     response = game.process_command('east')
     assert response is game.message_ok
-    assert game.current_room is game.rooms[2]
+    assert game.current_room is game.rooms['sklad']
 
     response = game.process_command('down')
     assert response is game.message_ok
-    assert game.current_room is game.rooms[3]
+    assert game.current_room is game.rooms['sklep']
     assert game.objects[3] in game.objects_in_room
     assert not game.portable_objects
     assert game.objects[5] not in game.visible_objects
@@ -83,11 +88,13 @@ def test_game_walk_through(game):
 
 
 def test_portable_container_opened_before_taken(game):
+    game.process_command('north')
     game.process_command('open', game.objects[1])
     assert game.objects[2].location is game.current_room
 
 
 def test_portable_container_opened_after_taken(game):
+    game.process_command('north')
     game.process_command('take', game.objects[1])
     game.process_command('open', game.objects[1])
     assert game.objects[2].location is game.inventory
