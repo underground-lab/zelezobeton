@@ -17,7 +17,6 @@ def test_game_walk_through(game):
     response = game.process_command('north')
     assert response is game.message_ok
     assert game.current_room is game.rooms['pracovna']
-
     assert game.objects['plechovka'] in game.objects_with_action('take')
     assert game.objects['plechovka'] in game.objects_with_action('open')
 
@@ -48,6 +47,7 @@ def test_game_walk_through(game):
     assert response == 'V plechovce byl malý klíček.'
     assert not game.objects_with_action('open')
     assert game.objects['klicek'].location is game.inventory
+    assert game.objects_with_action('use') == [game.objects['klicek']]
 
     with pytest.raises(InvalidCommand, match=r'open.*plechovku'):
         game.process_command('open', game.objects['plechovka'])
@@ -60,10 +60,13 @@ def test_game_walk_through(game):
 
     response = game.process_command('use', game.objects['klicek'])
     assert response == 'Odemkl jsi dveře.'
+    assert game.objects_with_action('open') == [game.objects['dvere']]
+    assert not game.objects_with_action('use')
 
     response = game.process_command('open', game.objects['dvere'])
     assert response == 'Otevřel jsi dveře.'
     assert game.current_room.exits['east'] is game.rooms['sklad']
+    assert game.rooms['sklad'].exits['west'] is game.current_room
     assert not game.objects_with_action('open')
 
     with pytest.raises(InvalidCommand, match=r'open.*dveře'):
@@ -78,8 +81,8 @@ def test_game_walk_through(game):
     assert game.current_room is game.rooms['sklep']
     assert game.objects['skrinka'] in game.objects_in_room
     assert not game.objects_with_action('take')
+    assert game.objects_with_action('open') == [game.objects['skrinka']]
     assert game.objects['nuzky'] not in game.visible_objects
-    assert game.objects['skrinka'] in game.objects_with_action('open')
 
     response = game.process_command('examine', game.objects['skrinka'])
     assert 'předmět typu skříň' in response
@@ -100,6 +103,21 @@ def test_game_walk_through(game):
 
     with pytest.raises(InvalidCommand, match=r'open.*nůžky'):
         game.process_command('open', game.objects['nuzky'])
+
+
+def test_straightforward_walk_through(game):
+    game.process_command('north')
+    game.process_command('open', game.objects['plechovka'])
+    game.process_command('take', game.objects['klicek'])
+    game.process_command('south')
+    game.process_command('use', game.objects['klicek'])
+    game.process_command('open', game.objects['dvere'])
+    game.process_command('east')
+    game.process_command('down')
+    game.process_command('open', game.objects['skrinka'])
+    game.process_command('take', game.objects['nuzky'])
+    game.process_command('up')
+    game.process_command('west')
 
 
 def test_portable_container_opened_before_taken(game):
