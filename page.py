@@ -49,24 +49,24 @@ with right_column:
             kwargs=dict(store_response=False),
         )
     examine = st.button(texts.examine) if game.visible_objects else None
-    take = st.button(texts.take) if game.objects_with_action('take') else None
-    open_ = st.button(texts.open) if game.objects_with_action('open') else None
+    buttons = {
+        command: st.button(getattr(texts, command))
+        for command in ('take', 'open')
+        if game.objects_with_action(command)
+    }
 
 if examine:
     write_styled(texts.examine_what, style=message)
     with st.columns([2, 1])[1]:
         for obj in game.visible_objects:
             st.button(obj.name, on_click=execute, args=('examine', obj))
-elif take:
-    write_styled(texts.take_what, style=message)
-    with st.columns([2, 1])[1]:
-        for obj in game.objects_with_action('take'):
-            st.button(obj.name, on_click=execute, args=('take', obj))
-elif open_:
-    write_styled(texts.open_what, style=message)
-    with st.columns([2, 1])[1]:
-        for obj in game.objects_with_action('open'):
-            st.button(obj.name, on_click=execute, args=('open', obj))
+for command, button in buttons.items():
+    if button:
+        write_styled(getattr(texts, command + '_what'), style=message)
+        _, right_column = st.columns([2, 1])
+        with right_column:
+            for obj in game.objects_with_action(command):
+                st.button(obj.name, on_click=execute, args=(command, obj))
 
 if getattr(st.session_state, 'response', None):
     write_styled(st.session_state.response, style=message)
