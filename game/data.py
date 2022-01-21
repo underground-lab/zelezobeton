@@ -30,7 +30,7 @@ object_data = {
         'actions': {
             'open': {
                 'impact': [
-                    ('add_to_same_location', dict(obj_1=1, obj_2=2)),
+                    ('move_to_same_location', dict(obj_1=2, obj_2=1)),
                     ('disable_action', dict(obj=1, action='open')),
                 ],
                 'message': 'V plechovce byl malý klíček.',
@@ -51,7 +51,7 @@ object_data = {
         'actions': {
             'open': {
                 'impact': [
-                    ('add_to_room', dict(room='sklep', obj=5)),
+                    ('move_to_room', dict(obj=5, room='sklep')),
                     ('disable_action', dict(obj=3, action='open')),
                 ],
                 'message': 'Ve skříňce jsi našel nůžky.',
