@@ -58,6 +58,11 @@ class Game:
             raise InvalidCommand(command, obj.name) from None
 
         action = obj.actions[command]
+        for condition_spec in action.get('condition', []):
+            callback_name, kwargs = condition_spec
+            if not getattr(callbacks, callback_name)(self, **kwargs):
+                raise InvalidCommand(command, obj.name) from None
+
         for impact_spec in action['impact']:
             callback_name, kwargs = impact_spec
             getattr(callbacks, callback_name)(self, **kwargs)
