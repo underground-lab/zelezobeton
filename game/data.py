@@ -21,7 +21,7 @@ room_data = {
 }
 
 object_data = {
-    1: {
+    'plechovka': {
         'name': 'plechovku',
         'description': 'Přenosný předmět typu krabička, batoh atd. Po jeho otevření se'
                        ' v místě tohoto předmětu objeví jeden nebo více nových'
@@ -30,41 +30,41 @@ object_data = {
         'actions': {
             'take': {
                 'impact': [
-                    ('move_to_inventory', dict(obj=1)),
+                    ('move_to_inventory', dict(obj='plechovka')),
                 ],
             },
             'open': {
                 'impact': [
-                    ('move_to_same_location', dict(obj_1=2, obj_2=1)),
-                    ('disable_action', dict(obj=1, action='open')),
+                    ('move_to_same_location', dict(obj_1='klicek', obj_2='plechovka')),
+                    ('disable_action', dict(obj='plechovka', action='open')),
                 ],
                 'message': 'V plechovce byl malý klíček.',
             },
         },
     },
-    2: {
+    'klicek': {
         'name': 'klíček',
         'description': 'Běžný přenosný předmět.',
         'actions': {
             'take': {
                 'impact': [
-                    ('move_to_inventory', dict(obj=2)),
+                    ('move_to_inventory', dict(obj='klicek')),
                 ],
             },
             'use': {
                 'condition': [
-                    ('in_inventory', dict(obj=2)),
-                    ('is_visible', dict(obj=4)),
+                    ('in_inventory', dict(obj='klicek')),
+                    ('is_visible', dict(obj='dvere')),
                 ],
                 'impact': [
-                    ('enable_action', dict(obj=4, action='open')),
-                    ('disable_action', dict(obj=2, action='use')),
+                    ('enable_action', dict(obj='dvere', action='open')),
+                    ('disable_action', dict(obj='klicek', action='use')),
                 ],
                 'message': 'Odemkl jsi dveře.',
             },
         },
     },
-    3: {
+    'skrinka': {
         'name': 'skříňku',
         'description': 'Nepřenosný předmět typu skříň, bedna atd. Po jeho otevření se'
                        ' v místnosti objeví jeden nebo více nových předmětů.'
@@ -73,14 +73,14 @@ object_data = {
         'actions': {
             'open': {
                 'impact': [
-                    ('move_to_room', dict(obj=5, room='sklep')),
-                    ('disable_action', dict(obj=3, action='open')),
+                    ('move_to_room', dict(obj='nuzky', room='sklep')),
+                    ('disable_action', dict(obj='skrinka', action='open')),
                 ],
                 'message': 'Ve skříňce jsi našel nůžky.',
             },
         },
     },
-    4: {
+    'dvere': {
         'name': 'dveře',
         'description': 'Nepřenosný předmět typu dveře, poklop atd. Po jeho otevření se'
                        ' objeví nový východ z místnosti. Následně už tento předmět'
@@ -91,20 +91,20 @@ object_data = {
                 'impact': [
                     ('open_exit', dict(room='start', direction='east', destination='sklad')),
                     ('open_exit', dict(room='sklad', direction='west', destination='start')),
-                    ('disable_action', dict(obj=4, action='open')),
+                    ('disable_action', dict(obj='dvere', action='open')),
                 ],
                 'message': 'Otevřel jsi dveře.',
                 'enabled': False,
             },
         },
     },
-    5: {
+    'nuzky': {
         'name': 'nůžky',
         'description': 'Běžný přenosný předmět.',
         'actions': {
             'take': {
                 'impact': [
-                    ('move_to_inventory', dict(obj=5)),
+                    ('move_to_inventory', dict(obj='nuzky')),
                 ],
             },
         },
