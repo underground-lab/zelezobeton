@@ -49,7 +49,7 @@ with right_column:
             kwargs=dict(store_response=False),
         )
     examine = st.button(texts.examine) if game.visible_objects else None
-    take = st.button(texts.take) if game.portable_objects else None
+    take = st.button(texts.take) if game.objects_with_action('take') else None
     open_ = st.button(texts.open) if game.objects_with_action('open') else None
 
 if examine:
@@ -60,7 +60,7 @@ if examine:
 elif take:
     write_styled(texts.take_what, style=message)
     with st.columns([2, 1])[1]:
-        for obj in game.portable_objects:
+        for obj in game.objects_with_action('take'):
             st.button(obj.name, on_click=execute, args=('take', obj))
 elif open_:
     write_styled(texts.open_what, style=message)

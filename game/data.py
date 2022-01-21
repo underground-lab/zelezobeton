@@ -28,6 +28,11 @@ object_data = {
                        ' předmětů. Následně už tento předmět nelze znova otevřít.',
         'location': 'pracovna',
         'actions': {
+            'take': {
+                'impact': [
+                    ('move_to_inventory', dict(obj=1)),
+                ],
+            },
             'open': {
                 'impact': [
                     ('move_to_same_location', dict(obj_1=2, obj_2=1)),
@@ -40,6 +45,13 @@ object_data = {
     2: {
         'name': 'klíček',
         'description': 'Běžný přenosný předmět.',
+        'actions': {
+            'take': {
+                'impact': [
+                    ('move_to_inventory', dict(obj=2)),
+                ],
+            },
+        },
     },
     3: {
         'name': 'skříňku',
@@ -47,7 +59,6 @@ object_data = {
                        ' v místnosti objeví jeden nebo více nových předmětů.'
                        ' Následně už tento předmět nelze znova otevřít.',
         'location': 'sklep',
-        'portable': False,
         'actions': {
             'open': {
                 'impact': [
@@ -64,7 +75,6 @@ object_data = {
                        ' objeví nový východ z místnosti. Následně už tento předmět'
                        ' nelze znova otevřít.',
         'location': 'start',
-        'portable': False,
         'actions': {
             'open': {
                 'impact': [
@@ -79,5 +89,12 @@ object_data = {
     5: {
         'name': 'nůžky',
         'description': 'Běžný přenosný předmět.',
+        'actions': {
+            'take': {
+                'impact': [
+                    ('move_to_inventory', dict(obj=5)),
+                ],
+            },
+        },
     },
 }

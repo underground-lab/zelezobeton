@@ -19,7 +19,6 @@ class Object:
     name: str
     description: str
     location: Optional[Room] = None
-    portable: bool = True
     actions: dict = field(default_factory=dict)
 
 
@@ -54,16 +53,11 @@ class Game:
         obj = params[0]
         if command == 'examine' and obj in self.visible_objects:
             return obj.description
-        if command == 'take' and obj in self.portable_objects:
-            obj.location = self.inventory
-            return self.message_ok
 
-        try:
-            action = obj.actions[command]
-        except KeyError:
+        if obj not in self.objects_with_action(command):
             raise InvalidCommand(command, obj.name) from None
-        if not action.get('enabled', True):
-            raise InvalidCommand(command, obj.name) from None
+
+        action = obj.actions[command]
         for impact_spec in action['impact']:
             callback_name, kwargs = impact_spec
             getattr(callbacks, callback_name)(self, **kwargs)
@@ -83,10 +77,6 @@ class Game:
     @property
     def visible_objects(self):
         return self.objects_in_room + self.objects_in_inventory
-
-    @property
-    def portable_objects(self):
-        return [obj for obj in self.objects_in_room if obj.portable]
 
     def objects_with_action(self, action):
         return [

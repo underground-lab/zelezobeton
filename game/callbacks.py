@@ -2,12 +2,20 @@ def move_to_room(game, obj, room):
     game.objects[obj].location = game.rooms[room]
 
 
+def move_to_inventory(game, obj):
+    game.objects[obj].location = game.inventory
+    disable_action(game, obj, 'take')
+
+
 def remove_object(game, obj):
     game.objects[obj].location = None
 
 
 def move_to_same_location(game, obj_1, obj_2):
-    game.objects[obj_1].location = game.objects[obj_2].location
+    if game.objects[obj_2].location is game.inventory:
+        move_to_inventory(game, obj_1)
+    else:
+        game.objects[obj_1].location = game.objects[obj_2].location
 
 
 def enable_action(game, obj, action):
