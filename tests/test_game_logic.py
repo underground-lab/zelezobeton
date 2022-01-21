@@ -42,11 +42,11 @@ def test_game_walk_through(game):
     assert 'east' not in game.current_room.exits
     assert game.objects[4] in game.objects_in_room
     assert not game.objects_with_action('take')
-    assert len(game.objects_with_action('open')) == 2
+    assert game.objects_with_action('open') == [game.objects[1]]
 
     response = game.process_command('open', game.objects[1])
     assert response == 'V plechovce byl malý klíček.'
-    assert len(game.objects_with_action('open')) == 1
+    assert not game.objects_with_action('open')
     assert game.objects[2].location is game.inventory
 
     with pytest.raises(InvalidCommand, match=r'open.*plechovku'):
@@ -54,6 +54,12 @@ def test_game_walk_through(game):
 
     response = game.process_command('examine', game.objects[4])
     assert 'předmět typu dveře' in response
+
+    with pytest.raises(InvalidCommand, match=r'open.*dveře'):
+        game.process_command('open', game.objects[4])
+
+    response = game.process_command('use', game.objects[2])
+    assert response == 'Odemkl jsi dveře.'
 
     response = game.process_command('open', game.objects[4])
     assert response == 'Otevřel jsi dveře.'

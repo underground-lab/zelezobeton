@@ -55,7 +55,7 @@ with right_column:
     examine = st.button(texts.examine) if game.visible_objects else None
     buttons = {
         command: st.button(getattr(texts, command))
-        for command in ('take', 'open')
+        for command in ('take', 'open', 'use')
         if game.objects_with_action(command)
     }
 

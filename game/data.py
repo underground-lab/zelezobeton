@@ -51,6 +51,17 @@ object_data = {
                     ('move_to_inventory', dict(obj=2)),
                 ],
             },
+            'use': {
+                'condition': [
+                    ('in_inventory', dict(obj=2)),
+                    ('is_visible', dict(obj=4)),
+                ],
+                'impact': [
+                    ('enable_action', dict(obj=4, action='open')),
+                    ('disable_action', dict(obj=2, action='use')),
+                ],
+                'message': 'Odemkl jsi dveře.',
+            },
         },
     },
     3: {
@@ -83,6 +94,7 @@ object_data = {
                     ('disable_action', dict(obj=4, action='open')),
                 ],
                 'message': 'Otevřel jsi dveře.',
+                'enabled': False,
             },
         },
     },

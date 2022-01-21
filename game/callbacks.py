@@ -34,3 +34,11 @@ def close_exit(game, room, direction):
     exits = game.rooms[room].exits
     if direction in exits:
         del exits[direction]
+
+
+def is_visible(game, obj):
+    return game.objects[obj] in game.visible_objects
+
+
+def in_inventory(game, obj):
+    return game.objects[obj].location is game.inventory
