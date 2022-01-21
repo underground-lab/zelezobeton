@@ -22,12 +22,22 @@ class Object:
     actions: dict = field(default_factory=dict)
 
 
+@dataclass
+class Action:
+    condition: list = field(default_factory=list)
+    impact: list = field(default_factory=list)
+    message: Optional[str] = None
+    enabled: bool = True
+
+
 class Game:
     message_ok = 'OK'
 
     def __init__(self, room_data, object_data, start_location_id='start'):
-        self.rooms = {i: Room(**params) for i, params in room_data.items()}
-        self.objects = {i: Object(**params) for i, params in object_data.items()}
+        self.rooms = {key: Room(**params) for key, params in room_data.items()}
+        self.objects = {key: Object(**params) for key, params in object_data.items()}
+        for obj in self.objects.values():
+            obj.actions = {key: Action(**params) for key, params in obj.actions.items()}
 
         # replace integer ids with object references
         for room in self.rooms.values():
@@ -58,15 +68,15 @@ class Game:
             raise InvalidCommand(command, obj.name) from None
 
         action = obj.actions[command]
-        for condition_spec in action.get('condition', []):
+        for condition_spec in action.condition:
             callback_name, kwargs = condition_spec
             if not getattr(callbacks, callback_name)(self, **kwargs):
                 raise InvalidCommand(command, obj.name) from None
 
-        for impact_spec in action['impact']:
+        for impact_spec in action.impact:
             callback_name, kwargs = impact_spec
             getattr(callbacks, callback_name)(self, **kwargs)
-        return action.get('message', self.message_ok)
+        return action.message or self.message_ok
 
     @property
     def objects_in_room(self):
@@ -86,5 +96,5 @@ class Game:
     def objects_with_action(self, action):
         return [
             obj for obj in self.visible_objects
-            if action in obj.actions and obj.actions[action].get('enabled', True)
+            if action in obj.actions and obj.actions[action].enabled
         ]

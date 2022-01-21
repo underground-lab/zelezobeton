@@ -19,11 +19,11 @@ def move_to_same_location(game, obj_1, obj_2):
 
 
 def enable_action(game, obj, action):
-    game.objects[obj].actions[action]['enabled'] = True
+    game.objects[obj].actions[action].enabled = True
 
 
 def disable_action(game, obj, action):
-    game.objects[obj].actions[action]['enabled'] = False
+    game.objects[obj].actions[action].enabled = False
 
 
 def open_exit(game, room, direction, destination):
