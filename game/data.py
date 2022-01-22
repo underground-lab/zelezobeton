@@ -31,6 +31,8 @@ object_data = {
             'take': {
                 'impact': [
                     ('move_to_inventory', dict(obj='plechovka')),
+                    ('disable_action', dict(obj='plechovka', action='take')),
+                    ('enable_action', dict(obj='klicek', action='use')),
                 ],
             },
             'open': {
@@ -49,18 +51,22 @@ object_data = {
             'take': {
                 'impact': [
                     ('move_to_inventory', dict(obj='klicek')),
+                    ('disable_action', dict(obj='klicek', action='take')),
+                    ('enable_action', dict(obj='klicek', action='use')),
                 ],
             },
             'use': {
                 'condition': [
                     ('in_inventory', dict(obj='klicek')),
-                    ('is_visible', dict(obj='dvere')),
+                    ('in_room', dict(obj='dvere')),
+                    ('action_disabled', dict(obj='dvere', action='open')),
                 ],
                 'impact': [
                     ('enable_action', dict(obj='dvere', action='open')),
-                    ('disable_action', dict(obj='klicek', action='use')),
+                    ('remove_object', dict(obj='klicek')),
                 ],
                 'message': 'Odemkl jsi dveře.',
+                'enabled': False,
             },
         },
     },
@@ -105,6 +111,7 @@ object_data = {
             'take': {
                 'impact': [
                     ('move_to_inventory', dict(obj='nuzky')),
+                    ('disable_action', dict(obj='nuzky', action='take')),
                 ],
             },
         },

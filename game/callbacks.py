@@ -4,7 +4,6 @@ def move_to_room(game, obj, room):
 
 def move_to_inventory(game, obj):
     game.objects[obj].location = game.inventory
-    disable_action(game, obj, 'take')
 
 
 def remove_object(game, obj):
@@ -12,10 +11,7 @@ def remove_object(game, obj):
 
 
 def move_to_same_location(game, obj_1, obj_2):
-    if game.objects[obj_2].location is game.inventory:
-        move_to_inventory(game, obj_1)
-    else:
-        game.objects[obj_1].location = game.objects[obj_2].location
+    game.objects[obj_1].location = game.objects[obj_2].location
 
 
 def enable_action(game, obj, action):
@@ -40,5 +36,17 @@ def is_visible(game, obj):
     return game.objects[obj] in game.visible_objects
 
 
+def in_room(game, obj):
+    return game.objects[obj].location is game.current_room
+
+
 def in_inventory(game, obj):
     return game.objects[obj].location is game.inventory
+
+
+def action_enabled(game, obj, action):
+    return game.objects[obj].actions[action].enabled
+
+
+def action_disabled(game, obj, action):
+    return not game.objects[obj].actions[action].enabled

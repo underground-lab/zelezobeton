@@ -94,7 +94,10 @@ class Game:
     def objects_with_action(self, action):
         return [
             obj for obj in self.visible_objects
-            if action in obj.actions and obj.actions[action].enabled
+            if action in obj.actions
+            and obj.actions[action].enabled
+            and not (action == 'take' and obj in self.objects_in_inventory)
+            and not (action == 'use' and obj not in self.objects_in_inventory)
         ]
 
     def _action_possible(self, action):
