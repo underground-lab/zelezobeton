@@ -68,10 +68,8 @@ class Game:
             raise InvalidCommand(command, obj.name) from None
 
         action = obj.actions[command]
-        for condition_spec in action.condition:
-            callback_name, kwargs = condition_spec
-            if not getattr(callbacks, callback_name)(self, **kwargs):
-                raise InvalidCommand(command, obj.name) from None
+        if not self._action_possible(action):
+            raise InvalidCommand(command, obj.name) from None
 
         for impact_spec in action.impact:
             callback_name, kwargs = impact_spec
@@ -98,3 +96,10 @@ class Game:
             obj for obj in self.visible_objects
             if action in obj.actions and obj.actions[action].enabled
         ]
+
+    def _action_possible(self, action):
+        for condition_spec in action.condition:
+            callback_name, kwargs = condition_spec
+            if not getattr(callbacks, callback_name)(self, **kwargs):
+                return False
+        return True
