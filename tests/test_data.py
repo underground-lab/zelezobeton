@@ -1,6 +1,6 @@
 import pytest
 
-import game.callbacks
+from game.classes import Game
 from game.data import room_data, object_data
 
 
@@ -42,8 +42,7 @@ def impact_specs():
 def test_impact_specs_use_existing_callback_names(impact_specs):
     for impact_spec in impact_specs:
         callback_name = impact_spec[0]
-        assert hasattr(game.callbacks, callback_name), \
-            f'Unknown callback {callback_name!r}'
+        assert hasattr(Game, callback_name), f'Unknown callback {callback_name!r}'
 
 
 def test_impact_specs_use_existing_room_ids(impact_specs):

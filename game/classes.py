@@ -1,8 +1,6 @@
 from dataclasses import dataclass, field
 from typing import Optional
 
-from game import callbacks
-
 
 class InvalidCommand(ValueError):
     ...
@@ -72,7 +70,7 @@ class Game:
             raise InvalidCommand(command, obj.name) from None
 
         for callback_name, kwargs in action.impact:
-            getattr(callbacks, callback_name)(self, **kwargs)
+            getattr(self, callback_name)(**kwargs)
         return action.message or self.message_ok
 
     @property
@@ -101,6 +99,49 @@ class Game:
 
     def _action_possible(self, action):
         for callback_name, kwargs in action.condition:
-            if not getattr(callbacks, callback_name)(self, **kwargs):
+            if not getattr(self, callback_name)(**kwargs):
                 return False
         return True
+
+    # callbacks that don't modify game state
+    def is_visible(self, obj):
+        return self.objects[obj] in self.visible_objects
+
+    def in_room(self, obj):
+        return self.objects[obj].location is self.current_room
+
+    def in_inventory(self, obj):
+        return self.objects[obj].location is self.inventory
+
+    def action_enabled(self, obj, action):
+        return self.objects[obj].actions[action].enabled
+
+    def action_disabled(self, obj, action):
+        return not self.objects[obj].actions[action].enabled
+
+    # callbacks that modify game state
+    def move_to_room(self, obj, room):
+        self.objects[obj].location = self.rooms[room]
+
+    def move_to_inventory(self, obj):
+        self.objects[obj].location = self.inventory
+
+    def remove_object(self, obj):
+        self.objects[obj].location = None
+
+    def move_to_same_location(self, obj_1, obj_2):
+        self.objects[obj_1].location = self.objects[obj_2].location
+
+    def enable_action(self, obj, action):
+        self.objects[obj].actions[action].enabled = True
+
+    def disable_action(self, obj, action):
+        self.objects[obj].actions[action].enabled = False
+
+    def open_exit(self, room, direction, destination):
+        self.rooms[room].exits[direction] = self.rooms[destination]
+
+    def close_exit(self, room, direction):
+        exits = self.rooms[room].exits
+        if direction in exits:
+            del exits[direction]
