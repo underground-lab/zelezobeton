@@ -71,8 +71,7 @@ class Game:
         if not self._action_possible(action):
             raise InvalidCommand(command, obj.name) from None
 
-        for impact_spec in action.impact:
-            callback_name, kwargs = impact_spec
+        for callback_name, kwargs in action.impact:
             getattr(callbacks, callback_name)(self, **kwargs)
         return action.message or self.message_ok
 
@@ -101,8 +100,7 @@ class Game:
         ]
 
     def _action_possible(self, action):
-        for condition_spec in action.condition:
-            callback_name, kwargs = condition_spec
+        for callback_name, kwargs in action.condition:
             if not getattr(callbacks, callback_name)(self, **kwargs):
                 return False
         return True
