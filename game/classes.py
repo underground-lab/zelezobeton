@@ -129,9 +129,15 @@ class Game:
     def action_disabled(self, obj, action):
         return not self.objects[obj].actions[action].enabled
 
+    def current_room_is(self, room):
+        return self.current_room is self.rooms[room]
+
     # callbacks that modify game state
     def move_to_room(self, obj, room):
         self.objects[obj].location = self.rooms[room]
+
+    def move_to_current_room(self, obj):
+        self.objects[obj].location = self.current_room
 
     def move_to_inventory(self, obj):
         self.objects[obj].location = self.inventory

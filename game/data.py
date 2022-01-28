@@ -53,8 +53,7 @@ object_data = {
             },
             'use': {
                 'condition': [
-                    ('in_room', dict(obj='dvere')),
-                    ('action_disabled', dict(obj='dvere', action='open')),
+                    ('current_room_is', dict(room='start')),
                 ],
                 'impact': [
                     ('enable_action', dict(obj='dvere', action='open')),
@@ -73,7 +72,7 @@ object_data = {
         'actions': {
             'open': {
                 'impact': [
-                    ('move_to_room', dict(obj='nuzky', room='sklep')),
+                    ('move_to_current_room', dict(obj='nuzky')),
                     ('disable_action', dict(obj='skrinka', action='open')),
                 ],
                 'message': 'Ve skříňce jsi našel nůžky.',
