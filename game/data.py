@@ -35,7 +35,7 @@ object_data = {
             },
             'open': {
                 'impact': [
-                    ('move_to_same_location', dict(obj_1='klicek', obj_2='plechovka')),
+                    ('move_to_same_location', dict(obj='klicek', obj_2='plechovka')),
                     ('disable_action', dict(obj='plechovka', action='open')),
                 ],
                 'message': 'V plechovce byl malý klíček.',
@@ -88,8 +88,8 @@ object_data = {
         'actions': {
             'open': {
                 'impact': [
-                    ('open_exit', dict(room='start', direction='east', destination='sklad')),
-                    ('open_exit', dict(room='sklad', direction='west', destination='start')),
+                    ('open_exit', dict(room='start', direction='east', room_2='sklad')),
+                    ('open_exit', dict(room='sklad', direction='west', room_2='start')),
                     ('disable_action', dict(obj='dvere', action='open')),
                 ],
                 'message': 'Otevřel jsi dveře.',

@@ -145,8 +145,8 @@ class Game:
     def remove_object(self, obj):
         self.objects[obj].location = None
 
-    def move_to_same_location(self, obj_1, obj_2):
-        self.objects[obj_1].location = self.objects[obj_2].location
+    def move_to_same_location(self, obj, obj_2):
+        self.objects[obj].location = self.objects[obj_2].location
 
     def enable_action(self, obj, action):
         self.objects[obj].actions[action].enabled = True
@@ -154,8 +154,8 @@ class Game:
     def disable_action(self, obj, action):
         self.objects[obj].actions[action].enabled = False
 
-    def open_exit(self, room, direction, destination):
-        self.rooms[room].exits[direction] = self.rooms[destination]
+    def open_exit(self, room, direction, room_2):
+        self.rooms[room].exits[direction] = self.rooms[room_2]
 
     def close_exit(self, room, direction):
         exits = self.rooms[room].exits

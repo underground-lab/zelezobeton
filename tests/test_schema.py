@@ -46,7 +46,7 @@ def test_object_data_schema():
                 {
                     'type': 'object',
                     'patternProperties': {
-                        '^(room|obj|action|direction|destination)': {'type': 'string'},
+                        '^(room|room_2|obj|obj_2|action|direction)$': {'type': 'string'},
                     },
                     'minProperties': 1,
                     'additionalProperties': False,
