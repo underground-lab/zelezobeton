@@ -66,7 +66,7 @@ class Game:
             raise InvalidCommand(command, obj.name) from None
 
         action = obj.actions[command]
-        if not self._action_possible(action):
+        if not self._conditions_met(action):
             raise InvalidCommand(command, obj.name) from None
 
         for callback_name, kwargs in action.impact:
@@ -88,19 +88,29 @@ class Game:
     def visible_objects(self):
         return self.objects_in_room + self.objects_in_inventory
 
-    def objects_with_action(self, action):
+    def objects_with_action(self, action_name):
         return [
             obj for obj in self.visible_objects
-            if action in obj.actions
-            and obj.actions[action].enabled
-            and not (action == 'take' and obj in self.objects_in_inventory)
-            and not (action == 'use' and obj not in self.objects_in_inventory)
+            if action_name in obj.actions
+            and self._action_enabled(obj, action_name)
         ]
 
-    def _action_possible(self, action):
+    def _conditions_met(self, action):
         for callback_name, kwargs in action.condition:
             if not getattr(self, callback_name)(**kwargs):
                 return False
+        return True
+
+    def _action_enabled(self, obj, action_name):
+        if not obj.actions[action_name].enabled:
+            return False
+        if action_name == 'take' and obj.location is self.inventory:
+            # cannot take object already taken
+            return False
+        if (action_name == 'use' and 'take' in obj.actions
+                and obj.location is not self.inventory):
+            # can only use portable object if taken
+            return False
         return True
 
     # callbacks that don't modify game state

@@ -98,8 +98,10 @@ def test_game_walk_through(game):
 
     response = game.process_command('open', game.objects['skrinka'])
     assert response == 'Ve skříňce jsi našel nůžky.'
+    assert game.objects['nuzky'].location is game.current_room
     assert game.objects_with_action('take') == [game.objects['nuzky']]
     assert not game.objects_with_action('open')
+    assert not game.objects_with_action('use')
 
     with pytest.raises(InvalidCommand, match=r'open.*skříňku'):
         game.process_command('open', game.objects['skrinka'])
@@ -108,6 +110,7 @@ def test_game_walk_through(game):
     assert response is game.message_ok
     assert game.objects['nuzky'].location is game.inventory
     assert not game.objects_with_action('take')
+    assert not game.objects_with_action('use')
 
     with pytest.raises(InvalidCommand, match=r'open.*nůžky'):
         game.process_command('open', game.objects['nuzky'])
