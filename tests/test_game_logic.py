@@ -1,5 +1,7 @@
 # coding: utf-8
 
+from copy import deepcopy
+
 import pytest
 
 from game import new_game
@@ -8,7 +10,7 @@ from game.classes import InvalidCommand
 
 @pytest.fixture
 def game():
-    return new_game()
+    return deepcopy(new_game)
 
 
 def test_game_walk_through(game):

@@ -6,7 +6,7 @@ from data import texts
 from styles import room_description, room_objects, inventory, message
 from utils import write_styled, room_listing, inventory_listing
 
-from game import game, __version__
+from game import new_game as game, __version__
 from game.classes import InvalidCommand
 
 
