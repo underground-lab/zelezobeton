@@ -2,30 +2,31 @@
 
 room_data = {
     'start': {
-        'description': 'Popis místnosti 0.',
+        'description': 'Popis místnosti "Chodba".',
         'exits': {'north': 'pracovna'},
     },
     'pracovna': {
-        'description': 'Popis místnosti 1.',
+        'description': 'Popis místnosti "Pracovna".',
         'exits': {'south': 'start'},
     },
     'sklad': {
-        'description': 'Popis místnosti 2.',
+        'description': 'Popis místnosti "Sklad".',
         'exits': {'down': 'sklep'},
     },
     'sklep': {
-        'description': 'Popis místnosti 3.',
+        'description': 'Popis místnosti "Sklep".',
         'exits': {'up': 'sklad'},
     },
     'inventory': {},
 }
 
 object_data = {
+    # Přenosný předmět typu krabička, batoh atd. Po jeho otevření se
+    # v místě tohoto předmětu objeví jeden nebo více nových předmětů.
+    # Následně už nelze otevřít.
     'plechovka': {
         'name': 'plechovku',
-        'description': 'Přenosný předmět typu krabička, batoh atd. Po jeho otevření se'
-                       ' v místě tohoto předmětu objeví jeden nebo více nových'
-                       ' předmětů. Následně už tento předmět nelze znova otevřít.',
+        'description': 'Popis předmětu "plechovka".',
         'location': 'pracovna',
         'actions': {
             'take': {
@@ -44,7 +45,7 @@ object_data = {
     },
     'klicek': {
         'name': 'klíček',
-        'description': 'Běžný přenosný předmět.',
+        'description': 'Popis předmětu "klíček".',
         'actions': {
             'take': {
                 'impact': [
@@ -53,37 +54,41 @@ object_data = {
             },
             'use': {
                 'condition': [
-                    ('current_room_is', dict(room='start')),
+                    ('current_room_is', dict(room='sklep')),
                 ],
                 'impact': [
-                    ('enable_action', dict(obj='dvere', action='open')),
+                    ('enable_action', dict(obj='trezor', action='open')),
                     ('remove_object', dict(obj='klicek')),
                 ],
-                'message': 'Odemkl jsi dveře.',
+                'message': 'Odemkl jsem trezor.',
             },
         },
     },
-    'skrinka': {
-        'name': 'skříňku',
-        'description': 'Nepřenosný předmět typu skříň, bedna atd. Po jeho otevření se'
-                       ' v místnosti objeví jeden nebo více nových předmětů.'
-                       ' Následně už tento předmět nelze znova otevřít.',
+
+    # Nepřenosný předmět typu skříň, bedna atd. Po jeho otevření se
+    # v místnosti objeví jeden nebo více nových předmětů. Následně už
+    # nelze otevřít.
+    'trezor': {
+        'name': 'trezor',
+        'description': 'Popis předmětu "trezor".',
         'location': 'sklep',
         'actions': {
             'open': {
                 'impact': [
                     ('move_to_current_room', dict(obj='nuzky')),
-                    ('disable_action', dict(obj='skrinka', action='open')),
+                    ('disable_action', dict(obj='trezor', action='open')),
                 ],
-                'message': 'Ve skříňce jsi našel nůžky.',
+                'message': 'V trezoru jsem našel nůžky.',
+                'enabled': False,
             },
         },
     },
+
+    # Nepřenosný předmět typu dveře, poklop atd. Po jeho otevření se
+    # objeví nový východ z místnosti. Následně už nelze otevřít.
     'dvere': {
         'name': 'dveře',
-        'description': 'Nepřenosný předmět typu dveře, poklop atd. Po jeho otevření se'
-                       ' objeví nový východ z místnosti. Následně už tento předmět'
-                       ' nelze znova otevřít.',
+        'description': 'Popis předmětu "dveře".',
         'location': 'start',
         'actions': {
             'open': {
@@ -92,14 +97,13 @@ object_data = {
                     ('open_exit', dict(room='sklad', direction='west', room_2='start')),
                     ('disable_action', dict(obj='dvere', action='open')),
                 ],
-                'message': 'Otevřel jsi dveře.',
-                'enabled': False,
+                'message': 'Otevřel jsem dveře.',
             },
         },
     },
     'nuzky': {
         'name': 'nůžky',
-        'description': 'Běžný přenosný předmět.',
+        'description': 'Popis předmětu "nůžky".',
         'actions': {
             'take': {
                 'impact': [
