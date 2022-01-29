@@ -1,10 +1,18 @@
+# coding: utf-8
+
 from time import sleep
+from urllib.request import urlopen
 
 import pytest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 URL = 'http://localhost:8501/'
+try:
+    with urlopen(URL):
+        SERVER_RUNNING = True
+except OSError:
+    SERVER_RUNNING = False
 
 
 @pytest.fixture
@@ -16,6 +24,7 @@ def driver():
     firefox_driver.close()
 
 
+@pytest.mark.skipif(not SERVER_RUNNING, reason='requires local server running')
 def test_web_ui(driver):
     driver.get(URL)
     sleep(1)
