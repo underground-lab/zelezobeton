@@ -3,31 +3,30 @@
 room_data = {
     'start': {
         'description': 'Popis místnosti "Chodba".',
-        'exits': {'north': 'pracovna'},
+        'exits': {'north': 'kancelar'},
     },
-    'pracovna': {
-        'description': 'Popis místnosti "Pracovna".',
+    'kancelar': {
+        'description': 'Popis místnosti "Kancelář".',
         'exits': {'south': 'start'},
     },
     'sklad': {
         'description': 'Popis místnosti "Sklad".',
-        'exits': {'down': 'sklep'},
     },
-    'sklep': {
-        'description': 'Popis místnosti "Sklep".',
-        'exits': {'up': 'sklad'},
+    'vyklenek': {
+        'description': 'Popis místnosti "Výklenek".',
     },
     'inventory': {},
 }
 
 object_data = {
+
     # Přenosný předmět typu krabička, batoh atd. Po jeho otevření se
     # v místě tohoto předmětu objeví jeden nebo více nových předmětů.
     # Následně už nelze otevřít.
     'plechovka': {
         'name': 'plechovku',
         'description': 'Popis předmětu "plechovka".',
-        'location': 'pracovna',
+        'location': 'kancelar',
         'actions': {
             'take': {
                 'impact': [
@@ -36,13 +35,14 @@ object_data = {
             },
             'open': {
                 'impact': [
-                    ('move_to_same_location', dict(obj='klicek', obj_2='plechovka')),
+                    ('move_to_same_location', dict(obj='sponky', obj_2='plechovka')),
                     ('disable_action', dict(obj='plechovka', action='open')),
                 ],
-                'message': 'V plechovce byl malý klíček.',
+                'message': 'V plechovce byly jen dvě kancelářské sponky.',
             },
         },
     },
+
     'klicek': {
         'name': 'klíček',
         'description': 'Popis předmětu "klíček".',
@@ -54,13 +54,13 @@ object_data = {
             },
             'use': {
                 'condition': [
-                    ('current_room_is', dict(room='sklep')),
+                    ('current_room_is', dict(room='vyklenek')),
                 ],
                 'impact': [
                     ('enable_action', dict(obj='trezor', action='open')),
                     ('remove_object', dict(obj='klicek')),
                 ],
-                'message': 'Odemkl jsem trezor.',
+                'message': 'Klíčkem jsem odemkl trezor.',
             },
         },
     },
@@ -71,14 +71,14 @@ object_data = {
     'trezor': {
         'name': 'trezor',
         'description': 'Popis předmětu "trezor".',
-        'location': 'sklep',
+        'location': 'vyklenek',
         'actions': {
             'open': {
                 'impact': [
-                    ('move_to_current_room', dict(obj='nuzky')),
+                    ('move_to_current_room', dict(obj='obalka')),
                     ('disable_action', dict(obj='trezor', action='open')),
                 ],
-                'message': 'V trezoru jsem našel nůžky.',
+                'message': 'V trezoru jsem našel obálku.',
                 'enabled': False,
             },
         },
@@ -97,18 +97,95 @@ object_data = {
                     ('open_exit', dict(room='sklad', direction='west', room_2='start')),
                     ('disable_action', dict(obj='dvere', action='open')),
                 ],
-                'message': 'Otevřel jsem dveře.',
             },
         },
     },
-    'nuzky': {
-        'name': 'nůžky',
-        'description': 'Popis předmětu "nůžky".',
+
+    'sponky': {
+        'name': 'sponky',
+        'description': 'Popis předmětu "sponky".',
         'actions': {
             'take': {
                 'impact': [
-                    ('move_to_inventory', dict(obj='nuzky')),
+                    ('move_to_inventory', dict(obj='sponky')),
                 ],
+            },
+            'use': {
+                'condition': [
+                    ('current_room_is', dict(room='sklad')),
+                ],
+                'impact': [
+                    ('remove_object', dict(obj='sponky')),
+                    ('enable_action', dict(obj='mriz', action='open')),
+                ],
+                'message': 'Pomocí kancelářských sponek jsem odemkl zámek mříže.',
+            },
+        },
+    },
+
+    'obalka': {
+        'name': 'obálku',
+        'description': 'Popis předmětu "obálka".',
+        'actions': {
+            'take': {
+                'impact': [
+                    ('move_to_inventory', dict(obj='obalka')),
+                ],
+            },
+        },
+    },
+
+    'smetak': {
+        'name': 'smeták',
+        'description': 'Popis předmětu "smeták".',
+        'location': 'sklad',
+        'actions': {
+            'take': {
+                'impact': [
+                    ('move_to_inventory', dict(obj='smetak')),
+                ],
+            },
+            'use': {
+                'condition': [
+                    ('current_room_is', dict(room='kancelar')),
+                    ('is_visible', dict(obj='vaza')),
+                ],
+                'impact': [
+                    ('move_to_current_room', dict(obj='klicek')),
+                    ('remove_object', dict(obj='vaza')),
+                    ('disable_action', dict(obj='smetak', action='use')),
+                ],
+                'message': 'Smetl jsem vázu z knihovny a v jejích střepech jsem našel'
+                           ' malý klíček.'
+            },
+        },
+    },
+
+    # Předmět s nestandardní akcí 'take'.
+    'vaza': {
+        'name': 'vázu',
+        'description': 'Popis předmětu "váza".',
+        'location': 'kancelar',
+        'actions': {
+            'take': {
+                'message': 'Nedosáhnu na ni. Stojí na vysoké knihovně.',
+            },
+        },
+    },
+
+    # Další předmět typu dveře.
+    'mriz': {
+        'name': 'mříž',
+        'description': 'Popis předmětu "mříž".',
+        'location': 'sklad',
+        'actions': {
+            'open': {
+                'impact': [
+                    ('open_exit', dict(room='sklad', direction='south', room_2='vyklenek')),
+                    ('open_exit', dict(room='vyklenek', direction='north', room_2='sklad')),
+                    ('disable_action', dict(obj='mriz', action='open')),
+                ],
+                'enabled': False,
             },
         },
     },
