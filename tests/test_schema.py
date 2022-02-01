@@ -66,7 +66,6 @@ def test_object_data_schema():
             'message': {'type': 'string'},
             'enabled': {'type': 'boolean'},
         },
-        'required': ['impact'],
         'additionalProperties': False,
     }
     schema = {

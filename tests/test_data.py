@@ -35,7 +35,7 @@ def impact_specs():
         impact_spec
         for obj in object_data.values()
         for action in obj.get('actions', {}).values()
-        for impact_spec in action['impact']
+        for impact_spec in action.get('impact', [])
     ]
 
 
