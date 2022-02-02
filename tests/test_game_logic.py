@@ -13,6 +13,16 @@ def game():
     return deepcopy(new_game)
 
 
+@pytest.fixture
+def game_in_progress(game):
+    game.process_command('north')
+    game.process_command('open', game.objects['plechovka'])
+    game.process_command('take', game.objects['sponky'])
+    game.process_command('south')
+    game.process_command('open', game.objects['dvere'])
+    return game
+
+
 def test_game_walk_through(game):
     assert game.current_room is game.rooms['start']
     dvere = game.objects['dvere']
@@ -143,3 +153,24 @@ def test_portable_container_opened_after_taken(game):
     assert game.objects['sponky'] not in game.objects_with_action('take')
     assert not game.objects_with_action('open')
     assert game.objects_with_action('use') == [game.objects['sponky']]
+
+
+@pytest.mark.parametrize(
+    'command, object_key',
+    (
+        ('examine', 'plechovka'),    # examine invisible object
+        ('take', 'plechovka'),    # take invisible object
+        ('take', 'sponky'),    # take already taken object
+        ('take', 'dvere'),    # take unexpected object
+        ('open', 'trezor'),    # open invisible object
+        ('open', 'dvere'),    # open already open object
+        ('open', 'sponky'),    # open unexpected object
+        ('use', 'smetak'),    # use invisible object
+        ('use', 'dvere'),    # use unexpected object
+        ('use', 'sponky'),    # use object in wrong place
+    ),
+)
+def test_invalid_commands(game_in_progress, command, object_key):
+    obj = game_in_progress.objects[object_key]
+    with pytest.raises(InvalidCommand):
+        game_in_progress.process_command(command, obj)
