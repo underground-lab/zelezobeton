@@ -1,4 +1,3 @@
-from jsonschema import validate
 from jsonschema.validators import Draft202012Validator, extend
 
 from game.data import room_data, object_data
@@ -8,7 +7,8 @@ def is_list_or_tuple(_, instance):
     return isinstance(instance, (list, tuple))
 
 
-ValidatorWithTupleSupport = extend(
+# validator that type-checks both lists and tuples as arrays
+CustomArrayValidator = extend(
     Draft202012Validator,
     type_checker=Draft202012Validator.TYPE_CHECKER.redefine('array', is_list_or_tuple)
 )
@@ -30,8 +30,9 @@ def test_room_data_schema():
         },
         'additionalProperties': False,
     }
+    validator = CustomArrayValidator(schema)
     for room in room_data.values():
-        validate(room, schema=schema)
+        validator.validate(room)
 
 
 def test_object_data_schema():
@@ -87,6 +88,6 @@ def test_object_data_schema():
         'required': ['name', 'description'],
         'additionalProperties': False,
     }
-    validator = ValidatorWithTupleSupport(schema)
+    validator = CustomArrayValidator(schema)
     for obj in object_data.values():
         validator.validate(obj)
