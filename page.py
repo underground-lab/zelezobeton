@@ -1,3 +1,4 @@
+import importlib
 import sys
 
 import streamlit as st
@@ -11,8 +12,8 @@ from game.classes import InvalidCommand
 
 
 def restart():
-    """Force restart by simply removing `game` from imported modules."""
-    del sys.modules['game']
+    """Force restart by reloading the `game` package."""
+    importlib.reload(sys.modules['game'])
 
 
 def execute(*args, store_response=True):
