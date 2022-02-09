@@ -2,10 +2,6 @@ from dataclasses import dataclass, field
 from typing import Optional
 
 
-class InvalidCommand(ValueError):
-    ...
-
-
 @dataclass
 class Room:
     description: Optional[str] = None
@@ -161,3 +157,7 @@ class Game:
         exits = self.rooms[room].exits
         if direction in exits:
             del exits[direction]
+
+
+class InvalidCommand(NotImplementedError):
+    ...
