@@ -1,10 +1,10 @@
 from dataclasses import dataclass, field
-from typing import Optional
+from typing import Optional, Union
 
 
 @dataclass
 class Room:
-    description: Optional[str] = None
+    description: str
     exits: dict = field(default_factory=dict)
 
 
@@ -12,7 +12,7 @@ class Room:
 class Object:
     name: str
     description: str
-    location: Optional[Room] = None
+    location: Union[str, Room, None] = None
     actions: dict = field(default_factory=dict)
 
 
@@ -40,11 +40,10 @@ class Game:
                 for key, room_id in room.exits.items()
             }
         for obj in self.objects.values():
-            if obj.location is not None:
+            if obj.location in self.rooms:
                 obj.location = self.rooms[obj.location]
 
         self.current_room = self.rooms[start_location_id]
-        self.inventory = self.rooms.pop('inventory')
 
     def process_command(self, command, *params):
         if command in ('north', 'south', 'west', 'east', 'up', 'down'):
@@ -78,7 +77,7 @@ class Game:
 
     @property
     def objects_in_inventory(self):
-        return [obj for obj in self.objects.values() if obj.location is self.inventory]
+        return [obj for obj in self.objects.values() if obj.location == 'inventory']
 
     @property
     def visible_objects(self):
@@ -100,11 +99,11 @@ class Game:
     def _action_enabled(self, obj, action_name):
         if not obj.actions[action_name].enabled:
             return False
-        if action_name == 'take' and obj.location is self.inventory:
+        if action_name == 'take' and obj.location == 'inventory':
             # cannot take object already taken
             return False
         if (action_name == 'use' and 'take' in obj.actions
-                and obj.location is not self.inventory):
+                and obj.location != 'inventory'):
             # can only use portable object if taken
             return False
         return True
@@ -117,7 +116,7 @@ class Game:
         return self.objects[obj].location is self.current_room
 
     def in_inventory(self, obj):
-        return self.objects[obj].location is self.inventory
+        return self.objects[obj].location == 'inventory'
 
     def action_enabled(self, obj, action):
         return self.objects[obj].actions[action].enabled
@@ -136,7 +135,7 @@ class Game:
         self.objects[obj].location = self.current_room
 
     def move_to_inventory(self, obj):
-        self.objects[obj].location = self.inventory
+        self.objects[obj].location = 'inventory'
 
     def remove_object(self, obj):
         self.objects[obj].location = None

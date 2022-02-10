@@ -15,10 +15,16 @@ room_data = {
     'vyklenek': {
         'description': 'Popis místnosti "Výklenek".',
     },
-    'inventory': {},
 }
 
 object_data = {
+
+    # Předmět, který je na začátku hry v inventáři
+    'mince': {
+        'name': 'minci',
+        'description': 'Popis předmětu "mince".',
+        'location': 'inventory',
+   },
 
     # Přenosný předmět typu krabička, batoh atd. Po jeho otevření se
     # v místě tohoto předmětu objeví jeden nebo více nových předmětů.

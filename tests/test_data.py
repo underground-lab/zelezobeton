@@ -29,6 +29,15 @@ def test_no_room_has_exit_to_itself():
             f'Room {room_id} has an exit to itself'
 
 
+def test_all_object_locations_exist():
+    for obj_id, obj in object_data.items():
+        if 'location' not in obj:
+            continue
+        location = obj['location']
+        assert location in room_data or location == 'inventory', \
+            f'Unknown location {location!r} of object {obj_id!r}'
+
+
 @pytest.fixture
 def impact_specs():
     return [
