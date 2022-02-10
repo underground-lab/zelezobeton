@@ -40,6 +40,9 @@ object_data = {
                 ],
             },
             'open': {
+                'condition': [
+                    ('is_undiscovered', dict(obj='sponky')),
+                ],
                 'impact': [
                     ('move_to_same_location', dict(obj='sponky', obj_2='plechovka')),
                     ('disable_action', dict(obj='plechovka', action='open')),
@@ -80,6 +83,10 @@ object_data = {
         'location': 'vyklenek',
         'actions': {
             'open': {
+                'condition': [
+                    ('is_gone', dict(obj='klicek')),
+                    ('is_undiscovered', dict(obj='obalka')),
+                ],
                 'impact': [
                     ('move_to_current_room', dict(obj='obalka')),
                     ('disable_action', dict(obj='trezor', action='open')),

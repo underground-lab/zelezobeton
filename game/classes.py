@@ -12,7 +12,7 @@ class Room:
 class Object:
     name: str
     description: str
-    location: Union[str, Room, None] = None
+    location: Union[str, Room] = 'undiscovered'
     actions: dict = field(default_factory=dict)
 
 
@@ -118,6 +118,12 @@ class Game:
     def in_inventory(self, obj):
         return self.objects[obj].location == 'inventory'
 
+    def is_undiscovered(self, obj):
+        return self.objects[obj].location == 'undiscovered'
+
+    def is_gone(self, obj):
+        return self.objects[obj].location == 'gone'
+
     def action_enabled(self, obj, action):
         return self.objects[obj].actions[action].enabled
 
@@ -138,7 +144,7 @@ class Game:
         self.objects[obj].location = 'inventory'
 
     def remove_object(self, obj):
-        self.objects[obj].location = None
+        self.objects[obj].location = 'gone'
 
     def move_to_same_location(self, obj, obj_2):
         self.objects[obj].location = self.objects[obj_2].location
