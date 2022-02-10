@@ -36,39 +36,6 @@ def test_room_data_schema():
 
 
 def test_object_data_schema():
-    callbacks_schema = {
-        'type': 'array',
-        'items': {
-            'type': 'array',
-            'prefixItems': [
-                # callback name
-                {'type': 'string'},
-                # kwargs
-                {
-                    'type': 'object',
-                    'patternProperties': {
-                        '^(room|room_2|obj|obj_2|action|direction)$': {'type': 'string'},
-                    },
-                    'minProperties': 1,
-                    'additionalProperties': False,
-                },
-            ],
-            'items': False,    # no additional items
-            'minItems': 2,
-        },
-        'minItems': 1,
-        'uniqueItems': True,
-    }
-    actions_schema = {
-        'type': 'object',
-        'properties': {
-            'condition': callbacks_schema,
-            'impact': callbacks_schema,
-            'message': {'type': 'string'},
-            'enabled': {'type': 'boolean'},
-        },
-        'additionalProperties': False,
-    }
     schema = {
         '$schema': 'https://json-schema.org/draft/2020-12/schema',
         'type': 'object',
@@ -79,7 +46,7 @@ def test_object_data_schema():
             'actions': {
                 'type': 'object',
                 'patternProperties': {
-                    '^(take|open|use)$': actions_schema,
+                    '^(take|open|use)$': {'$ref': '#/$defs/actions'},
                 },
                 'minProperties': 1,
                 'additionalProperties': False,
@@ -87,6 +54,43 @@ def test_object_data_schema():
         },
         'required': ['name', 'description'],
         'additionalProperties': False,
+        '$defs': {
+            'actions': {
+                'type': 'object',
+                'properties': {
+                    'condition': {'$ref': '#/$defs/callbacks'},
+                    'impact': {'$ref': '#/$defs/callbacks'},
+                    'message': {'type': 'string'},
+                    'enabled': {'type': 'boolean'},
+                },
+                'minProperties': 1,
+                'additionalProperties': False,
+            },
+            'callbacks': {
+                'type': 'array',
+                'items': {
+                    'type': 'array',
+                    'prefixItems': [
+                        # callback name
+                        {'type': 'string'},
+                        # kwargs
+                        {
+                            'type': 'object',
+                            'patternProperties': {
+                                '^(room|room_2|obj|obj_2|action|direction)$': {
+                                    'type': 'string'},
+                            },
+                            'minProperties': 1,
+                            'additionalProperties': False,
+                        },
+                    ],
+                    'items': False,  # no additional items
+                    'minItems': 2,
+                },
+                'minItems': 1,
+                'uniqueItems': True,
+            },
+        },
     }
     validator = CustomArrayValidator(schema)
     for obj in object_data.values():
