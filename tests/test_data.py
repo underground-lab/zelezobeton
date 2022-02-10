@@ -1,3 +1,4 @@
+from handpick import values_for_key
 import pytest
 
 from game.classes import Game
@@ -8,7 +9,7 @@ def test_all_exits_exist():
     for room_id, room in room_data.items():
         for target_room_id in room.get('exits', {}).values():
             assert target_room_id in room_data, \
-                f'Unknown room {target_room_id} in exits of room {room_id}'
+                f'Unknown room {target_room_id!r} in exits of room {room_id!r}'
 
 
 def test_all_exit_relations_are_symmetric():
@@ -20,13 +21,13 @@ def test_all_exit_relations_are_symmetric():
             target_room = room_data[target_room_id]
             opposite_direction = opposites[direction]
             assert target_room.get('exits', {}).get(opposite_direction) == room_id, \
-                f'Asymmetric exits between rooms {room_id} and {target_room_id}'
+                f'Asymmetric exits between rooms {room_id!r} and {target_room_id!r}'
 
 
 def test_no_room_has_exit_to_itself():
     for room_id, room in room_data.items():
         assert room_id not in room.get('exits', {}).values(), \
-            f'Room {room_id} has an exit to itself'
+            f'Room {room_id!r} has an exit to itself'
 
 
 def test_all_object_locations_exist():
@@ -39,36 +40,37 @@ def test_all_object_locations_exist():
 
 
 @pytest.fixture
-def impact_specs():
+def callback_specs():
     return [
-        impact_spec
-        for obj in object_data.values()
-        for action in obj.get('actions', {}).values()
-        for impact_spec in action.get('impact', [])
+        spec
+        for spec_list in values_for_key(object_data, ['condition', 'impact'])
+        for spec in spec_list
     ]
 
 
-def test_impact_specs_use_existing_callback_names(impact_specs):
-    for impact_spec in impact_specs:
-        callback_name = impact_spec[0]
+def test_callback_specs_use_existing_callback_names(callback_specs):
+    for spec in callback_specs:
+        callback_name = spec[0]
         assert hasattr(Game, callback_name), f'Unknown callback {callback_name!r}'
 
 
-def test_impact_specs_use_existing_room_ids(impact_specs):
-    for impact_spec in impact_specs:
-        kwargs = impact_spec[1]
+def test_callback_specs_use_existing_room_ids(callback_specs):
+    for spec in callback_specs:
+        kwargs = spec[1]
         if 'room' in kwargs:
             room_id = kwargs['room']
-            assert room_id in room_data, f'Unknown room {room_id} in {impact_spec}'
-        if 'destination' in kwargs:
-            dest_id = kwargs['destination']
-            assert dest_id in room_data, \
-                f'Unknown destination {dest_id} in {impact_spec}'
+            assert room_id in room_data, f'Unknown room {room_id!r} in {kwargs}'
+        if 'room_2' in kwargs:
+            room_id = kwargs['room_2']
+            assert room_id in room_data, f'Unknown room {room_id!r} in {kwargs}'
 
 
-def test_impact_specs_use_existing_object_ids(impact_specs):
-    for impact_spec in impact_specs:
-        kwargs = impact_spec[1]
+def test_callback_specs_use_existing_object_ids(callback_specs):
+    for spec in callback_specs:
+        kwargs = spec[1]
         if 'obj' in kwargs:
             obj_id = kwargs['obj']
-            assert obj_id in object_data, f'Unknown object {obj_id} in {impact_spec}'
+            assert obj_id in object_data, f'Unknown object {obj_id!r} in {kwargs}'
+        if 'obj_2' in kwargs:
+            obj_id = kwargs['obj_2']
+            assert obj_id in object_data, f'Unknown object {obj_id!r} in {kwargs}'
