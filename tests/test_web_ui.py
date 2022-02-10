@@ -1,13 +1,16 @@
 # coding: utf-8
 
+import os
 from time import sleep
 from urllib.request import urlopen
 
 import pytest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.options import Options
 
 URL = 'http://localhost:8501/'
+HEADLESS = not os.getenv('NO_HEADLESS')
 try:
     with urlopen(URL):
         SERVER_RUNNING = True
@@ -17,7 +20,9 @@ except OSError:
 
 @pytest.fixture
 def driver():
-    firefox_driver = webdriver.Firefox()
+    options = Options()
+    options.headless = HEADLESS
+    firefox_driver = webdriver.Firefox(options=options)
     yield firefox_driver
 
     # teardown
