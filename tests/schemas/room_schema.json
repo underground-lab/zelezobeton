@@ -1,0 +1,19 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+        "description": {
+            "type": "string"
+        },
+        "exits": {
+            "type": "object",
+            "patternProperties": {
+                "^(north|south|west|east|up|down)$": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        }
+    },
+    "additionalProperties": false
+}

@@ -1,0 +1,76 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string"
+        },
+        "actions": {
+            "type": "object",
+            "patternProperties": {
+                "^(take|open|use)$": {
+                    "$ref": "#/$defs/actions"
+                }
+            },
+            "minProperties": 1,
+            "additionalProperties": false
+        }
+    },
+    "required": [
+        "name",
+        "description"
+    ],
+    "additionalProperties": false,
+    "$defs": {
+        "actions": {
+            "type": "object",
+            "properties": {
+                "condition": {
+                    "$ref": "#/$defs/callbacks"
+                },
+                "impact": {
+                    "$ref": "#/$defs/callbacks"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "enabled": {
+                    "type": "boolean"
+                }
+            },
+            "minProperties": 1,
+            "additionalProperties": false
+        },
+        "callbacks": {
+            "type": "array",
+            "items": {
+                "type": "array",
+                "prefixItems": [
+                    {
+                        "type": "string"
+                    },
+                    {
+                        "type": "object",
+                        "patternProperties": {
+                            "^(room|room_2|obj|obj_2|action|direction)$": {
+                                "type": "string"
+                            }
+                        },
+                        "minProperties": 1,
+                        "additionalProperties": false
+                    }
+                ],
+                "items": false,
+                "minItems": 2
+            },
+            "minItems": 1,
+            "uniqueItems": true
+        }
+    }
+}
