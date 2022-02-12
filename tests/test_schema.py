@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 
 from jsonschema.validators import Draft202012Validator, extend
+import pytest
 
 from game.data import room_data, object_data
 
@@ -19,17 +20,16 @@ CustomArrayValidator = extend(
 )
 
 
-def test_room_data_schema():
-    with open(SCHEMAS_DIR / 'room_schema.json') as f:
+@pytest.mark.parametrize(
+    'data, schema_file',
+    (
+        (room_data, 'room_schema.json'),
+        (object_data, 'obj_schema.json'),
+    )
+)
+def test_data_schema(data, schema_file):
+    with open(SCHEMAS_DIR / schema_file) as f:
         schema = json.load(f)
     validator = CustomArrayValidator(schema)
-    for room in room_data.values():
-        validator.validate(room)
-
-
-def test_object_data_schema():
-    with open(SCHEMAS_DIR / 'obj_schema.json') as f:
-        schema = json.load(f)
-    validator = CustomArrayValidator(schema)
-    for obj in object_data.values():
-        validator.validate(obj)
+    for item in data.values():
+        validator.validate(item)
