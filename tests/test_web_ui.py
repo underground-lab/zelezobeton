@@ -1,7 +1,6 @@
 # coding: utf-8
 
 import os
-from time import sleep
 from urllib.request import urlopen
 
 import pytest
@@ -23,6 +22,7 @@ def driver():
     options = Options()
     options.headless = HEADLESS
     firefox_driver = webdriver.Firefox(options=options)
+    firefox_driver.implicitly_wait(5)
     yield firefox_driver
 
     # teardown
@@ -32,7 +32,6 @@ def driver():
 @pytest.mark.skipif(not SERVER_RUNNING, reason='requires local server running')
 def test_web_ui(driver):
     driver.get(URL)
-    sleep(1)
 
     for button_label, expected_text in (
             ('Restartovat', '"Chodba"'),
@@ -77,5 +76,4 @@ def test_web_ui(driver):
     ):
         button = driver.find_element(By.XPATH, f'//button[text()="{button_label}"]')
         button.click()
-        sleep(0.33)
-        assert expected_text in driver.page_source
+        driver.find_element(By.XPATH, f"//*[contains(text(), '{expected_text}')]")
