@@ -50,6 +50,8 @@ def test_web_ui(driver):
             ('Otevři', 'Co mám otevřít?'),
             ('dveře', 'OK'),
             ('Jdi na východ', '"Sklad"'),
+            ('Vezmi', 'Co mám vzít?'),
+            ('krabici hřebíků', 'Jeden bude stačit'),
             ('Použij', 'Co mám použít?'),
             ('sponky', 'odemkl zámek mříže'),
             ('Otevři', 'Co mám otevřít?'),

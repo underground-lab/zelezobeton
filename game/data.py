@@ -26,9 +26,7 @@ object_data = {
         'location': 'inventory',
    },
 
-    # Přenosný předmět typu krabička, batoh atd. Po jeho otevření se
-    # v místě tohoto předmětu objeví jeden nebo více nových předmětů.
-    # Následně už nelze otevřít.
+    # Předmět typu 'přenosný kontejner'
     'plechovka': {
         'name': 'plechovku',
         'description': 'Popis předmětu "plechovka".',
@@ -85,9 +83,7 @@ object_data = {
         },
     },
 
-    # Nepřenosný předmět typu skříň, bedna atd. Po jeho otevření se
-    # v místnosti objeví jeden nebo více nových předmětů. Následně už
-    # nelze otevřít.
+    # Předmět typu 'nepřenosný kontejner'
     'trezor': {
         'name': 'trezor',
         'description': 'Popis předmětu "trezor".',
@@ -106,8 +102,7 @@ object_data = {
         },
     },
 
-    # Nepřenosný předmět typu dveře, poklop atd. Po jeho otevření se
-    # objeví nový východ z místnosti. Následně už nelze otevřít.
+    # Předmět typu 'odemčené dveře'
     'dvere': {
         'name': 'dveře',
         'description': 'Popis předmětu "dveře".',
@@ -188,7 +183,7 @@ object_data = {
         },
     },
 
-    # Předmět s nestandardní akcí 'take'.
+    # Předmět s nestandardní akcí vezmi/take.
     'vaza': {
         'name': 'vázu',
         'description': 'Popis předmětu "váza".',
@@ -200,22 +195,55 @@ object_data = {
         },
     },
 
-    # Další předmět typu dveře.
+    # Předmět s nestandardní akcí vezmi/take.
+    'krabice': {
+        'name': 'krabici hřebíků',
+        'description': 'Popis předmětu "krabice hřebíků".',
+        'location': 'sklad',
+        'actions': {
+            'take': {
+                'condition': [
+                    ('is_undiscovered', dict(obj='hrebik')),
+                ],
+                'impact': [
+                    ('move_to_inventory', dict(obj='hrebik')),
+                ],
+                'message': 'Jeden bude stačit.',
+            },
+        },
+    },
+
+    'hrebik': {
+        'name': 'hřebík',
+        'description': 'Popis předmětu "hřebík".',
+    },
+
+    # Předmět typu 'zamčené dveře'
     'mriz': {
         'name': 'mříž',
         'description': 'Popis předmětu "mříž".',
         'location': 'sklad',
         'actions': {
-            'open': {
-                'condition': [
-                    ('is_true', dict(obj='mriz', attr='unlocked')),
-                    ('exit_closed', dict(room='sklad', direction='south')),
-                ],
-                'impact': [
-                    ('open_exit', dict(room='sklad', direction='south', room_2='vyklenek')),
-                    ('open_exit', dict(room='vyklenek', direction='north', room_2='sklad')),
-                ],
-            },
+            'open': [
+                {
+                    'condition': [
+                        ('is_true', dict(obj='mriz', attr='unlocked')),
+                        ('exit_closed', dict(room='sklad', direction='south')),
+                    ],
+                    'impact': [
+                        ('open_exit',
+                         dict(room='sklad', direction='south', room_2='vyklenek')),
+                        ('open_exit',
+                         dict(room='vyklenek', direction='north', room_2='sklad')),
+                    ],
+                },
+                {
+                    'condition': [
+                        ('not_true', dict(obj='mriz', attr='unlocked')),
+                    ],
+                    'message': 'Je zamčená.',
+                },
+            ],
         },
     },
 }

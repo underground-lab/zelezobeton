@@ -43,6 +43,13 @@ def test_game_walk_through(game):
     assert response is game.message_ok
     assert smetak.location == 'inventory'
 
+    krabice = game.objects['krabice']
+    response = game.process_command('take', krabice)
+    assert 'Jeden bude stačit' in response
+    assert krabice not in game.objects_in_inventory
+    hrebik = game.objects['hrebik']
+    assert hrebik in game.objects_in_inventory
+
     response = game.process_command('west')
     assert response is game.message_ok
     assert game.current_room is game.rooms['start']
@@ -80,11 +87,13 @@ def test_game_walk_through(game):
     response = game.process_command('east')
     assert response is game.message_ok
     assert game.current_room is game.rooms['sklad']
-    assert not game.objects_with_action('open')
+
+    mriz = game.objects['mriz']
+    response = game.process_command('open', mriz)
+    assert response == 'Je zamčená.'
 
     response = game.process_command('use', sponky)
     assert 'odemkl zámek mříže' in response
-    mriz = game.objects['mriz']
     assert mriz.unlocked is True
     assert game.objects_with_action('open') == [mriz]
 

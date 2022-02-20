@@ -139,6 +139,9 @@ class Game:
     def is_true(self, obj, attr):
         return getattr(self.objects[obj], attr, None) is True
 
+    def not_true(self, obj, attr):
+        return not getattr(self.objects[obj], attr, None)
+
     # callbacks that modify game state
     def move_to_room(self, obj, room):
         self.objects[obj].location = self.rooms[room]
