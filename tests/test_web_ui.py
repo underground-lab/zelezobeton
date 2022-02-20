@@ -46,7 +46,7 @@ def test_web_ui(driver):
             ('sponky', 'OK'),
             ('Jdi na jih', '"Chodba"'),
             ('Použij', 'Co mám použít?'),
-            ('sponky', 'jak mám udělat'),
+            ('sponky', 'Nevím jak.'),
             ('Otevři', 'Co mám otevřít?'),
             ('dveře', 'OK'),
             ('Jdi na východ', '"Sklad"'),

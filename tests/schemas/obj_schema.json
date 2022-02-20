@@ -15,7 +15,17 @@
             "type": "object",
             "patternProperties": {
                 "^(take|open|use)$": {
-                    "$ref": "#/$defs/actions"
+                    "oneOf": [
+                        {
+                            "$ref": "#/$defs/actions"
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/$defs/actions"
+                            }
+                        }
+                    ]
                 }
             },
             "minProperties": 1,

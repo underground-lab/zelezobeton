@@ -39,16 +39,30 @@ object_data = {
                     ('move_to_inventory', dict(obj='plechovka')),
                 ],
             },
-            'open': {
-                'condition': [
-                    ('is_undiscovered', dict(obj='sponky')),
-                ],
-                'impact': [
-                    ('move_to_same_location', dict(obj='sponky', obj_2='plechovka')),
-                    ('disable_action', dict(obj='plechovka', action='open')),
-                ],
-                'message': 'V plechovce byly jen dvě kancelářské sponky.',
-            },
+            'open': [
+                {
+                    'condition': [
+                        ('in_room', dict(obj='plechovka')),
+                        ('is_undiscovered', dict(obj='sponky')),
+                    ],
+                    'impact': [
+                        ('move_to_current_room', dict(obj='sponky')),
+                        ('disable_action', dict(obj='plechovka', action='open')),
+                    ],
+                    'message': 'V plechovce jsou jen dvě kancelářské sponky.',
+                },
+                {
+                    'condition': [
+                        ('in_inventory', dict(obj='plechovka')),
+                        ('is_undiscovered', dict(obj='sponky')),
+                    ],
+                    'impact': [
+                        ('move_to_inventory', dict(obj='sponky')),
+                        ('disable_action', dict(obj='plechovka', action='open')),
+                    ],
+                    'message': 'V plechovce jsem našel dvě kancelářské sponky.',
+                },
+            ],
         },
     },
 
@@ -123,16 +137,21 @@ object_data = {
                     ('move_to_inventory', dict(obj='sponky')),
                 ],
             },
-            'use': {
-                'condition': [
-                    ('current_room_is', dict(room='sklad')),
-                ],
-                'impact': [
-                    ('remove_object', dict(obj='sponky')),
-                    ('enable_action', dict(obj='mriz', action='open')),
-                ],
-                'message': 'Pomocí kancelářských sponek jsem odemkl zámek mříže.',
-            },
+            'use': [
+                {
+                    'condition': [
+                        ('current_room_is', dict(room='sklad')),
+                    ],
+                    'impact': [
+                        ('remove_object', dict(obj='sponky')),
+                        ('enable_action', dict(obj='mriz', action='open')),
+                    ],
+                    'message': 'Pomocí kancelářských sponek jsem odemkl zámek mříže.',
+                },
+                {
+                    'message': 'Nevím jak.',
+                },
+            ],
         },
     },
 
@@ -193,6 +212,9 @@ object_data = {
         'location': 'sklad',
         'actions': {
             'open': {
+                'condition': [
+                    ('is_gone', dict(obj='sponky')),
+                ],
                 'impact': [
                     ('open_exit', dict(room='sklad', direction='south', room_2='vyklenek')),
                     ('open_exit', dict(room='vyklenek', direction='north', room_2='sklad')),

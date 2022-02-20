@@ -167,7 +167,6 @@ def test_portable_container_opened_after_taken(game):
         ('open', 'sponky'),    # open unexpected object
         ('use', 'smetak'),    # use invisible object
         ('use', 'dvere'),    # use unexpected object
-        ('use', 'sponky'),    # use object in wrong place
     ),
 )
 def test_invalid_commands(game_in_progress, command, object_key):

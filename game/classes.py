@@ -31,7 +31,10 @@ class Game:
         self.rooms = {key: Room(**params) for key, params in room_data.items()}
         self.objects = {key: Object(**params) for key, params in object_data.items()}
         for obj in self.objects.values():
-            obj.actions = {key: Action(**params) for key, params in obj.actions.items()}
+            obj.actions = {
+                key: [Action(**params) for params in self._ensure_list(action_specs)]
+                for key, action_specs in obj.actions.items()
+            }
 
         # replace integer ids with object references
         for room in self.rooms.values():
@@ -44,6 +47,11 @@ class Game:
                 obj.location = self.rooms[obj.location]
 
         self.current_room = self.rooms[start_location_id]
+
+    def _ensure_list(self, action_specs):
+        if isinstance(action_specs, list):
+            return action_specs
+        return [action_specs]
 
     def process_command(self, command, *params):
         if command in ('north', 'south', 'west', 'east', 'up', 'down'):
@@ -60,13 +68,14 @@ class Game:
         if obj not in self.objects_with_action(command):
             raise InvalidCommand(command, obj.name) from None
 
-        action = obj.actions[command]
-        if not self._conditions_met(action):
-            raise InvalidCommand(command, obj.name) from None
+        for action in obj.actions[command]:
+            if not self._conditions_met(action):
+                continue
+            for callback_name, kwargs in action.impact:
+                getattr(self, callback_name)(**kwargs)
+            return action.message or self.message_ok
 
-        for callback_name, kwargs in action.impact:
-            getattr(self, callback_name)(**kwargs)
-        return action.message or self.message_ok
+        raise InvalidCommand(command, obj.name)
 
     @property
     def objects_in_room(self):
@@ -97,7 +106,7 @@ class Game:
         return True
 
     def _action_enabled(self, obj, action_name):
-        if not obj.actions[action_name].enabled:
+        if not any(action.enabled for action in obj.actions[action_name]):
             return False
         if action_name == 'take' and obj.location == 'inventory':
             # cannot take object already taken
@@ -106,7 +115,7 @@ class Game:
                 and obj.location != 'inventory'):
             # can only use portable object if taken
             return False
-        return True
+        return any(self._conditions_met(action) for action in obj.actions[action_name])
 
     # callbacks that don't modify game state
     def is_visible(self, obj):
