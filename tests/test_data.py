@@ -71,6 +71,3 @@ def test_callback_specs_use_existing_object_ids(callback_specs):
         if 'obj' in kwargs:
             obj_id = kwargs['obj']
             assert obj_id in object_data, f'Unknown object {obj_id!r} in {kwargs}'
-        if 'obj_2' in kwargs:
-            obj_id = kwargs['obj_2']
-            assert obj_id in object_data, f'Unknown object {obj_id!r} in {kwargs}'

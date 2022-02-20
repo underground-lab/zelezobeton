@@ -35,7 +35,7 @@ class Game:
                 for key, action_specs in obj.actions.items()
             }
 
-        # replace integer ids with object references
+        # replace room ids with Room instances
         for room in self.rooms.values():
             room.exits = {
                 key: self.rooms[room_id]
@@ -65,7 +65,7 @@ class Game:
             return obj.description
 
         if obj not in self.objects_with_action(command):
-            raise InvalidCommand(command, obj.name) from None
+            raise InvalidCommand(command, obj.name)
 
         for action in obj.actions[command]:
             if not self._conditions_met(action):
@@ -154,9 +154,6 @@ class Game:
 
     def remove_object(self, obj):
         self.objects[obj].location = 'gone'
-
-    def move_to_same_location(self, obj, obj_2):
-        self.objects[obj].location = self.objects[obj_2].location
 
     def open_exit(self, room, direction, room_2):
         self.rooms[room].exits[direction] = self.rooms[room_2]

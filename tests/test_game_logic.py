@@ -41,7 +41,7 @@ def test_game_walk_through(game):
     smetak = game.objects['smetak']
     response = game.process_command('take', smetak)
     assert response is game.message_ok
-    assert smetak.location == 'inventory'
+    assert smetak in game.objects_in_inventory
 
     krabice = game.objects['krabice']
     response = game.process_command('take', krabice)
@@ -68,7 +68,7 @@ def test_game_walk_through(game):
     sponky = game.objects['sponky']
     response = game.process_command('take', sponky)
     assert response is game.message_ok
-    assert sponky.location == 'inventory'
+    assert sponky in game.objects_in_inventory
 
     response = game.process_command('use', smetak)
     assert 'našel malý klíček' in response
@@ -78,7 +78,7 @@ def test_game_walk_through(game):
     klicek = game.objects['klicek']
     response = game.process_command('take', klicek)
     assert response is game.message_ok
-    assert klicek.location == 'inventory'
+    assert klicek in game.objects_in_inventory
 
     response = game.process_command('south')
     assert response is game.message_ok
@@ -119,7 +119,7 @@ def test_game_walk_through(game):
     obalka = game.objects['obalka']
     response = game.process_command('take', obalka)
     assert response is game.message_ok
-    assert obalka.location == 'inventory'
+    assert obalka in game.objects_in_inventory
 
 
 def test_straightforward_walk_through(game):
@@ -158,7 +158,7 @@ def test_portable_container_opened_after_taken(game):
     game.process_command('north')
     game.process_command('take', game.objects['plechovka'])
     game.process_command('open', game.objects['plechovka'])
-    assert game.objects['sponky'].location == 'inventory'
+    assert game.objects['sponky'] in game.objects_in_inventory
     assert game.objects['sponky'] not in game.objects_with_action('take')
     assert not game.objects_with_action('open')
     assert game.objects_with_action('use') == [game.objects['sponky']]

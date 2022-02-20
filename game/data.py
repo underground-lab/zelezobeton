@@ -24,7 +24,7 @@ object_data = {
         'name': 'minci',
         'description': 'Popis předmětu "mince".',
         'location': 'inventory',
-   },
+    },
 
     # Předmět typu 'přenosný kontejner'
     'plechovka': {
