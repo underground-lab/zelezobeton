@@ -47,7 +47,6 @@ object_data = {
                     ],
                     'impact': [
                         ('move_to_current_room', dict(obj='sponky')),
-                        ('disable_action', dict(obj='plechovka', action='open')),
                     ],
                     'message': 'V plechovce jsou jen dvě kancelářské sponky.',
                 },
@@ -58,7 +57,6 @@ object_data = {
                     ],
                     'impact': [
                         ('move_to_inventory', dict(obj='sponky')),
-                        ('disable_action', dict(obj='plechovka', action='open')),
                     ],
                     'message': 'V plechovce jsem našel dvě kancelářské sponky.',
                 },
@@ -80,7 +78,6 @@ object_data = {
                     ('current_room_is', dict(room='vyklenek')),
                 ],
                 'impact': [
-                    ('enable_action', dict(obj='trezor', action='open')),
                     ('remove_object', dict(obj='klicek')),
                 ],
                 'message': 'Klíčkem jsem odemkl trezor.',
@@ -103,10 +100,8 @@ object_data = {
                 ],
                 'impact': [
                     ('move_to_current_room', dict(obj='obalka')),
-                    ('disable_action', dict(obj='trezor', action='open')),
                 ],
                 'message': 'V trezoru jsem našel obálku.',
-                'enabled': False,
             },
         },
     },
@@ -122,7 +117,6 @@ object_data = {
                 'impact': [
                     ('open_exit', dict(room='start', direction='east', room_2='sklad')),
                     ('open_exit', dict(room='sklad', direction='west', room_2='start')),
-                    ('disable_action', dict(obj='dvere', action='open')),
                 ],
             },
         },
@@ -144,7 +138,6 @@ object_data = {
                     ],
                     'impact': [
                         ('remove_object', dict(obj='sponky')),
-                        ('enable_action', dict(obj='mriz', action='open')),
                     ],
                     'message': 'Pomocí kancelářských sponek jsem odemkl zámek mříže.',
                 },
@@ -185,7 +178,6 @@ object_data = {
                 'impact': [
                     ('move_to_current_room', dict(obj='klicek')),
                     ('remove_object', dict(obj='vaza')),
-                    ('disable_action', dict(obj='smetak', action='use')),
                 ],
                 'message': 'Smetl jsem vázu z knihovny a v jejích střepech jsem našel'
                            ' malý klíček.'
@@ -218,9 +210,7 @@ object_data = {
                 'impact': [
                     ('open_exit', dict(room='sklad', direction='south', room_2='vyklenek')),
                     ('open_exit', dict(room='vyklenek', direction='north', room_2='sklad')),
-                    ('disable_action', dict(obj='mriz', action='open')),
                 ],
-                'enabled': False,
             },
         },
     },

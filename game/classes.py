@@ -21,7 +21,6 @@ class Action:
     condition: list = field(default_factory=list)
     impact: list = field(default_factory=list)
     message: Optional[str] = None
-    enabled: bool = True
 
 
 class Game:
@@ -106,8 +105,6 @@ class Game:
         return True
 
     def _action_enabled(self, obj, action_name):
-        if not any(action.enabled for action in obj.actions[action_name]):
-            return False
         if action_name == 'take' and obj.location == 'inventory':
             # cannot take object already taken
             return False
@@ -133,12 +130,6 @@ class Game:
     def is_gone(self, obj):
         return self.objects[obj].location == 'gone'
 
-    def action_enabled(self, obj, action):
-        return self.objects[obj].actions[action].enabled
-
-    def action_disabled(self, obj, action):
-        return not self.objects[obj].actions[action].enabled
-
     def current_room_is(self, room):
         return self.current_room is self.rooms[room]
 
@@ -157,12 +148,6 @@ class Game:
 
     def move_to_same_location(self, obj, obj_2):
         self.objects[obj].location = self.objects[obj_2].location
-
-    def enable_action(self, obj, action):
-        self.objects[obj].actions[action].enabled = True
-
-    def disable_action(self, obj, action):
-        self.objects[obj].actions[action].enabled = False
 
     def open_exit(self, room, direction, room_2):
         self.rooms[room].exits[direction] = self.rooms[room_2]

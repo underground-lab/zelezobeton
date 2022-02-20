@@ -49,9 +49,6 @@
                 },
                 "message": {
                     "type": "string"
-                },
-                "enabled": {
-                    "type": "boolean"
                 }
             },
             "minProperties": 1,
