@@ -65,7 +65,7 @@
                     {
                         "type": "object",
                         "patternProperties": {
-                            "^(room|room_2|obj|obj_2|action|direction)$": {
+                            "^(room|room_2|obj|obj_2|action|direction|attr)$": {
                                 "type": "string"
                             }
                         },

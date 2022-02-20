@@ -78,7 +78,7 @@ object_data = {
                     ('current_room_is', dict(room='vyklenek')),
                 ],
                 'impact': [
-                    ('remove_object', dict(obj='klicek')),
+                    ('set_true', dict(obj='trezor', attr='unlocked')),
                 ],
                 'message': 'Klíčkem jsem odemkl trezor.',
             },
@@ -95,7 +95,7 @@ object_data = {
         'actions': {
             'open': {
                 'condition': [
-                    ('is_gone', dict(obj='klicek')),
+                    ('is_true', dict(obj='trezor', attr='unlocked')),
                     ('is_undiscovered', dict(obj='obalka')),
                 ],
                 'impact': [
@@ -114,6 +114,9 @@ object_data = {
         'location': 'start',
         'actions': {
             'open': {
+                'condition': [
+                    ('exit_closed', dict(room='start', direction='east')),
+                ],
                 'impact': [
                     ('open_exit', dict(room='start', direction='east', room_2='sklad')),
                     ('open_exit', dict(room='sklad', direction='west', room_2='start')),
@@ -137,7 +140,7 @@ object_data = {
                         ('current_room_is', dict(room='sklad')),
                     ],
                     'impact': [
-                        ('remove_object', dict(obj='sponky')),
+                        ('set_true', dict(obj='mriz', attr='unlocked')),
                     ],
                     'message': 'Pomocí kancelářských sponek jsem odemkl zámek mříže.',
                 },
@@ -205,7 +208,8 @@ object_data = {
         'actions': {
             'open': {
                 'condition': [
-                    ('is_gone', dict(obj='sponky')),
+                    ('is_true', dict(obj='mriz', attr='unlocked')),
+                    ('exit_closed', dict(room='sklad', direction='south')),
                 ],
                 'impact': [
                     ('open_exit', dict(room='sklad', direction='south', room_2='vyklenek')),

@@ -84,8 +84,8 @@ def test_game_walk_through(game):
 
     response = game.process_command('use', sponky)
     assert 'odemkl zámek mříže' in response
-    assert sponky not in game.visible_objects
     mriz = game.objects['mriz']
+    assert mriz.unlocked is True
     assert game.objects_with_action('open') == [mriz]
 
     response = game.process_command('open', mriz)
@@ -99,8 +99,8 @@ def test_game_walk_through(game):
 
     response = game.process_command('use', klicek)
     assert 'odemkl trezor' in response
-    assert klicek not in game.visible_objects
     trezor = game.objects['trezor']
+    assert trezor.unlocked is True
     assert game.objects_with_action('open') == [trezor]
 
     response = game.process_command('open', trezor)

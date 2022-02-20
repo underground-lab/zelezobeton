@@ -133,6 +133,12 @@ class Game:
     def current_room_is(self, room):
         return self.current_room is self.rooms[room]
 
+    def exit_closed(self, room, direction):
+        return direction not in self.rooms[room].exits
+
+    def is_true(self, obj, attr):
+        return getattr(self.objects[obj], attr, None) is True
+
     # callbacks that modify game state
     def move_to_room(self, obj, room):
         self.objects[obj].location = self.rooms[room]
@@ -156,6 +162,9 @@ class Game:
         exits = self.rooms[room].exits
         if direction in exits:
             del exits[direction]
+
+    def set_true(self, obj, attr):
+        setattr(self.objects[obj], attr, True)
 
 
 class InvalidCommand(NotImplementedError):
