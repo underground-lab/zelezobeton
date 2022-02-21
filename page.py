@@ -73,6 +73,8 @@ for command, button in buttons.items():
             for obj in game.objects_with_action(command):
                 st.button(obj.name, on_click=execute, args=(command, obj))
 
-if getattr(st.session_state, 'response', None):
+try:
     write_styled(st.session_state.response, style=message)
-    st.session_state.response = None
+    del st.session_state.response
+except AttributeError:
+    pass

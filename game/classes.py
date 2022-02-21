@@ -95,17 +95,14 @@ class Game:
         return [
             obj for obj in self.visible_objects
             if action_name in obj.actions
-            and self._action_enabled(obj, action_name)
+            and any(self._conditions_met(action) for action in obj.actions[action_name])
         ]
 
     def _conditions_met(self, action):
-        for callback_name, kwargs in action.condition:
-            if not getattr(self, callback_name)(**kwargs):
-                return False
-        return True
-
-    def _action_enabled(self, obj, action_name):
-        return any(self._conditions_met(action) for action in obj.actions[action_name])
+        return all(
+            getattr(self, callback_name)(**kwargs)
+            for callback_name, kwargs in action.condition
+        )
 
     # callbacks that don't modify game state
     def is_visible(self, obj):
