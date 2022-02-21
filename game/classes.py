@@ -60,7 +60,7 @@ class Game:
                 raise InvalidCommand(command) from None
             return self.message_ok
 
-        obj = params[0]
+        obj = self.objects[params[0]]
         if command == 'examine' and obj in self.visible_objects:
             return obj.description
 
