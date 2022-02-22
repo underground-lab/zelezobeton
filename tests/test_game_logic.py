@@ -39,6 +39,10 @@ def test_game_walk_through(game):
     assert game.current_room is game.rooms['sklad']
 
     smetak = game.objects['smetak']
+    # cannot be used before taken
+    with pytest.raises(InvalidCommand):
+        game.process_command('use', smetak)
+
     response = game.process_command('take', smetak)
     assert response is game.message_ok
     assert smetak in game.objects_in_inventory
@@ -70,6 +74,10 @@ def test_game_walk_through(game):
     assert len(game.objects_with_action('take')) == 3
 
     sponky = game.objects['sponky']
+    # cannot be used before taken
+    with pytest.raises(InvalidCommand):
+        game.process_command('use', sponky)
+
     response = game.process_command('take', sponky)
     assert response is game.message_ok
     assert sponky in game.objects_in_inventory
@@ -83,7 +91,15 @@ def test_game_walk_through(game):
     vaza = game.objects['vaza']
     assert vaza not in game.visible_objects
 
+    # use again
+    response = game.process_command('use', smetak)
+    assert 'Nevím jak' in response
+
     klicek = game.objects['klicek']
+    # cannot be used before taken
+    with pytest.raises(InvalidCommand):
+        game.process_command('use', klicek)
+
     response = game.process_command('take', klicek)
     assert response is game.message_ok
     assert klicek in game.objects_in_inventory
@@ -117,6 +133,10 @@ def test_game_walk_through(game):
     assert mriz.unlocked is True
     assert game.objects_with_action('open') == [mriz]
 
+    # use again
+    response = game.process_command('use', sponky)
+    assert 'Nevím jak' in response
+
     response = game.process_command('open', mriz)
     assert response is game.message_ok
     assert not game.objects_with_action('open')
@@ -131,6 +151,10 @@ def test_game_walk_through(game):
     trezor = game.objects['trezor']
     assert trezor.unlocked is True
     assert game.objects_with_action('open') == [trezor]
+
+    # use again
+    response = game.process_command('use', klicek)
+    assert 'Nevím jak' in response
 
     response = game.process_command('open', trezor)
     assert 'našel obálku' in response

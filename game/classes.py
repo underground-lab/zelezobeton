@@ -105,10 +105,6 @@ class Game:
         return True
 
     def _action_enabled(self, obj, action_name):
-        if (action_name == 'use' and 'take' in obj.actions
-                and obj.location != 'inventory'):
-            # can only use portable object if taken
-            return False
         return any(self._conditions_met(action) for action in obj.actions[action_name])
 
     # callbacks that don't modify game state

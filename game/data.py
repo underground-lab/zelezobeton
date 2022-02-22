@@ -77,15 +77,24 @@ object_data = {
                     ('move_to_inventory', dict(obj='klicek')),
                 ],
             },
-            'use': {
-                'condition': [
-                    ('current_room_is', dict(room='vyklenek')),
-                ],
-                'impact': [
-                    ('set_true', dict(obj='trezor', attr='unlocked')),
-                ],
-                'message': 'Klíčkem jsem odemkl trezor.',
-            },
+            'use': [
+                {
+                    'condition': [
+                        ('current_room_is', dict(room='vyklenek')),
+                        ('not_true', dict(obj='trezor', attr='unlocked')),
+                    ],
+                    'impact': [
+                        ('set_true', dict(obj='trezor', attr='unlocked')),
+                    ],
+                    'message': 'Klíčkem jsem odemkl trezor.',
+                },
+                {
+                    'condition': [
+                        ('in_inventory', dict(obj='klicek')),
+                    ],
+                    'message': 'Nevím jak.',
+                },
+            ],
         },
     },
 
@@ -142,6 +151,7 @@ object_data = {
                 {
                     'condition': [
                         ('current_room_is', dict(room='sklad')),
+                        ('not_true', dict(obj='mriz', attr='unlocked')),
                     ],
                     'impact': [
                         ('set_true', dict(obj='mriz', attr='unlocked')),
@@ -149,6 +159,9 @@ object_data = {
                     'message': 'Pomocí kancelářských sponek jsem odemkl zámek mříže.',
                 },
                 {
+                    'condition': [
+                        ('in_inventory', dict(obj='sponky')),
+                    ],
                     'message': 'Nevím jak.',
                 },
             ],
@@ -183,18 +196,26 @@ object_data = {
                     ('move_to_inventory', dict(obj='smetak')),
                 ],
             },
-            'use': {
-                'condition': [
-                    ('current_room_is', dict(room='kancelar')),
-                    ('is_visible', dict(obj='vaza')),
-                ],
-                'impact': [
-                    ('move_to_current_room', dict(obj='klicek')),
-                    ('remove_object', dict(obj='vaza')),
-                ],
-                'message': 'Smetl jsem vázu z knihovny a v jejích střepech jsem našel'
-                           ' malý klíček.'
-            },
+            'use': [
+                {
+                    'condition': [
+                        ('current_room_is', dict(room='kancelar')),
+                        ('is_visible', dict(obj='vaza')),
+                    ],
+                    'impact': [
+                        ('move_to_current_room', dict(obj='klicek')),
+                        ('remove_object', dict(obj='vaza')),
+                    ],
+                    'message': 'Smetl jsem vázu z knihovny a v jejích střepech jsem'
+                               ' našel malý klíček.'
+                },
+                {
+                    'condition': [
+                        ('in_inventory', dict(obj='smetak')),
+                    ],
+                    'message': 'Nevím jak.',
+                },
+            ],
         },
     },
 
