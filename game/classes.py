@@ -105,9 +105,6 @@ class Game:
         return True
 
     def _action_enabled(self, obj, action_name):
-        if action_name == 'take' and obj.location == 'inventory':
-            # cannot take object already taken
-            return False
         if (action_name == 'use' and 'take' in obj.actions
                 and obj.location != 'inventory'):
             # can only use portable object if taken

@@ -43,6 +43,10 @@ def test_game_walk_through(game):
     assert response is game.message_ok
     assert smetak in game.objects_in_inventory
 
+    # cannot take again
+    with pytest.raises(InvalidCommand):
+        game.process_command('take', smetak)
+
     krabice = game.objects['krabice']
     response = game.process_command('take', krabice)
     assert 'Jeden bude stačit' in response
@@ -70,6 +74,10 @@ def test_game_walk_through(game):
     assert response is game.message_ok
     assert sponky in game.objects_in_inventory
 
+    # cannot take again
+    with pytest.raises(InvalidCommand):
+        game.process_command('take', sponky)
+
     response = game.process_command('use', smetak)
     assert 'našel malý klíček' in response
     vaza = game.objects['vaza']
@@ -79,6 +87,18 @@ def test_game_walk_through(game):
     response = game.process_command('take', klicek)
     assert response is game.message_ok
     assert klicek in game.objects_in_inventory
+
+    # cannot take again
+    with pytest.raises(InvalidCommand):
+        game.process_command('take', klicek)
+
+    response = game.process_command('take', plechovka)
+    assert response is game.message_ok
+    assert plechovka in game.objects_in_inventory
+
+    # cannot take again
+    with pytest.raises(InvalidCommand):
+        game.process_command('take', plechovka)
 
     response = game.process_command('south')
     assert response is game.message_ok
@@ -120,6 +140,10 @@ def test_game_walk_through(game):
     response = game.process_command('take', obalka)
     assert response is game.message_ok
     assert obalka in game.objects_in_inventory
+
+    # cannot take again
+    with pytest.raises(InvalidCommand):
+        game.process_command('take', obalka)
 
 
 def test_straightforward_walk_through(game):

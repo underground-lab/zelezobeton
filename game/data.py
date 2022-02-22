@@ -33,6 +33,9 @@ object_data = {
         'location': 'kancelar',
         'actions': {
             'take': {
+                'condition': [
+                    ('in_room', dict(obj='plechovka')),
+                ],
                 'impact': [
                     ('move_to_inventory', dict(obj='plechovka')),
                 ],
@@ -67,6 +70,9 @@ object_data = {
         'description': 'Popis předmětu "klíček".',
         'actions': {
             'take': {
+                'condition': [
+                    ('in_room', dict(obj='klicek')),
+                ],
                 'impact': [
                     ('move_to_inventory', dict(obj='klicek')),
                 ],
@@ -125,6 +131,9 @@ object_data = {
         'description': 'Popis předmětu "sponky".',
         'actions': {
             'take': {
+                'condition': [
+                    ('in_room', dict(obj='sponky')),
+                ],
                 'impact': [
                     ('move_to_inventory', dict(obj='sponky')),
                 ],
@@ -151,6 +160,9 @@ object_data = {
         'description': 'Popis předmětu "obálka".',
         'actions': {
             'take': {
+                'condition': [
+                    ('in_room', dict(obj='obalka')),
+                ],
                 'impact': [
                     ('move_to_inventory', dict(obj='obalka')),
                 ],
@@ -164,6 +176,9 @@ object_data = {
         'location': 'sklad',
         'actions': {
             'take': {
+                'condition': [
+                    ('in_room', dict(obj='smetak')),
+                ],
                 'impact': [
                     ('move_to_inventory', dict(obj='smetak')),
                 ],
