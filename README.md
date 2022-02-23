@@ -36,5 +36,10 @@ Stránka na adrese http://localhost:8501/ se automaticky otevře v prohlížeči
 poetry run pytest
 ```
 
-Pokud server na adrese http://localhost:8501/ běží, spustí se kromě
-jiných testů také test webového rozhraní v novém okně Firefoxu.
+Pokud server na adrese http://localhost:8501/ běží, spustí se kromě jiných
+testů také test webového rozhraní. Chcete-li sledovat průběh tohoto testu
+v okně Firefoxu, spusťte testy s nastavenou proměnnou `NO_HEADLESS`:
+
+```
+NO_HEADLESS=1 poetry run pytest
+```
