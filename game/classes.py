@@ -60,12 +60,13 @@ class Game:
                 raise InvalidCommand(command) from None
             return self.message_ok
 
-        obj = self.objects[params[0]]
-        if command == 'examine' and obj in self.visible_objects:
+        obj_key = params[0]
+        obj = self.objects[obj_key]
+        if command == 'examine' and obj_key in self.visible_objects:
             return obj.description
 
-        if obj not in self.objects_with_action(command):
-            raise InvalidCommand(command, obj.name)
+        if obj_key not in self.objects_with_action(command):
+            raise InvalidCommand(command, obj_key)
 
         for action in obj.actions[command]:
             if not self._conditions_met(action):
@@ -74,29 +75,32 @@ class Game:
                 getattr(self, callback_name)(**kwargs)
             return action.message or self.message_ok
 
-        raise InvalidCommand(command, obj.name)
+        raise InvalidCommand(command, obj_key)
 
     @property
     def objects_in_room(self):
-        return [
-            obj for obj in self.objects.values()
+        return {
+            obj_key: obj for obj_key, obj in self.objects.items()
             if obj.location is self.current_room
-        ]
+        }
 
     @property
     def objects_in_inventory(self):
-        return [obj for obj in self.objects.values() if obj.location == 'inventory']
+        return {
+            obj_key: obj for obj_key, obj in self.objects.items()
+            if obj.location == 'inventory'
+        }
 
     @property
     def visible_objects(self):
-        return self.objects_in_room + self.objects_in_inventory
+        return {**self.objects_in_room, **self.objects_in_inventory}
 
     def objects_with_action(self, action_name):
-        return [
-            obj for obj in self.visible_objects
+        return {
+            obj_key: obj for obj_key, obj in self.visible_objects.items()
             if action_name in obj.actions
             and any(self._conditions_met(action) for action in obj.actions[action_name])
-        ]
+        }
 
     def _conditions_met(self, action):
         return all(
@@ -106,7 +110,7 @@ class Game:
 
     # callbacks that don't modify game state
     def is_visible(self, obj):
-        return self.objects[obj] in self.visible_objects
+        return obj in self.visible_objects
 
     def in_room(self, obj):
         return self.objects[obj].location is self.current_room

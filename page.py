@@ -63,15 +63,15 @@ with right_column:
 if examine:
     write_styled(texts.examine_what, style=message)
     with st.columns([2, 1])[1]:
-        for obj in game.visible_objects:
-            st.button(obj.name, on_click=execute, args=('examine', obj))
+        for obj_key, obj in game.visible_objects.items():
+            st.button(obj.name, on_click=execute, args=('examine', obj_key))
 for command, button in buttons.items():
     if button:
         write_styled(getattr(texts, command + '_what'), style=message)
         _, right_column = st.columns([2, 1])
         with right_column:
-            for obj in game.objects_with_action(command):
-                st.button(obj.name, on_click=execute, args=(command, obj))
+            for obj_key, obj in game.objects_with_action(command).items():
+                st.button(obj.name, on_click=execute, args=(command, obj_key))
 
 try:
     write_styled(st.session_state.response, style=message)

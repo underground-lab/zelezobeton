@@ -16,10 +16,10 @@ def write_styled(text, style):
 
 
 def room_listing(objects):
-    object_names = [obj.name for obj in objects]
+    object_names = [obj.name for obj in objects.values()]
     return texts.you_see.format(listing(object_names))
 
 
 def inventory_listing(objects):
-    object_names = [obj.name for obj in objects]
+    object_names = [obj.name for obj in objects.values()]
     return texts.you_have.format(listing(object_names))
