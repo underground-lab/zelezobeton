@@ -38,8 +38,8 @@ class Game:
         # replace room ids with Room instances
         for room in self.rooms.values():
             room.exits = {
-                key: self.rooms[room_id]
-                for key, room_id in room.exits.items()
+                key: self.rooms[room_key]
+                for key, room_key in room.exits.items()
             }
         for obj in self.objects.values():
             if obj.location in self.rooms:

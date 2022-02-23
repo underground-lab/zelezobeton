@@ -6,37 +6,37 @@ from game.data import room_data, object_data
 
 
 def test_all_exits_exist():
-    for room_id, room in room_data.items():
-        for target_room_id in room.get('exits', {}).values():
-            assert target_room_id in room_data, \
-                f'Unknown room {target_room_id!r} in exits of room {room_id!r}'
+    for room_key, room in room_data.items():
+        for target_room_key in room.get('exits', {}).values():
+            assert target_room_key in room_data, \
+                f'Unknown room {target_room_key!r} in exits of room {room_key!r}'
 
 
 def test_all_exit_relations_are_symmetric():
     opposites = dict(
         north='south', south='north', west='east', east='west', up='down', down='up'
     )
-    for room_id, room in room_data.items():
-        for direction, target_room_id in room.get('exits', {}).items():
-            target_room = room_data[target_room_id]
+    for room_key, room in room_data.items():
+        for direction, target_room_key in room.get('exits', {}).items():
+            target_room = room_data[target_room_key]
             opposite_direction = opposites[direction]
-            assert target_room.get('exits', {}).get(opposite_direction) == room_id, \
-                f'Asymmetric exits between rooms {room_id!r} and {target_room_id!r}'
+            assert target_room.get('exits', {}).get(opposite_direction) == room_key, \
+                f'Asymmetric exits between rooms {room_key!r} and {target_room_key!r}'
 
 
 def test_no_room_has_exit_to_itself():
-    for room_id, room in room_data.items():
-        assert room_id not in room.get('exits', {}).values(), \
-            f'Room {room_id!r} has an exit to itself'
+    for room_key, room in room_data.items():
+        assert room_key not in room.get('exits', {}).values(), \
+            f'Room {room_key!r} has an exit to itself'
 
 
 def test_all_object_locations_exist():
-    for obj_id, obj in object_data.items():
+    for obj_key, obj in object_data.items():
         if 'location' not in obj:
             continue
         location = obj['location']
         assert location in room_data or location == 'inventory', \
-            f'Unknown location {location!r} of object {obj_id!r}'
+            f'Unknown location {location!r} of object {obj_key!r}'
 
 
 @pytest.fixture
@@ -54,20 +54,20 @@ def test_callback_specs_use_existing_callback_names(callback_specs):
         assert hasattr(Game, callback_name), f'Unknown callback {callback_name!r}'
 
 
-def test_callback_specs_use_existing_room_ids(callback_specs):
+def test_callback_specs_use_existing_room_keys(callback_specs):
     for spec in callback_specs:
         kwargs = spec[1]
         if 'room' in kwargs:
-            room_id = kwargs['room']
-            assert room_id in room_data, f'Unknown room {room_id!r} in {kwargs}'
+            room_key = kwargs['room']
+            assert room_key in room_data, f'Unknown room {room_key!r} in {kwargs}'
         if 'room_2' in kwargs:
-            room_id = kwargs['room_2']
-            assert room_id in room_data, f'Unknown room {room_id!r} in {kwargs}'
+            room_key = kwargs['room_2']
+            assert room_key in room_data, f'Unknown room {room_key!r} in {kwargs}'
 
 
-def test_callback_specs_use_existing_object_ids(callback_specs):
+def test_callback_specs_use_existing_object_keys(callback_specs):
     for spec in callback_specs:
         kwargs = spec[1]
         if 'obj' in kwargs:
-            obj_id = kwargs['obj']
-            assert obj_id in object_data, f'Unknown object {obj_id!r} in {kwargs}'
+            obj_key = kwargs['obj']
+            assert obj_key in object_data, f'Unknown object {obj_key!r} in {kwargs}'

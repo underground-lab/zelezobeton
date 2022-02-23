@@ -215,7 +215,7 @@ def test_portable_container_opened_after_taken(game):
 
 
 @pytest.mark.parametrize(
-    'command, object_key',
+    'command, obj_key',
     (
         ('examine', 'plechovka'),    # examine invisible object
         ('take', 'plechovka'),    # take invisible object
@@ -228,7 +228,7 @@ def test_portable_container_opened_after_taken(game):
         ('use', 'dvere'),    # use unexpected object
     ),
 )
-def test_invalid_commands(game_in_progress, command, object_key):
-    obj = game_in_progress.objects[object_key]
+def test_invalid_commands(game_in_progress, command, obj_key):
+    obj = game_in_progress.objects[obj_key]
     with pytest.raises(InvalidCommand):
         game_in_progress.process_command(command, obj)
