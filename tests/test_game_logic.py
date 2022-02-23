@@ -144,11 +144,13 @@ def test_game_walk_through(game):
     response = game.process_command('south')
     assert response is game.message_ok
     assert game.current_room is game.rooms['vyklenek']
-    assert not game.objects_with_action('open')
+
+    trezor = game.objects['trezor']
+    response = game.process_command('open', trezor)
+    assert response == 'Je zamčený.'
 
     response = game.process_command('use', klicek)
     assert 'odemkl trezor' in response
-    trezor = game.objects['trezor']
     assert trezor.unlocked is True
     assert game.objects_with_action('open') == [trezor]
 

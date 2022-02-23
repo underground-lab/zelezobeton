@@ -104,16 +104,24 @@ object_data = {
         'description': 'Popis předmětu "trezor".',
         'location': 'vyklenek',
         'actions': {
-            'open': {
-                'condition': [
-                    ('is_true', dict(obj='trezor', attr='unlocked')),
-                    ('is_undiscovered', dict(obj='obalka')),
-                ],
-                'impact': [
-                    ('move_to_current_room', dict(obj='obalka')),
-                ],
-                'message': 'V trezoru jsem našel obálku.',
-            },
+            'open': [
+                {
+                    'condition': [
+                        ('is_true', dict(obj='trezor', attr='unlocked')),
+                        ('is_undiscovered', dict(obj='obalka')),
+                    ],
+                    'impact': [
+                        ('move_to_current_room', dict(obj='obalka')),
+                    ],
+                    'message': 'V trezoru jsem našel obálku.',
+                },
+                {
+                    'condition': [
+                        ('not_true', dict(obj='trezor', attr='unlocked')),
+                    ],
+                    'message': 'Je zamčený.',
+                },
+            ],
         },
     },
 
