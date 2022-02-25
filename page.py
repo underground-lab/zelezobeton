@@ -4,8 +4,7 @@ from data import texts
 from styles import room_description, room_objects, inventory, message
 from utils import write_styled, room_listing, inventory_listing
 
-from game import Game, __version__
-from game.classes import InvalidCommand
+from engine import Game, InvalidCommand, __version__
 from game.data import room_data, object_data
 
 if not hasattr(st.session_state, 'game'):

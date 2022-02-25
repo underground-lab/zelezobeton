@@ -4,8 +4,7 @@ from copy import deepcopy
 
 import pytest
 
-from game import Game
-from game.classes import InvalidCommand
+from engine import Game, InvalidCommand
 from game.data import room_data, object_data
 
 
