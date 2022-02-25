@@ -4,13 +4,14 @@ from copy import deepcopy
 
 import pytest
 
-from game import new_game
+from game import Game
 from game.classes import InvalidCommand
+from game.data import room_data, object_data
 
 
 @pytest.fixture
 def game():
-    return deepcopy(new_game)
+    return deepcopy(Game(room_data, object_data))
 
 
 @pytest.fixture

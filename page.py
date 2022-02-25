@@ -1,19 +1,20 @@
-import importlib
-import sys
-
 import streamlit as st
 
 from data import texts
 from styles import room_description, room_objects, inventory, message
 from utils import write_styled, room_listing, inventory_listing
 
-from game import new_game as game, __version__
+from game import Game, __version__
 from game.classes import InvalidCommand
+from game.data import room_data, object_data
+
+if not hasattr(st.session_state, 'game'):
+    st.session_state.game = Game(room_data, object_data)
+game = st.session_state.game
 
 
 def restart():
-    """Force restart by reloading the `game` package."""
-    importlib.reload(sys.modules['game'])
+    del st.session_state.game
 
 
 def execute(*args, store_response=True):
