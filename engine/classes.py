@@ -1,3 +1,4 @@
+from copy import deepcopy
 from dataclasses import dataclass, field
 from typing import Optional, Union
 
@@ -27,25 +28,34 @@ class Game:
     message_ok = 'OK'
 
     def __init__(self, room_data, object_data, start_location_id='start'):
-        self.rooms = {key: Room(**params) for key, params in room_data.items()}
-        self.objects = {key: Object(**params) for key, params in object_data.items()}
-        for obj in self.objects.values():
+        self.rooms = self._rooms_from_data(room_data)
+        self.objects = self._objects_from_data(object_data)
+        self.current_room = self.rooms[start_location_id]
+
+    def _rooms_from_data(self, data):
+        result = {key: Room(**params) for key, params in deepcopy(data).items()}
+        # replace room keys with Room instances
+        for room in result.values():
+            room.exits = {
+                key: result[room_key]
+                for key, room_key in room.exits.items()
+            }
+        return result
+
+    def _objects_from_data(self, data):
+        result = {}
+        for key, params in deepcopy(data).items():
+            obj = Object(**params)
+            # replace action specs with Action instance
             obj.actions = {
                 key: [Action(**params) for params in self._ensure_list(action_specs)]
                 for key, action_specs in obj.actions.items()
             }
-
-        # replace room ids with Room instances
-        for room in self.rooms.values():
-            room.exits = {
-                key: self.rooms[room_key]
-                for key, room_key in room.exits.items()
-            }
-        for obj in self.objects.values():
+            # replace room key with Room instance
             if obj.location in self.rooms:
                 obj.location = self.rooms[obj.location]
-
-        self.current_room = self.rooms[start_location_id]
+            result[key] = obj
+        return result
 
     def _ensure_list(self, action_specs):
         if isinstance(action_specs, list):
