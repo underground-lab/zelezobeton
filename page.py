@@ -1,10 +1,12 @@
+from pathlib import Path
+
 import streamlit as st
 
 from data import texts
 import styles
 from utils import write_styled, room_listing, inventory_listing
 
-from engine import Game, InvalidCommand, __version__
+from engine import Game, InvalidCommand
 from game.data import room_data, object_data
 
 if not hasattr(st.session_state, 'game'):
@@ -31,7 +33,8 @@ st.set_page_config(
 )
 
 write_styled(texts.game_title, style=styles.title, sidebar=True)
-write_styled(texts.version_info.format(__version__), style=styles.tiny, sidebar=True)
+version = Path('VERSION').read_text().strip()
+write_styled(texts.version_info.format(version), style=styles.tiny, sidebar=True)
 st.sidebar.button(texts.restart, on_click=restart)
 
 left_column, right_column = st.columns([2, 1])
