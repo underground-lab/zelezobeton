@@ -11,8 +11,9 @@ def listing(strings):
     return f'{", ".join(strings[:-1])} {texts.and_} {strings[-1]}'
 
 
-def write_styled(text, style):
-    st.write(f'<p style="{style}">{text}</p>', unsafe_allow_html=True)
+def write_styled(text, style, sidebar=False):
+    target = st.sidebar if sidebar else st
+    target.write(f'<p style="{style}">{text}</p>', unsafe_allow_html=True)
 
 
 def room_listing(objects):

@@ -1,7 +1,7 @@
 import streamlit as st
 
 from data import texts
-from styles import room_description, room_objects, inventory, message
+import styles
 from utils import write_styled, room_listing, inventory_listing
 
 from engine import Game, InvalidCommand, __version__
@@ -30,20 +30,23 @@ st.set_page_config(
     page_icon=texts.icon_char,
 )
 
-st.sidebar.title(texts.game_title)
-st.sidebar.caption(texts.version_info.format(__version__))
+write_styled(texts.game_title, style=styles.title, sidebar=True)
+write_styled(texts.version_info.format(__version__), style=styles.tiny, sidebar=True)
 st.sidebar.button(texts.restart, on_click=restart)
 
 left_column, right_column = st.columns([2, 1])
 
 with left_column:
-    write_styled(game.current_room.description, style=room_description)
+    write_styled(game.current_room.description, style=styles.room_description)
 
     if game.objects_in_room:
-        write_styled(room_listing(game.objects_in_room), style=room_objects)
+        write_styled(room_listing(game.objects_in_room), style=styles.room_objects)
 
     if game.objects_in_inventory:
-        write_styled(inventory_listing(game.objects_in_inventory), style=inventory)
+        write_styled(
+            inventory_listing(game.objects_in_inventory),
+            style=styles.inventory
+        )
 
 with right_column:
     for command in game.current_room.exits:
@@ -61,20 +64,20 @@ with right_column:
     }
 
 if examine:
-    write_styled(texts.examine_what, style=message)
+    write_styled(texts.examine_what, style=styles.message)
     with st.columns([2, 1])[1]:
         for obj_key, obj in game.visible_objects.items():
             st.button(obj.name, on_click=execute, args=('examine', obj_key))
 for command, button in buttons.items():
     if button:
-        write_styled(getattr(texts, command + '_what'), style=message)
+        write_styled(getattr(texts, command + '_what'), style=styles.message)
         _, right_column = st.columns([2, 1])
         with right_column:
             for obj_key, obj in game.objects_with_action(command).items():
                 st.button(obj.name, on_click=execute, args=(command, obj_key))
 
 try:
-    write_styled(st.session_state.response, style=message)
+    write_styled(st.session_state.response, style=styles.message)
     del st.session_state.response
 except AttributeError:
     pass
