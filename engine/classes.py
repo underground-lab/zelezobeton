@@ -79,13 +79,21 @@ class Game:
             raise InvalidCommand(command, obj_key)
 
         for action in obj.actions[command]:
-            if not self._conditions_met(action):
-                continue
-            for callback_name, kwargs in action.impact:
-                getattr(self, callback_name)(**kwargs)
-            return action.message or self.message_ok
+            if self._conditions_met(action):
+                self._apply_impact(action)
+                return action.message or self.message_ok
 
         raise InvalidCommand(command, obj_key)
+
+    def _conditions_met(self, action):
+        return all(
+            getattr(self, callback_name)(**kwargs)
+            for callback_name, kwargs in action.condition
+        )
+
+    def _apply_impact(self, action):
+        for callback_name, kwargs in action.impact:
+            getattr(self, callback_name)(**kwargs)
 
     @property
     def objects_in_room(self):
@@ -111,12 +119,6 @@ class Game:
             if action_name in obj.actions
             and any(self._conditions_met(action) for action in obj.actions[action_name])
         }
-
-    def _conditions_met(self, action):
-        return all(
-            getattr(self, callback_name)(**kwargs)
-            for callback_name, kwargs in action.condition
-        )
 
     # callbacks that don't modify game state
     def is_visible(self, obj):
