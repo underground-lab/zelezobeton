@@ -1,5 +1,12 @@
 __pycache__
 .pytest_cache
+.idea/
+.venv/
+
 build/
 dist/
 *.egg-info/
+
+geckodriver.log
+db.sqlite3
+.key
