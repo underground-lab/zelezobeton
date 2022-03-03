@@ -33,14 +33,7 @@ class Game:
         self.current_room = self.rooms[current_room]
 
     def _rooms_from_data(self, data):
-        result = {key: Room(**params) for key, params in deepcopy(data).items()}
-        # replace room keys with Room instances
-        for room in result.values():
-            room.exits = {
-                key: result[room_key]
-                for key, room_key in room.exits.items()
-            }
-        return result
+        return {key: Room(**params) for key, params in deepcopy(data).items()}
 
     def _objects_from_data(self, data):
         result = {}
@@ -65,7 +58,8 @@ class Game:
     def process_command(self, command, *params):
         if command in ('north', 'south', 'west', 'east', 'up', 'down'):
             try:
-                self.current_room = self.current_room.exits[command]
+                room_key = self.current_room.exits[command]
+                self.current_room = self.rooms[room_key]
             except KeyError:
                 raise InvalidCommand(command) from None
             return self.message_ok
@@ -162,7 +156,7 @@ class Game:
         self.objects[obj].location = 'gone'
 
     def open_exit(self, room, direction, room_2):
-        self.rooms[room].exits[direction] = self.rooms[room_2]
+        self.rooms[room].exits[direction] = room_2
 
     def close_exit(self, room, direction):
         exits = self.rooms[room].exits

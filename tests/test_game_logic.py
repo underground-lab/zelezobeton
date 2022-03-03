@@ -11,8 +11,8 @@ def test_game_walk_through(game):
 
     response = game.process_command('open', 'dvere')
     assert response is game.message_ok
-    assert game.current_room.exits['east'] is game.rooms['sklad']
-    assert game.rooms['sklad'].exits['west'] is game.current_room
+    assert game.current_room.exits['east'] == 'sklad'
+    assert game.rooms['sklad'].exits['west'] == 'start'
     assert not game.objects_with_action('open')
 
     response = game.process_command('east')
@@ -112,6 +112,8 @@ def test_game_walk_through(game):
 
     response = game.process_command('open', 'mriz')
     assert response is game.message_ok
+    assert game.current_room.exits['south'] == 'vyklenek'
+    assert game.rooms['vyklenek'].exits['north'] == 'sklad'
     assert not game.objects_with_action('open')
 
     response = game.process_command('south')
