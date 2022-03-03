@@ -27,10 +27,10 @@ class Action:
 class Game:
     message_ok = 'OK'
 
-    def __init__(self, room_data, object_data, start_location_id='start'):
+    def __init__(self, room_data, object_data, current_room='start'):
         self.rooms = self._rooms_from_data(room_data)
         self.objects = self._objects_from_data(object_data)
-        self.current_room = self.rooms[start_location_id]
+        self.current_room = self.rooms[current_room]
 
     def _rooms_from_data(self, data):
         result = {key: Room(**params) for key, params in deepcopy(data).items()}
@@ -46,7 +46,7 @@ class Game:
         result = {}
         for key, params in deepcopy(data).items():
             obj = Object(**params)
-            # replace action specs with Action instance
+            # replace action specs with Action instances
             obj.actions = {
                 key: [Action(**params) for params in self._ensure_list(action_specs)]
                 for key, action_specs in obj.actions.items()
@@ -174,4 +174,4 @@ class Game:
 
 
 class InvalidCommand(NotImplementedError):
-    ...
+    pass
