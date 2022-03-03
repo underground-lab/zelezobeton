@@ -6,7 +6,12 @@
 </head>
 <body>
     <p>
+        {{ game.current_room.description }}
+    </p>
+    {% if message %}
+    <p>
         {{ message }}
     </p>
+    {% endif %}
 </body>
 </html>
