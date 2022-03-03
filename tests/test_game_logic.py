@@ -12,7 +12,7 @@ def test_game_walk_through(game):
     response = game.process_command('open', 'dvere')
     assert response is game.message_ok
     assert game.current_room.exits['east'] == 'sklad'
-    assert game.rooms['sklad'].exits['west'] == 'start'
+    assert game.rooms['sklad'].exits['west'] == game._current_room
     assert not game.objects_with_action('open')
 
     response = game.process_command('east')
@@ -113,7 +113,7 @@ def test_game_walk_through(game):
     response = game.process_command('open', 'mriz')
     assert response is game.message_ok
     assert game.current_room.exits['south'] == 'vyklenek'
-    assert game.rooms['vyklenek'].exits['north'] == 'sklad'
+    assert game.rooms['vyklenek'].exits['north'] == game._current_room
     assert not game.objects_with_action('open')
 
     response = game.process_command('south')
@@ -170,7 +170,7 @@ def test_straightforward_walk_through(game):
 def test_portable_container_opened_before_taken(game):
     game.process_command('north')
     game.process_command('open', 'plechovka')
-    assert game.objects['sponky'].location is game.current_room
+    assert game.objects['sponky'].location == game._current_room
     game.process_command('take', 'plechovka')
     assert 'sponky' in game.objects_with_action('take')
     assert not game.objects_with_action('open')
