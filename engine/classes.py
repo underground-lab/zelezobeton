@@ -35,18 +35,18 @@ class Game:
 
     def _rooms_from_data(self, data):
         return {
-            key: item if isinstance(item, Room) else Room(**item)
+            key: self._ensure_class(item, Room)
             for key, item in deepcopy(data).items()
         }
 
     def _objects_from_data(self, data):
         result = {}
         for key, item in deepcopy(data).items():
-            obj = item if isinstance(item, Object) else Object(**item)
+            obj = self._ensure_class(item, Object)
             # replace action specs with Action instances
             obj.actions = {
                 key: [
-                    item if isinstance(item, Action) else Action(**item)
+                    self._ensure_class(item, Action)
                     for item in self._ensure_list(action_specs)
                 ]
                 for key, action_specs in obj.actions.items()
@@ -54,7 +54,14 @@ class Game:
             result[key] = obj
         return result
 
-    def _ensure_list(self, action_specs):
+    @staticmethod
+    def _ensure_class(obj, cls):
+        if isinstance(obj, cls):
+            return obj
+        return cls(**obj)
+
+    @staticmethod
+    def _ensure_list(action_specs):
         if isinstance(action_specs, list):
             return action_specs
         return [action_specs]
