@@ -1,5 +1,6 @@
 from copy import deepcopy
 from dataclasses import dataclass, field
+import json
 from typing import Optional
 
 
@@ -166,6 +167,26 @@ class Game:
     def set_true(self, obj, attr):
         setattr(self.objects[obj], attr, True)
 
+    # serialization
+    def to_json(self):
+        return game_encoder.encode(self)
+
 
 class InvalidCommand(NotImplementedError):
     pass
+
+
+class GameJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, (Room, Object, Action)):
+            return {'_class': obj.__class__.__name__, '_kwargs': obj.__dict__}
+        if isinstance(obj, Game):
+            return {
+                'room_data': obj.rooms,
+                'object_data': obj.objects,
+                'current_room': obj._current_room,
+            }
+        return super().default(obj)
+
+
+game_encoder = GameJSONEncoder(ensure_ascii=False)
