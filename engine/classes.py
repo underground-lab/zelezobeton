@@ -28,10 +28,10 @@ class Action:
 class Game:
     message_ok = 'OK'
 
-    def __init__(self, room_data, object_data, current_room='start'):
-        self.rooms = self._rooms_from_data(room_data)
-        self.objects = self._objects_from_data(object_data)
-        self._current_room = current_room
+    def __init__(self, rooms, objects, current_room_key='start'):
+        self.rooms = self._rooms_from_data(rooms)
+        self.objects = self._objects_from_data(objects)
+        self.current_room_key = current_room_key
 
     def _rooms_from_data(self, data):
         return {
@@ -69,7 +69,7 @@ class Game:
     def process_command(self, command, *params):
         if command in ('north', 'south', 'west', 'east', 'up', 'down'):
             try:
-                self._current_room = self.current_room.exits[command]
+                self.current_room_key = self.current_room.exits[command]
             except KeyError:
                 raise InvalidCommand(command) from None
             return self.message_ok
@@ -101,13 +101,13 @@ class Game:
 
     @property
     def current_room(self):
-        return self.rooms[self._current_room]
+        return self.rooms[self.current_room_key]
 
     @property
     def objects_in_room(self):
         return {
             obj_key: obj for obj_key, obj in self.objects.items()
-            if obj.location == self._current_room
+            if obj.location == self.current_room_key
         }
 
     @property
@@ -145,7 +145,7 @@ class Game:
         return self.objects[obj].location == 'gone'
 
     def current_room_is(self, room):
-        return self._current_room == room
+        return self.current_room_key == room
 
     def exit_closed(self, room, direction):
         return direction not in self.rooms[room].exits
@@ -161,7 +161,7 @@ class Game:
         self.objects[obj].location = room
 
     def move_to_current_room(self, obj):
-        self.objects[obj].location = self._current_room
+        self.objects[obj].location = self.current_room_key
 
     def move_to_inventory(self, obj):
         self.objects[obj].location = 'inventory'
@@ -184,9 +184,9 @@ class Game:
     def to_json(self):
         return game_encoder.encode(self)
 
-    @classmethod
-    def from_json(cls, json_str):
-        return cls(**game_decoder.decode(json_str))
+    @staticmethod
+    def from_json(json_str):
+        return game_decoder.decode(json_str)
 
 
 class InvalidCommand(NotImplementedError):
@@ -195,14 +195,8 @@ class InvalidCommand(NotImplementedError):
 
 class GameJSONEncoder(json.JSONEncoder):
     def default(self, obj):
-        if isinstance(obj, (Room, Object, Action)):
+        if isinstance(obj, (Room, Object, Action, Game)):
             return {'_class': obj.__class__.__name__, '_kwargs': obj.__dict__}
-        if isinstance(obj, Game):
-            return {
-                'room_data': obj.rooms,
-                'object_data': obj.objects,
-                'current_room': obj._current_room,
-            }
         return super().default(obj)
 
 
@@ -211,8 +205,9 @@ game_encoder = GameJSONEncoder(ensure_ascii=False)
 
 def custom_class_hook(obj):
     if '_class' in obj:
-        cls = {'Room': Room, 'Object': Object, 'Action': Action}[obj['_class']]
-        return cls(**obj['_kwargs'])
+        class_name, kwargs = obj['_class'], obj['_kwargs']
+        if class_name in ('Room', 'Object', 'Action', 'Game'):
+            return globals()[class_name](**kwargs)
     return obj
 
 

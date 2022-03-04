@@ -28,7 +28,8 @@ def test_encode_object(game):
 
 def test_encode_game(game):
     encoded = game.to_json()
-    assert encoded.startswith('{"room_data": {"start": {"_class": "Room", "_kwargs": {"')
+    assert encoded.startswith('{"_class": "Game", "_kwargs": {"')
+    assert '"start": {"_class": "Room", "_kwargs": {"' in encoded
     assert '"klicek": {"_class": "Object", "_kwargs": {"' in encoded
     assert '"use": [{"_class": "Action", "_kwargs": {"' in encoded
 
