@@ -34,15 +34,21 @@ class Game:
         self._current_room = current_room
 
     def _rooms_from_data(self, data):
-        return {key: Room(**params) for key, params in deepcopy(data).items()}
+        return {
+            key: item if isinstance(item, Room) else Room(**item)
+            for key, item in deepcopy(data).items()
+        }
 
     def _objects_from_data(self, data):
         result = {}
-        for key, params in deepcopy(data).items():
-            obj = Object(**params)
+        for key, item in deepcopy(data).items():
+            obj = item if isinstance(item, Object) else Object(**item)
             # replace action specs with Action instances
             obj.actions = {
-                key: [Action(**params) for params in self._ensure_list(action_specs)]
+                key: [
+                    item if isinstance(item, Action) else Action(**item)
+                    for item in self._ensure_list(action_specs)
+                ]
                 for key, action_specs in obj.actions.items()
             }
             result[key] = obj
@@ -170,6 +176,10 @@ class Game:
     # serialization
     def to_json(self):
         return game_encoder.encode(self)
+
+    @classmethod
+    def from_json(cls, json_str):
+        return cls(**game_decoder.decode(json_str))
 
 
 class InvalidCommand(NotImplementedError):

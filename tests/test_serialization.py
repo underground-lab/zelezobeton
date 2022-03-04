@@ -51,3 +51,7 @@ def test_decode_object():
         '{"_class": "Object", "_kwargs": {"name": "a", "description": "b",'
         ' "location": "c", "actions": {"use": [{"_class": "Action", "_kwargs": {}}]}}}'
     ) == Object('a', 'b', 'c', {'use': [Action()]})
+
+
+def test_roundtrip_no_error(game):
+    game.from_json(game.to_json())
