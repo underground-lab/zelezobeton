@@ -190,3 +190,13 @@ class GameJSONEncoder(json.JSONEncoder):
 
 
 game_encoder = GameJSONEncoder(ensure_ascii=False)
+
+
+def custom_class_hook(obj):
+    if '_class' in obj:
+        cls = {'Room': Room, 'Object': Object, 'Action': Action}[obj['_class']]
+        return cls(**obj['_kwargs'])
+    return obj
+
+
+game_decoder = json.JSONDecoder(object_hook=custom_class_hook)

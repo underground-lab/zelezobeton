@@ -1,6 +1,6 @@
 # coding: utf-8
 
-from engine.classes import game_encoder
+from engine.classes import Room, Object, Action, game_encoder, game_decoder
 
 
 def test_encode_room(game):
@@ -31,3 +31,23 @@ def test_encode_game(game):
     assert encoded.startswith('{"room_data": {"start": {"_class": "Room", "_kwargs": {"')
     assert '"klicek": {"_class": "Object", "_kwargs": {"' in encoded
     assert '"use": [{"_class": "Action", "_kwargs": {"' in encoded
+
+
+def test_decode_room():
+    assert game_decoder.decode(
+        '{"_class": "Room", "_kwargs": {"description": "a", "exits": {"north": "b"}}}'
+    ) == Room('a', {'north': 'b'})
+
+
+def test_decode_action():
+    assert game_decoder.decode(
+        '{"_class": "Action", "_kwargs": {"condition": [["a", {"b": "c"}]],'
+        ' "impact": [["d", {"e": "f"}]], "message": "OK"}}'
+    ) == Action([['a', {'b': 'c'}]], [['d', {'e': 'f'}]], 'OK')
+
+
+def test_decode_object():
+    assert game_decoder.decode(
+        '{"_class": "Object", "_kwargs": {"name": "a", "description": "b",'
+        ' "location": "c", "actions": {"use": [{"_class": "Action", "_kwargs": {}}]}}}'
+    ) == Object('a', 'b', 'c', {'use': [Action()]})
