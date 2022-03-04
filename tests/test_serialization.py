@@ -6,7 +6,7 @@ from engine.classes import Room, Object, Action, game_encoder, game_decoder
 def test_encode_room(game):
     room = game.rooms['start']
     assert game_encoder.encode(room) == (
-        '{"_class": "Room", "_kwargs": {"description": "Popis místnosti \\"Chodba\\".",'
+        '{"_class": "Room", "_kwargs": {"description": "Popis místnosti „Chodba“.",'
         ' "exits": {"north": "kancelar"}}}'
     )
 

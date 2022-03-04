@@ -2,18 +2,18 @@
 
 room_data = {
     'start': {
-        'description': 'Popis místnosti "Chodba".',
+        'description': 'Popis místnosti „Chodba“.',
         'exits': {'north': 'kancelar'},
     },
     'kancelar': {
-        'description': 'Popis místnosti "Kancelář".',
+        'description': 'Popis místnosti „Kancelář“.',
         'exits': {'south': 'start'},
     },
     'sklad': {
-        'description': 'Popis místnosti "Sklad".',
+        'description': 'Popis místnosti „Sklad“.',
     },
     'vyklenek': {
-        'description': 'Popis místnosti "Výklenek".',
+        'description': 'Popis místnosti „Výklenek“.',
     },
 }
 
@@ -22,14 +22,14 @@ object_data = {
     # Předmět, který je na začátku hry v inventáři
     'mince': {
         'name': 'minci',
-        'description': 'Popis předmětu "mince".',
+        'description': 'Popis předmětu „mince“.',
         'location': 'inventory',
     },
 
     # Předmět typu 'přenosný kontejner'
     'plechovka': {
         'name': 'plechovku',
-        'description': 'Popis předmětu "plechovka".',
+        'description': 'Popis předmětu „plechovka“.',
         'location': 'kancelar',
         'actions': {
             'take': {
@@ -67,7 +67,7 @@ object_data = {
 
     'klicek': {
         'name': 'klíček',
-        'description': 'Popis předmětu "klíček".',
+        'description': 'Popis předmětu „klíček“.',
         'actions': {
             'take': {
                 'condition': [
@@ -101,7 +101,7 @@ object_data = {
     # Předmět typu 'nepřenosný kontejner'
     'trezor': {
         'name': 'trezor',
-        'description': 'Popis předmětu "trezor".',
+        'description': 'Popis předmětu „trezor“.',
         'location': 'vyklenek',
         'actions': {
             'open': [
@@ -128,7 +128,7 @@ object_data = {
     # Předmět typu 'odemčené dveře'
     'dvere': {
         'name': 'dveře',
-        'description': 'Popis předmětu "dveře".',
+        'description': 'Popis předmětu „dveře“.',
         'location': 'start',
         'actions': {
             'open': {
@@ -145,7 +145,7 @@ object_data = {
 
     'sponky': {
         'name': 'sponky',
-        'description': 'Popis předmětu "sponky".',
+        'description': 'Popis předmětu „sponky“.',
         'actions': {
             'take': {
                 'condition': [
@@ -178,7 +178,7 @@ object_data = {
 
     'obalka': {
         'name': 'obálku',
-        'description': 'Popis předmětu "obálka".',
+        'description': 'Popis předmětu „obálka“.',
         'actions': {
             'take': {
                 'condition': [
@@ -193,7 +193,7 @@ object_data = {
 
     'smetak': {
         'name': 'smeták',
-        'description': 'Popis předmětu "smeták".',
+        'description': 'Popis předmětu „smeták“.',
         'location': 'sklad',
         'actions': {
             'take': {
@@ -230,7 +230,7 @@ object_data = {
     # Předmět s nestandardní akcí vezmi/take.
     'vaza': {
         'name': 'vázu',
-        'description': 'Popis předmětu "váza".',
+        'description': 'Popis předmětu „váza“.',
         'location': 'kancelar',
         'actions': {
             'take': {
@@ -259,13 +259,13 @@ object_data = {
 
     'hrebik': {
         'name': 'hřebík',
-        'description': 'Popis předmětu "hřebík".',
+        'description': 'Popis předmětu „hřebík“.',
     },
 
     # Předmět typu 'zamčené dveře'
     'mriz': {
         'name': 'mříž',
-        'description': 'Popis předmětu "mříž".',
+        'description': 'Popis předmětu „mříž“.',
         'location': 'sklad',
         'actions': {
             'open': [

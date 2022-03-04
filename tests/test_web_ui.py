@@ -34,19 +34,19 @@ def driver():
 @pytest.mark.parametrize(
     'button_label, expected_text',
     (
-        ('Restartovat', '"Chodba"'),
-        ('Jdi na sever', '"Kancelář"'),
+        ('Restartovat', '„Chodba“'),
+        ('Jdi na sever', '„Kancelář“'),
         ('Otevři', 'Co mám otevřít?'),
         ('plechovku', 'dvě kancelářské sponky'),
 
         # restart
-        ('Restartovat', '"Chodba"'),
-        ('Jdi na sever', '"Kancelář"'),
+        ('Restartovat', '„Chodba“'),
+        ('Jdi na sever', '„Kancelář“'),
         ('Otevři', 'Co mám otevřít?'),
         ('plechovku', 'dvě kancelářské sponky'),
         ('Vezmi', 'Co mám vzít?'),
         ('sponky', 'OK'),
-        ('Jdi na jih', '"Chodba"'),
+        ('Jdi na jih', '„Chodba“'),
 
         # use in a wrong room
         ('Použij', 'Co mám použít?'),
@@ -54,7 +54,7 @@ def driver():
 
         ('Otevři', 'Co mám otevřít?'),
         ('dveře', 'OK'),
-        ('Jdi na východ', '"Sklad"'),
+        ('Jdi na východ', '„Sklad“'),
         ('Vezmi', 'Co mám vzít?'),
         ('krabici hřebíků', 'Jeden bude stačit'),
         ('Použij', 'Co mám použít?'),
@@ -63,8 +63,8 @@ def driver():
         ('mříž', 'OK'),
         ('Vezmi', 'Co mám vzít?'),
         ('smeták', 'OK'),
-        ('Jdi na západ', '"Chodba"'),
-        ('Jdi na sever', '"Kancelář"'),
+        ('Jdi na západ', '„Chodba“'),
+        ('Jdi na sever', '„Kancelář“'),
 
         # take an unreachable object
         ('Vezmi', 'Co mám vzít?'),
@@ -74,9 +74,9 @@ def driver():
         ('smeták', 'našel malý klíček'),
         ('Vezmi', 'Co mám vzít?'),
         ('klíček', 'OK'),
-        ('Jdi na jih', '"Chodba"'),
-        ('Jdi na východ', '"Sklad"'),
-        ('Jdi na jih', '"Výklenek"'),
+        ('Jdi na jih', '„Chodba“'),
+        ('Jdi na východ', '„Sklad“'),
+        ('Jdi na jih', '„Výklenek“'),
 
         # open a locked object
         ('Otevři', 'Co mám otevřít?'),
