@@ -16,9 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from webapp.views import home
+from webapp.views import home, restart
 
 urlpatterns = [
     path('', home, name='home'),
+    path('restart/', restart, name='restart'),
     path('admin/', admin.site.urls),
 ]

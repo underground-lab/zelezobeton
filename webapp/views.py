@@ -1,4 +1,6 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
 
 from engine import Game
 from game.data import room_data, object_data
@@ -23,3 +25,10 @@ def home(request):
 
     context = dict(game=game, exits_czech=exits_czech, message=response)
     return render(request, 'home.html', context)
+
+
+def restart(request):
+    if request.method == 'POST':
+        session = request.session
+        session.flush()
+    return HttpResponseRedirect(reverse('home'))

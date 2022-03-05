@@ -22,6 +22,10 @@
         {% endfor %}
       </p>
     </form>
+    <form action="{% url 'restart' %}" method="post" id="restart_form">
+      {% csrf_token %}
+      <button type="submit" id="restart_button">Restartovat</button>
+    </form>
     {% if message %}
     <p>
         {{ message }}
