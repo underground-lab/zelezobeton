@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 from engine import Game
 from game.data import room_data, object_data
+from . import exits_czech
 
 
 def home(request):
@@ -14,9 +15,11 @@ def home(request):
         game = Game(room_data, object_data)
 
     # modify game state
-    ...
+    command = request.POST.get('command')
+    response = game.process_command(command) if command else None
 
     # store game state
     session['game'] = game.to_json()
 
-    return render(request, 'home.html', {'game': game})
+    context = dict(game=game, exits_czech=exits_czech, message=response)
+    return render(request, 'home.html', context)

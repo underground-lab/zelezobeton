@@ -8,6 +8,20 @@
     <p>
         {{ game.current_room.description }}
     </p>
+    <form action="{% url 'home' %}" method="post" id="command_form">
+      {% csrf_token %}
+      <p>
+        {% for exit in game.current_room.exits %}
+          <button type="submit" id="{{ exit }}_button"
+                  name="command" value="{{ exit }}">
+            Jdi
+            {% for key, value in exits_czech.items %}
+              {% if key == exit %}{{ value }}{% endif %}
+            {% endfor %}
+          </button>
+        {% endfor %}
+      </p>
+    </form>
     {% if message %}
     <p>
         {{ message }}
