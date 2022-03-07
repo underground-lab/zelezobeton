@@ -23,7 +23,13 @@ def home(request):
     # store game state
     session['game'] = game.to_json()
 
-    context = dict(game=game, exits_czech=exits_czech, message=response)
+    context = dict(
+        game=game,
+        in_room_names=[obj.name for obj in game.objects_in_room.values()],
+        in_inventory_names=[obj.name for obj in game.objects_in_inventory.values()],
+        exits_czech=exits_czech,
+        message=response
+    )
     return render(request, 'home.html', context)
 
 

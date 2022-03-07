@@ -8,6 +8,14 @@
     <p>
         {{ game.current_room.description }}
     </p>
+    <p>
+      Vidím tady:
+      <ul>{{ in_room_names|unordered_list }}</ul>
+    </p>
+    <p>
+      Mám u sebe:
+      <ul>{{ in_inventory_names|unordered_list }}</ul>
+    </p>
     <form action="{% url 'home' %}" method="post" id="command_form">
       {% csrf_token %}
       <p>
