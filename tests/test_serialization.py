@@ -26,6 +26,14 @@ def test_encode_object(game):
     assert '"open": [{"_class": "Action", "_kwargs": {"' in encoded
 
 
+def test_encode_object_with_additional_attribute(game):
+    obj = game.objects['mriz']
+    obj.unlocked = True
+    encoded = game_encoder.encode(obj)
+    assert encoded.startswith('{"_class": "Object", "_kwargs": {"')
+    assert '"unlocked": true' in encoded
+
+
 def test_encode_game(game):
     encoded = game.to_json()
     assert encoded.startswith('{"_class": "Game", "_kwargs": {"')
@@ -52,6 +60,14 @@ def test_decode_object():
         '{"_class": "Object", "_kwargs": {"name": "a", "description": "b",'
         ' "location": "c", "actions": {"use": [{"_class": "Action", "_kwargs": {}}]}}}'
     ) == Object('a', 'b', 'c', {'use': [Action()]})
+
+
+def test_decode_object_with_additional_attribute():
+    decoded = game_decoder.decode(
+        '{"_class": "Object", "_kwargs": {"name": "a", "description": "b",'
+        ' "location": "c", "actions": {}, "unlocked": true}}'
+    )
+    assert decoded.unlocked is True
 
 
 def test_roundtrip_no_error(game):

@@ -206,8 +206,20 @@ game_encoder = GameJSONEncoder(ensure_ascii=False)
 def custom_class_hook(obj):
     if '_class' in obj:
         class_name, kwargs = obj['_class'], obj['_kwargs']
-        if class_name in ('Room', 'Object', 'Action', 'Game'):
-            return globals()[class_name](**kwargs)
+        if class_name == 'Game':
+            return Game(**kwargs)
+        if class_name in ('Room', 'Object', 'Action'):
+            cls = globals()[class_name]
+            # separate dataclass fields from additional attributes
+            dataclass_kwargs = {
+                key: kwargs.pop(key)
+                for key in kwargs.copy()
+                if key in cls.__dataclass_fields__
+            }
+            # construct with dataclass fields, then apply additional attributes
+            result = cls(**dataclass_kwargs)
+            result.__dict__.update(kwargs)
+            return result
     return obj
 
 
