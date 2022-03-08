@@ -8,7 +8,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
 
-URL = 'http://localhost:8501/'
+URL = 'http://localhost:8000/'
 HEADLESS = not os.getenv('NO_HEADLESS')
 try:
     with urlopen(URL):
@@ -32,65 +32,66 @@ def driver():
 
 @pytest.mark.skipif(not SERVER_RUNNING, reason='requires local server running')
 @pytest.mark.parametrize(
-    'button_label, expected_text',
+    'button_id_prefix, paragraph_id, expected_text',
     (
-        ('Restartovat', '„Chodba“'),
-        ('Jdi na sever', '„Kancelář“'),
-        ('Otevři', 'Co mám otevřít?'),
-        ('plechovku', 'dvě kancelářské sponky'),
+        ('restart', 'room_description', '„Chodba“'),
+        ('north', 'room_description', '„Kancelář“'),
+        ('open', 'question', 'Co mám otevřít?'),
+        ('plechovka', 'message', 'dvě kancelářské sponky'),
 
         # restart
-        ('Restartovat', '„Chodba“'),
-        ('Jdi na sever', '„Kancelář“'),
-        ('Otevři', 'Co mám otevřít?'),
-        ('plechovku', 'dvě kancelářské sponky'),
-        ('Vezmi', 'Co mám vzít?'),
-        ('sponky', 'OK'),
-        ('Jdi na jih', '„Chodba“'),
+        ('restart', 'room_description', '„Chodba“'),
+        ('north', 'room_description', '„Kancelář“'),
+        ('open', 'question', 'Co mám otevřít?'),
+        ('plechovka', 'message', 'dvě kancelářské sponky'),
+        ('take', 'question', 'Co mám vzít?'),
+        ('sponky', 'message', 'OK'),
+        ('south', 'room_description', '„Chodba“'),
 
         # use in a wrong room
-        ('Použij', 'Co mám použít?'),
-        ('sponky', 'Nevím jak.'),
+        ('use', 'question', 'Co mám použít?'),
+        ('sponky', 'message', 'Nevím jak.'),
 
-        ('Otevři', 'Co mám otevřít?'),
-        ('dveře', 'OK'),
-        ('Jdi na východ', '„Sklad“'),
-        ('Vezmi', 'Co mám vzít?'),
-        ('krabici hřebíků', 'Jeden bude stačit'),
-        ('Použij', 'Co mám použít?'),
-        ('sponky', 'odemkl zámek mříže'),
-        ('Otevři', 'Co mám otevřít?'),
-        ('mříž', 'OK'),
-        ('Vezmi', 'Co mám vzít?'),
-        ('smeták', 'OK'),
-        ('Jdi na západ', '„Chodba“'),
-        ('Jdi na sever', '„Kancelář“'),
+        ('open', 'question', 'Co mám otevřít?'),
+        ('dvere', 'message', 'OK'),
+        ('east', 'room_description', '„Sklad“'),
+        ('take', 'question', 'Co mám vzít?'),
+        ('krabice', 'message', 'Jeden bude stačit'),
+        ('use', 'question', 'Co mám použít?'),
+        ('sponky', 'message', 'odemkl zámek mříže'),
+        ('open', 'question', 'Co mám otevřít?'),
+        ('mriz', 'message', 'OK'),
+        ('take', 'question', 'Co mám vzít?'),
+        ('smetak', 'message', 'OK'),
+        ('west', 'room_description', '„Chodba“'),
+        ('north', 'room_description', '„Kancelář“'),
 
         # take an unreachable object
-        ('Vezmi', 'Co mám vzít?'),
-        ('vázu', 'Nedosáhnu'),
+        ('take', 'question', 'Co mám vzít?'),
+        ('vaza', 'message', 'Nedosáhnu'),
 
-        ('Použij', 'Co mám použít?'),
-        ('smeták', 'našel malý klíček'),
-        ('Vezmi', 'Co mám vzít?'),
-        ('klíček', 'OK'),
-        ('Jdi na jih', '„Chodba“'),
-        ('Jdi na východ', '„Sklad“'),
-        ('Jdi na jih', '„Výklenek“'),
+        ('use', 'question', 'Co mám použít?'),
+        ('smetak', 'message', 'našel malý klíček'),
+        ('take', 'question', 'Co mám vzít?'),
+        ('klicek', 'message', 'OK'),
+        ('south', 'room_description', '„Chodba“'),
+        ('east', 'room_description', '„Sklad“'),
+        ('south', 'room_description', '„Výklenek“'),
 
         # open a locked object
-        ('Otevři', 'Co mám otevřít?'),
-        ('trezor', 'Je zamčený'),
+        ('open', 'question', 'Co mám otevřít?'),
+        ('trezor', 'message', 'Je zamčený'),
 
-        ('Použij', 'Co mám použít?'),
-        ('klíček', 'odemkl trezor'),
-        ('Otevři', 'Co mám otevřít?'),
-        ('trezor', 'našel obálku'),
-        ('Vezmi', 'Co mám vzít?'),
-        ('obálku', 'OK'),
+        ('use', 'question', 'Co mám použít?'),
+        ('klicek', 'message', 'odemkl trezor'),
+        ('open', 'question', 'Co mám otevřít?'),
+        ('trezor', 'message', 'našel obálku'),
+        ('take', 'question', 'Co mám vzít?'),
+        ('obalka', 'message', 'OK'),
     )
 )
-def test_web_ui(driver, button_label, expected_text):
-    button = driver.find_element(By.XPATH, f'//button[text()="{button_label}"]')
+def test_web_ui(driver, button_id_prefix, paragraph_id, expected_text):
+    button = driver.find_element(By.ID, button_id_prefix + '_button')
     button.click()
-    driver.find_element(By.XPATH, f"//*[contains(text(), '{expected_text}')]")
+    paragraph = driver.find_element(By.ID, paragraph_id)
+    assert expected_text in paragraph.text

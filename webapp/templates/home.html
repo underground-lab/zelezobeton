@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-    <p>
+    <p id="room_description">
         {{ game.current_room.description }}
     </p>
     <p>
@@ -48,7 +48,7 @@
       <button type="submit" id="restart_button">Restartovat</button>
     </form>
     {% if message %}
-    <p>
+    <p id="message">
         {{ message }}
     </p>
     {% endif %}

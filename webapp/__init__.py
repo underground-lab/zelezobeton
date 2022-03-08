@@ -1,3 +1,5 @@
+# coding: utf-8
+
 exits_czech = {
     'north': 'na sever',
     'south': 'na jih',
