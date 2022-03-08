@@ -13,3 +13,10 @@ commands_czech = {
     'open': 'otevři',
     'use': 'použij',
 }
+
+verbs_czech = {
+    'examine': 'prozkoumat',
+    'take': 'vzít',
+    'open': 'otevřít',
+    'use': 'použít',
+}
