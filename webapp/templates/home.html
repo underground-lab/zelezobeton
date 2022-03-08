@@ -16,7 +16,7 @@
       Mám u sebe:
       <ul>{{ in_inventory_names|unordered_list }}</ul>
     </p>
-    <form action="{% url 'home' %}" method="post" id="command_form">
+    <form action="{% url 'home' %}" method="post" id="exit_form">
       {% csrf_token %}
       <p>
         {% for exit in game.current_room.exits %}
@@ -26,6 +26,17 @@
             {% for key, value in exits_czech.items %}
               {% if key == exit %}{{ value }}{% endif %}
             {% endfor %}
+          </button>
+        {% endfor %}
+      </p>
+    </form>
+    <form action="{% url 'select_object' %}" method="post" id="command_form">
+      {% csrf_token %}
+      <p>
+        {% for command in commands %}
+          <button type="submit" id="{{ command }}_button"
+                  name="command" value="{{ command }}">
+            {{ command }}
           </button>
         {% endfor %}
       </p>

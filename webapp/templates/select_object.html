@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <form action="{% url 'home' %}" method="post" id="object_form">
+    {% csrf_token %}
+    <p>
+      {% for obj_key, obj in objects.items %}
+        <button type="submit" id="{{ obj_key }}_button"
+                name="command" value="{{ command }} {{ obj_key }}">
+          {{ obj.name }}
+        </button>
+      {% endfor %}
+    </p>
+  </form>
+</body>
+</html>

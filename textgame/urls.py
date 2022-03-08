@@ -16,10 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from webapp.views import home, restart
+from webapp.views import home, select_object, restart
 
 urlpatterns = [
     path('', home, name='home'),
+    path('select_object/', select_object, name='select_object'),
     path('restart/', restart, name='restart'),
     path('admin/', admin.site.urls),
 ]
