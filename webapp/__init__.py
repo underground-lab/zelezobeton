@@ -6,3 +6,10 @@ exits_czech = {
     'up': 'nahoru',
     'down': 'dolů',
 }
+
+commands_czech = {
+    'examine': 'prozkoumej',
+    'take': 'vezmi',
+    'open': 'otevři',
+    'use': 'použij',
+}

@@ -36,7 +36,9 @@
         {% for command in commands %}
           <button type="submit" id="{{ command }}_button"
                   name="command" value="{{ command }}">
-            {{ command }}
+            {% for key, value in commands_czech.items %}
+              {% if key == command %}{{ value|capfirst }}{% endif %}
+            {% endfor %}
           </button>
         {% endfor %}
       </p>

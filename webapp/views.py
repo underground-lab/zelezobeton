@@ -4,7 +4,7 @@ from django.urls import reverse
 
 from engine import Game
 from game.data import room_data, object_data
-from . import exits_czech
+from . import exits_czech, commands_czech
 
 
 def home(request):
@@ -28,6 +28,7 @@ def home(request):
         in_room_names=[obj.name for obj in game.objects_in_room.values()],
         in_inventory_names=[obj.name for obj in game.objects_in_inventory.values()],
         exits_czech=exits_czech,
+        commands_czech=commands_czech,
         commands=[
             cmd for cmd in ('take', 'open', 'use')
             if game.objects_with_action(cmd)
