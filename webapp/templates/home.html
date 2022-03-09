@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>{{ labels.title }}</title>
 </head>
 <body>
     {% load webapp_extras %}
@@ -25,7 +25,7 @@
         {% for exit in game.current_room.exits %}
           <button type="submit" id="{{ exit }}_button"
                   name="command" value="{{ exit }}">
-            Jdi {{ exits_czech|dict_get:exit }}
+            Jdi {{ labels.exits|dict_get:exit }}
           </button>
         {% endfor %}
       </p>
@@ -36,7 +36,7 @@
         {% for command in commands %}
           <button type="submit" id="{{ command }}_button"
                   name="command" value="{{ command }}">
-            {{ commands_czech|dict_get:command|capfirst }}
+            {{ labels.imperative|dict_get:command|capfirst }}
           </button>
         {% endfor %}
       </p>

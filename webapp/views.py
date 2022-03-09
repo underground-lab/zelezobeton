@@ -4,7 +4,7 @@ from django.urls import reverse
 
 from engine import Game
 from game.data import room_data, object_data
-from . import exits_czech, commands_czech, verbs_czech
+from . import czech
 
 
 def home(request):
@@ -25,8 +25,7 @@ def home(request):
 
     context = dict(
         game=game,
-        exits_czech=exits_czech,
-        commands_czech=commands_czech,
+        labels=czech,
         commands=[
             cmd for cmd in ('take', 'open', 'use')
             if game.objects_with_action(cmd)
@@ -46,7 +45,7 @@ def select_object(request):
     context = dict(
         command=command,
         objects=objects,
-        verbs_czech=verbs_czech
+        labels=czech
     )
     return render(request, 'select_object.html', context)
 
