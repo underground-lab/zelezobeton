@@ -16,20 +16,32 @@ Textová adventura ve webovém prohlížeči.
 
 ### Instalace
 
+Naklonujte repozitář a nainstalujte knihovny:
+
 ```
 git clone https://github.com/underground-lab/zelezobeton.git
 cd zelezobeton
 poetry install
+```
+
+Dále je potřeba vygenerovat tajný klíč pro Django (v adresáři se objeví
+soubor `.key`) a inicializovat databázi taktéž pro Django (vytvoří se
+soubor `db.sqlite3`):
+
+```
+poetry run python generate_key.py
 poetry run python manage.py migrate
 ```
 
 ### Spuštění
 
+Spusťte lokální server příkazem:
+
 ```
 poetry run python manage.py runserver
 ```
 
-V prohlížeči otevřete stránku na adrese http://localhost:8000/.
+a v prohlížeči otevřete stránku na adrese http://localhost:8000/.
 
 ### Testy
 
