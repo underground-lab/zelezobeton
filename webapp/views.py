@@ -25,8 +25,6 @@ def home(request):
 
     context = dict(
         game=game,
-        in_room_names=[obj.name for obj in game.objects_in_room.values()],
-        in_inventory_names=[obj.name for obj in game.objects_in_inventory.values()],
         exits_czech=exits_czech,
         commands_czech=commands_czech,
         commands=[

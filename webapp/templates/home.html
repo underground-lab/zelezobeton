@@ -9,14 +9,16 @@
     <p id="room_description">
         {{ game.current_room.description }}
     </p>
-    <p>
-      Vidím tady:
-      <ul>{{ in_room_names|unordered_list }}</ul>
-    </p>
-    <p>
-      Mám u sebe:
-      <ul>{{ in_inventory_names|unordered_list }}</ul>
-    </p>
+      {% if game.objects_in_room %}
+        <p>
+          Vidím tady {{ game.objects_in_room|values_attr:"name"|listing_czech }}.
+        </p>
+      {% endif %}
+      {% if game.objects_in_inventory %}
+        <p>
+          Mám u sebe {{ game.objects_in_inventory|values_attr:"name"|listing_czech }}.
+        </p>
+      {% endif %}
     <form action="{% url 'home' %}" method="post" id="exit_form">
       {% csrf_token %}
       <p>
