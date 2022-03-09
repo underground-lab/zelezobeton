@@ -5,6 +5,7 @@
     <title>Title</title>
 </head>
 <body>
+    {% load webapp_extras %}
     <p id="room_description">
         {{ game.current_room.description }}
     </p>
@@ -22,10 +23,7 @@
         {% for exit in game.current_room.exits %}
           <button type="submit" id="{{ exit }}_button"
                   name="command" value="{{ exit }}">
-            Jdi
-            {% for key, value in exits_czech.items %}
-              {% if key == exit %}{{ value }}{% endif %}
-            {% endfor %}
+            Jdi {{ exits_czech|dict_get:exit }}
           </button>
         {% endfor %}
       </p>
@@ -36,9 +34,7 @@
         {% for command in commands %}
           <button type="submit" id="{{ command }}_button"
                   name="command" value="{{ command }}">
-            {% for key, value in commands_czech.items %}
-              {% if key == command %}{{ value|capfirst }}{% endif %}
-            {% endfor %}
+            {{ commands_czech|dict_get:command|capfirst }}
           </button>
         {% endfor %}
       </p>

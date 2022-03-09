@@ -5,12 +5,9 @@
   <title>Title</title>
 </head>
 <body>
+  {% load webapp_extras %}
   <p id="question">
-    {% for key, value in verbs_czech.items %}
-      {% if key == command %}
-        Co mám {{ value }}?
-      {% endif %}
-    {% endfor %}
+    Co mám {{ verbs_czech|dict_get:command }}?
   </p>
   <form action="{% url 'home' %}" method="post" id="object_form">
     {% csrf_token %}
