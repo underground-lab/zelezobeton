@@ -12,7 +12,7 @@ def home(request):
 
     # retrieve stored game state or create new
     try:
-        game = Game.from_json(session['game'])
+        game = session['game']
     except KeyError:
         game = Game(room_data, object_data)
 
@@ -21,7 +21,7 @@ def home(request):
     response = game.process_command(*command.split()) if command else None
 
     # store game state
-    session['game'] = game.to_json()
+    session['game'] = game
 
     context = dict(
         game=game,
@@ -39,7 +39,7 @@ def select_object(request):
     session = request.session
     command = request.POST.get('command')
 
-    game = Game.from_json(session['game'])
+    game = session['game']
     objects = game.objects_with_action(command)
 
     context = dict(

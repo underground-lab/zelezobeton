@@ -30,6 +30,8 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+SESSION_SERIALIZER = 'engine.serializer.GameJSONSerializer'
+
 INSTALLED_APPS = [
     'webapp.apps.WebappConfig',
     'django.contrib.admin',

@@ -1,6 +1,5 @@
 from copy import deepcopy
 from dataclasses import dataclass, field
-import json
 from typing import Optional
 
 
@@ -180,47 +179,6 @@ class Game:
     def set_true(self, obj, attr):
         setattr(self.objects[obj], attr, True)
 
-    # serialization
-    def to_json(self):
-        return game_encoder.encode(self)
-
-    @staticmethod
-    def from_json(json_str):
-        return game_decoder.decode(json_str)
-
 
 class InvalidCommand(NotImplementedError):
     pass
-
-
-class GameJSONEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, (Room, Object, Action, Game)):
-            return {'_class': obj.__class__.__name__, '_kwargs': obj.__dict__}
-        return super().default(obj)
-
-
-game_encoder = GameJSONEncoder(ensure_ascii=False)
-
-
-def custom_class_hook(obj):
-    if '_class' in obj:
-        class_name, kwargs = obj['_class'], obj['_kwargs']
-        if class_name == 'Game':
-            return Game(**kwargs)
-        if class_name in ('Room', 'Object', 'Action'):
-            cls = globals()[class_name]
-            # separate dataclass fields from additional attributes
-            dataclass_kwargs = {
-                key: kwargs.pop(key)
-                for key in kwargs.copy()
-                if key in cls.__dataclass_fields__
-            }
-            # construct with dataclass fields, then apply additional attributes
-            result = cls(**dataclass_kwargs)
-            result.__dict__.update(kwargs)
-            return result
-    return obj
-
-
-game_decoder = json.JSONDecoder(object_hook=custom_class_hook)
