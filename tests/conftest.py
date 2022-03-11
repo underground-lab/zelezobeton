@@ -1,6 +1,6 @@
 import pytest
 
-from engine import Game
+from engine.classes import Game
 from engine.serializer import GameJSONSerializer
 from game.data import room_data, object_data
 

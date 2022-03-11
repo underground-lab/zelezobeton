@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from engine import Game
+from engine.classes import Game
 from game.data import room_data, object_data
 from . import czech
 

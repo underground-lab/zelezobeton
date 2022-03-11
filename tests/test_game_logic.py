@@ -2,7 +2,7 @@
 
 import pytest
 
-from engine import InvalidCommand
+from engine.classes import InvalidCommand
 
 
 def test_game_walk_through(game):

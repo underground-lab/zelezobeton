@@ -1,7 +1,7 @@
 from handpick import values_for_key
 import pytest
 
-from engine import Game
+from engine.classes import Game
 from game.data import room_data, object_data
 
 
