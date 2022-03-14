@@ -32,66 +32,42 @@ def driver():
 
 @pytest.mark.skipif(not SERVER_RUNNING, reason='requires local server running')
 @pytest.mark.parametrize(
-    'button_id_prefix, paragraph_id, expected_text',
+    'id_to_click, id_to_read, expected_text',
     (
-        ('restart', 'room_description', '„Chodba“'),
-        ('north', 'room_description', '„Kancelář“'),
-        ('open', 'question', 'Co mám otevřít?'),
-        ('plechovka', 'message', 'dvě kancelářské sponky'),
+        ('restart_button', 'room_description', '„Chodba“'),
+        ('north_button', 'room_description', '„Kancelář“'),
+        ('open_button', 'question', 'Co mám otevřít?'),
+        ('plechovka_button', 'message', 'jen dvě kancelářské sponky'),
+        ('take_button', 'question', 'Co mám vzít?'),
+        ('sponky_button', 'message', 'OK'),
+        ('south_button', 'room_description', '„Chodba“'),
+        ('open_button', 'question', 'Co mám otevřít?'),
+        ('dvere_button', 'message', 'OK'),
 
         # restart
-        ('restart', 'room_description', '„Chodba“'),
-        ('north', 'room_description', '„Kancelář“'),
-        ('open', 'question', 'Co mám otevřít?'),
-        ('plechovka', 'message', 'dvě kancelářské sponky'),
-        ('take', 'question', 'Co mám vzít?'),
-        ('sponky', 'message', 'OK'),
-        ('south', 'room_description', '„Chodba“'),
+        ('restart_button', 'room_description', '„Chodba“'),
+        ('north_button', 'room_description', '„Kancelář“'),
+        ('take_button', 'question', 'Co mám vzít?'),
+        ('plechovka_button', 'message', 'OK'),
+        ('south_button', 'room_description', '„Chodba“'),
+        ('open_button', 'question', 'Co mám otevřít?'),
+        ('plechovka_button', 'message', 'našel dvě kancelářské sponky'),
 
         # use in a wrong room
-        ('use', 'question', 'Co mám použít?'),
-        ('sponky', 'message', 'Nevím jak.'),
+        ('use_button', 'question', 'Co mám použít?'),
+        ('sponky_button', 'message', 'Nevím jak.'),
 
-        ('open', 'question', 'Co mám otevřít?'),
-        ('dvere', 'message', 'OK'),
-        ('east', 'room_description', '„Sklad“'),
-        ('take', 'question', 'Co mám vzít?'),
-        ('krabice', 'message', 'Jeden bude stačit'),
-        ('use', 'question', 'Co mám použít?'),
-        ('sponky', 'message', 'odemkl zámek mříže'),
-        ('open', 'question', 'Co mám otevřít?'),
-        ('mriz', 'message', 'OK'),
-        ('take', 'question', 'Co mám vzít?'),
-        ('smetak', 'message', 'OK'),
-        ('west', 'room_description', '„Chodba“'),
-        ('north', 'room_description', '„Kancelář“'),
-
-        # take an unreachable object
-        ('take', 'question', 'Co mám vzít?'),
-        ('vaza', 'message', 'Nedosáhnu'),
-
-        ('use', 'question', 'Co mám použít?'),
-        ('smetak', 'message', 'našel malý klíček'),
-        ('take', 'question', 'Co mám vzít?'),
-        ('klicek', 'message', 'OK'),
-        ('south', 'room_description', '„Chodba“'),
-        ('east', 'room_description', '„Sklad“'),
-        ('south', 'room_description', '„Výklenek“'),
-
-        # open a locked object
-        ('open', 'question', 'Co mám otevřít?'),
-        ('trezor', 'message', 'Je zamčený'),
-
-        ('use', 'question', 'Co mám použít?'),
-        ('klicek', 'message', 'odemkl trezor'),
-        ('open', 'question', 'Co mám otevřít?'),
-        ('trezor', 'message', 'našel obálku'),
-        ('take', 'question', 'Co mám vzít?'),
-        ('obalka', 'message', 'OK'),
+        ('open_button', 'question', 'Co mám otevřít?'),
+        ('dvere_button', 'message', 'OK'),
+        ('east_button', 'room_description', '„Sklad“'),
+        ('use_button', 'question', 'Co mám použít?'),
+        ('sponky_button', 'message', 'odemkl zámek mříže'),
+        ('open_button', 'question', 'Co mám otevřít?'),
+        ('mriz_button', 'message', 'OK'),
     )
 )
-def test_web_ui(driver, button_id_prefix, paragraph_id, expected_text):
-    button = driver.find_element(By.ID, button_id_prefix + '_button')
-    button.click()
-    paragraph = driver.find_element(By.ID, paragraph_id)
-    assert expected_text in paragraph.text
+def test_web_ui(driver, id_to_click, id_to_read, expected_text):
+    element_to_click = driver.find_element(By.ID, id_to_click)
+    element_to_click.click()
+    element_to_read = driver.find_element(By.ID, id_to_read)
+    assert expected_text in element_to_read.text
