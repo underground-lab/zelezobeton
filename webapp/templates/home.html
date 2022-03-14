@@ -33,7 +33,7 @@
     <form action="{% url 'select_object' %}" method="post" id="command_form">
       {% csrf_token %}
       <p>
-        {% for command in commands %}
+        {% for command in game.available_actions %}
           <button type="submit" id="{{ command }}_button"
                   name="command" value="{{ command }}">
             {{ labels.imperative|dict_get:command|capfirst }}

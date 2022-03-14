@@ -204,3 +204,11 @@ def test_portable_container_opened_after_taken(game):
 def test_invalid_commands(game_in_progress, command, obj_key):
     with pytest.raises(InvalidCommand):
         game_in_progress.process_command(command, obj_key)
+
+
+def test_available_actions(game):
+    assert game.available_actions() == ['open']
+    game.process_command('north')
+    assert game.available_actions() == ['take', 'open']
+    game.process_command('open', 'plechovka')
+    assert game.available_actions() == ['take']

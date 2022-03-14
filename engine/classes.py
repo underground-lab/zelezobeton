@@ -127,6 +127,12 @@ class Game:
             and any(self._conditions_met(action) for action in obj.actions[action_name])
         }
 
+    def available_actions(self):
+        return [
+            action_name for action_name in ('take', 'open', 'use')
+            if self.objects_with_action(action_name)
+        ]
+
     # callbacks that don't modify game state
     def is_visible(self, obj):
         return obj in self.visible_objects

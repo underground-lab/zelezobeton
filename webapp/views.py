@@ -26,10 +26,6 @@ def home(request):
     context = dict(
         game=game,
         labels=czech,
-        commands=[
-            cmd for cmd in ('take', 'open', 'use')
-            if game.objects_with_action(cmd)
-        ],
         message=response
     )
     return render(request, 'home.html', context)
