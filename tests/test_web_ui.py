@@ -39,6 +39,10 @@ def driver():
         ('open_button', 'question', 'Co mám otevřít?'),
         ('plechovka_button', 'message', 'jen dvě kancelářské sponky'),
         ('take_button', 'question', 'Co mám vzít?'),
+
+        # cancel object selection
+        ('back_home', 'room_description', '„Kancelář“'),
+        ('take_button', 'question', 'Co mám vzít?'),
         ('sponky_button', 'message', 'OK'),
         ('south_button', 'room_description', '„Chodba“'),
         ('open_button', 'question', 'Co mám otevřít?'),
@@ -62,6 +66,10 @@ def driver():
         ('east_button', 'room_description', '„Sklad“'),
         ('use_button', 'question', 'Co mám použít?'),
         ('sponky_button', 'message', 'odemkl zámek mříže'),
+        ('take_button', 'question', 'Co mám vzít?'),
+
+        # cancel object selection
+        ('back_home', 'room_description', '„Sklad“'),
         ('open_button', 'question', 'Co mám otevřít?'),
         ('mriz_button', 'message', 'OK'),
     )
