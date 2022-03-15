@@ -71,15 +71,13 @@ class Game:
 
         if not params:
             raise InvalidCommand(command)
-        obj_key = params[0]
-        obj = self.objects[obj_key]
-        if obj_key not in self.objects_with_action(command):
-            raise InvalidCommand(command, obj_key)
 
-        for action in obj.actions[command]:
-            if self._conditions_met(action):
-                self._apply_impact(action)
-                return action.message or self.message_ok
+        obj_key = params[0]
+        if obj_key in self.objects_with_action(command):
+            for action in self.objects[obj_key].actions[command]:
+                if self._conditions_met(action):
+                    self._apply_impact(action)
+                    return action.message or self.message_ok
 
         raise InvalidCommand(command, obj_key)
 
