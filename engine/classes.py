@@ -12,7 +12,6 @@ class Room:
 @dataclass
 class Object:
     name: str
-    description: str
     location: str = 'undiscovered'
     actions: dict = field(default_factory=dict)
 
@@ -74,9 +73,6 @@ class Game:
             raise InvalidCommand(command)
         obj_key = params[0]
         obj = self.objects[obj_key]
-        if command == 'examine' and obj_key in self.visible_objects:
-            return obj.description
-
         if obj_key not in self.objects_with_action(command):
             raise InvalidCommand(command, obj_key)
 
@@ -128,7 +124,7 @@ class Game:
 
     def available_actions(self):
         return [
-            action_name for action_name in ('take', 'open', 'use')
+            action_name for action_name in ('examine', 'take', 'open', 'use')
             if self.objects_with_action(action_name)
         ]
 

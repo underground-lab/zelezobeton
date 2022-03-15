@@ -58,10 +58,10 @@ def test_loads_action(serializer):
 
 def test_loads_object(serializer):
     assert serializer.loads(
-        b'{"_class": "Object", "_vars": {"name": "a", "description": "b",'
-        b' "location": "c", "actions": {"use": [{"_class": "Action",'
+        b'{"_class": "Object", "_vars": {"name": "a",'
+        b' "location": "b", "actions": {"use": [{"_class": "Action",'
         b' "_vars": {}}]}}}'
-    ) == Object('a', 'b', 'c', {'use': [Action()]})
+    ) == Object('a', 'b', {'use': [Action()]})
 
 
 def test_loads_object_with_additional_attribute(serializer):

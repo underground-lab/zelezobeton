@@ -22,14 +22,12 @@ object_data = {
     # Předmět, který je na začátku hry v inventáři
     'mince': {
         'name': 'minci',
-        'description': 'Popis předmětu „mince“.',
         'location': 'inventory',
     },
 
     # Předmět typu 'přenosný kontejner'
     'plechovka': {
         'name': 'plechovku',
-        'description': 'Popis předmětu „plechovka“.',
         'location': 'kancelar',
         'actions': {
             'take': {
@@ -67,7 +65,6 @@ object_data = {
 
     'klicek': {
         'name': 'klíček',
-        'description': 'Popis předmětu „klíček“.',
         'actions': {
             'take': {
                 'condition': [
@@ -101,7 +98,6 @@ object_data = {
     # Předmět typu 'nepřenosný kontejner'
     'trezor': {
         'name': 'trezor',
-        'description': 'Popis předmětu „trezor“.',
         'location': 'vyklenek',
         'actions': {
             'open': [
@@ -128,7 +124,6 @@ object_data = {
     # Předmět typu 'odemčené dveře'
     'dvere': {
         'name': 'dveře',
-        'description': 'Popis předmětu „dveře“.',
         'location': 'start',
         'actions': {
             'open': {
@@ -145,7 +140,6 @@ object_data = {
 
     'sponky': {
         'name': 'sponky',
-        'description': 'Popis předmětu „sponky“.',
         'actions': {
             'take': {
                 'condition': [
@@ -178,7 +172,6 @@ object_data = {
 
     'obalka': {
         'name': 'obálku',
-        'description': 'Popis předmětu „obálka“.',
         'actions': {
             'take': {
                 'condition': [
@@ -193,7 +186,6 @@ object_data = {
 
     'smetak': {
         'name': 'smeták',
-        'description': 'Popis předmětu „smeták“.',
         'location': 'sklad',
         'actions': {
             'take': {
@@ -230,7 +222,6 @@ object_data = {
     # Předmět s nestandardní akcí vezmi/take.
     'vaza': {
         'name': 'vázu',
-        'description': 'Popis předmětu „váza“.',
         'location': 'kancelar',
         'actions': {
             'take': {
@@ -242,7 +233,6 @@ object_data = {
     # Předmět s nestandardní akcí vezmi/take.
     'krabice': {
         'name': 'krabici hřebíků',
-        'description': 'Popis předmětu "krabice hřebíků".',
         'location': 'sklad',
         'actions': {
             'take': {
@@ -259,13 +249,11 @@ object_data = {
 
     'hrebik': {
         'name': 'hřebík',
-        'description': 'Popis předmětu „hřebík“.',
     },
 
     # Předmět typu 'zamčené dveře'
     'mriz': {
         'name': 'mříž',
-        'description': 'Popis předmětu „mříž“.',
         'location': 'sklad',
         'actions': {
             'open': [
