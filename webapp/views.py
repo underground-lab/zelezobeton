@@ -11,10 +11,7 @@ def home(request):
     session = request.session
 
     # retrieve stored game state or create new
-    try:
-        game = session['game']
-    except KeyError:
-        game = Game(room_data, object_data)
+    game = session.get('game', Game(room_data, object_data))
 
     # modify game state
     command = request.POST.get('command')
@@ -23,11 +20,7 @@ def home(request):
     # store game state
     session['game'] = game
 
-    context = dict(
-        game=game,
-        labels=czech,
-        message=response
-    )
+    context = dict(game=game, labels=czech, message=response)
     return render(request, 'home.html', context)
 
 
@@ -38,11 +31,7 @@ def select_object(request):
     game = session['game']
     objects = game.objects_with_action(command)
 
-    context = dict(
-        command=command,
-        objects=objects,
-        labels=czech
-    )
+    context = dict(command=command, objects=objects, labels=czech)
     return render(request, 'select_object.html', context)
 
 

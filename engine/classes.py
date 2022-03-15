@@ -66,13 +66,12 @@ class Game:
         return [action_specs]
 
     def process_command(self, command, *params):
-        if command in ('north', 'south', 'west', 'east', 'up', 'down'):
-            try:
-                self.current_room_key = self.current_room.exits[command]
-            except KeyError:
-                raise InvalidCommand(command) from None
+        if command in self.current_room.exits:
+            self.current_room_key = self.current_room.exits[command]
             return self.message_ok
 
+        if not params:
+            raise InvalidCommand(command)
         obj_key = params[0]
         obj = self.objects[obj_key]
         if command == 'examine' and obj_key in self.visible_objects:
