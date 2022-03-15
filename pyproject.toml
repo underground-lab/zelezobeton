@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "zelezobeton"
-version = "0.2.0"
+version = "0.2.1"
 description = "Textová adventura."
 license = "MIT"
 authors = ["Michal Porteš <michalportes1@gmail.com>"]
