@@ -199,15 +199,15 @@ object_data = {
             'use': [
                 {
                     'condition': [
-                        ('current_room_is', dict(room='kancelar')),
+                        ('is_undiscovered', dict(obj='strepy')),
                         ('is_visible', dict(obj='vaza')),
                     ],
                     'impact': [
-                        ('move_to_current_room', dict(obj='klicek')),
+                        ('move_to_current_room', dict(obj='strepy')),
                         ('remove_object', dict(obj='vaza')),
                     ],
-                    'message': 'Smetl jsem vázu z knihovny a v jejích střepech jsem'
-                               ' našel malý klíček.'
+                    'message': 'Smetl jsem z knihovny vázu, která se po dopadu na zem'
+                               ' rozbila na kousky.'
                 },
                 {
                     'condition': [
@@ -226,6 +226,22 @@ object_data = {
         'actions': {
             'take': {
                 'message': 'Nedosáhnu na ni. Stojí na vysoké knihovně.',
+            },
+        },
+    },
+
+    # Předmět s jednorázovou akcí prozkoumej/examine.
+    'strepy': {
+        'name': 'střepy',
+        'actions': {
+            'examine': {
+                'condition': [
+                    ('is_undiscovered', dict(obj='klicek')),
+                ],
+                'impact': [
+                    ('move_to_current_room', dict(obj='klicek')),
+                ],
+                'message': 'Mezi střepy jsem našel malý klíček.'
             },
         },
     },

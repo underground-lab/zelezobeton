@@ -48,7 +48,7 @@ def test_game_walk_through(game):
     response = game.process_command('open', 'plechovka')
     assert 'dvě kancelářské sponky' in response
     assert not game.objects_with_action('open')
-    assert len(game.objects_with_action('take')) == 3
+    assert set(game.objects_with_action('take')) == {'plechovka', 'sponky', 'vaza'}
 
     # cannot be used before taken
     with pytest.raises(InvalidCommand):
@@ -63,12 +63,17 @@ def test_game_walk_through(game):
         game.process_command('take', 'sponky')
 
     response = game.process_command('use', 'smetak')
-    assert 'našel malý klíček' in response
+    assert 'rozbila na kousky' in response
     assert 'vaza' not in game.visible_objects
+    assert 'strepy' in game.objects_with_action('examine')
 
     # use again
     response = game.process_command('use', 'smetak')
     assert 'Nevím jak' in response
+
+    response = game.process_command('examine', 'strepy')
+    assert 'našel malý klíček' in response
+    assert not game.objects_with_action('examine')
 
     # cannot be used before taken
     with pytest.raises(InvalidCommand):
@@ -157,6 +162,7 @@ def test_straightforward_walk_through(game):
     game.process_command('west')
     game.process_command('north')
     game.process_command('use', 'smetak')
+    game.process_command('examine', 'strepy')
     game.process_command('take', 'klicek')
     game.process_command('south')
     game.process_command('east')
