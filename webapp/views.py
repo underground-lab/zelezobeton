@@ -24,17 +24,6 @@ def home(request):
     return render(request, 'home.html', context)
 
 
-def select_object(request):
-    session = request.session
-    command = request.POST.get('command')
-
-    game = session['game']
-    objects = game.objects_with_action(command)
-
-    context = dict(command=command, objects=objects, labels=czech)
-    return render(request, 'select_object.html', context)
-
-
 def restart(request):
     if request.method == 'POST':
         session = request.session
