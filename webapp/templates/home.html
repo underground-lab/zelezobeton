@@ -42,6 +42,11 @@
           <button class="button" type="submit" id="restart_button">Restartovat</button>
         </form>
       </div>
+      {% if message %}
+        <div class="notification" id="message">
+          {{ message }}
+        </div>
+      {% endif %}
     </div>
     <div class="column is-two-thirds">
       <div class="box" id="room_description">
@@ -65,10 +70,5 @@
       </div>
     </div>
   </div>
-  {% if message %}
-    <div class="box" id="message">
-      {{ message }}
-    </div>
-  {% endif %}
 </body>
 </html>
