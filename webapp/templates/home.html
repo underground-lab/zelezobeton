@@ -8,45 +8,59 @@
 </head>
 <body>
   {% load webapp_extras %}
-  <p id="room_description">
-    {{ game.current_room.description }}
-  </p>
-  {% if game.objects_in_room %}
-    <p>
-      Vidím tady {{ game.objects_in_room|values_attr:"name"|listing_czech }}.
-    </p>
-  {% endif %}
-  {% if game.objects_in_inventory %}
-    <p>
-      Mám u sebe {{ game.objects_in_inventory|values_attr:"name"|listing_czech }}.
-    </p>
-  {% endif %}
-  <form action="{% url 'home' %}" method="post" id="exit_form">
-    {% csrf_token %}
-    {% for exit in game.current_room.exits %}
-      <button type="submit" id="{{ exit }}_button"
-              name="command" value="{{ exit }}">
-        Jdi {{ labels.exits|dict_get:exit }}
-      </button>
-    {% endfor %}
-  </form>
-  <form action="{% url 'select_object' %}" method="post" id="command_form">
-    {% csrf_token %}
-      {% for command in game.available_actions %}
-        <button type="submit" id="{{ command }}_button"
-                name="command" value="{{ command }}">
-          {{ labels.imperative|dict_get:command|capfirst }}
-        </button>
-      {% endfor %}
-  </form>
-  <form action="{% url 'restart' %}" method="post" id="restart_form">
-    {% csrf_token %}
-    <button type="submit" id="restart_button">Restartovat</button>
-  </form>
+  <div class="columns">
+    <div class="column">
+      <div class="box">
+        <form action="{% url 'home' %}" method="post" id="exit_form">
+          {% csrf_token %}
+          {% for exit in game.current_room.exits %}
+            <button type="submit" id="{{ exit }}_button"
+                    name="command" value="{{ exit }}">
+              Jdi {{ labels.exits|dict_get:exit }}
+            </button>
+          {% endfor %}
+        </form>
+        <form action="{% url 'select_object' %}" method="post" id="command_form">
+          {% csrf_token %}
+            {% for command in game.available_actions %}
+              <button type="submit" id="{{ command }}_button"
+                      name="command" value="{{ command }}">
+                {{ labels.imperative|dict_get:command|capfirst }}
+              </button>
+            {% endfor %}
+        </form>
+        <form action="{% url 'restart' %}" method="post" id="restart_form">
+          {% csrf_token %}
+          <button type="submit" id="restart_button">Restartovat</button>
+        </form>
+      </div>
+    </div>
+    <div class="column is-two-thirds">
+      <div class="box" id="room_description">
+        {{ game.current_room.description }}
+      </div>
+      <div class="columns">
+        <div class="column">
+          {% if game.objects_in_room %}
+            <div class="box">
+              Vidím tady {{ game.objects_in_room|values_attr:"name"|listing_czech }}.
+            </div>
+          {% endif %}
+        </div>
+        <div class="column">
+          {% if game.objects_in_inventory %}
+            <div class="box">
+              Mám u sebe {{ game.objects_in_inventory|values_attr:"name"|listing_czech }}.
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
   {% if message %}
-    <p id="message">
+    <div class="box" id="message">
       {{ message }}
-    </p>
+    </div>
   {% endif %}
 </body>
 </html>
