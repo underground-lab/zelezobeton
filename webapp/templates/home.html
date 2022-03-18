@@ -13,25 +13,29 @@
       <div class="box">
         <form action="{% url 'home' %}" method="post" id="exit_form">
           {% csrf_token %}
-          {% for exit in game.current_room.exits %}
-            <button type="submit" id="{{ exit }}_button"
-                    name="command" value="{{ exit }}">
-              Jdi {{ labels.exits|dict_get:exit }}
-            </button>
-          {% endfor %}
+          <div class="buttons">
+            {% for exit in game.current_room.exits %}
+              <button class="button" type="submit" id="{{ exit }}_button"
+                      name="command" value="{{ exit }}">
+                Jdi {{ labels.exits|dict_get:exit }}
+              </button>
+            {% endfor %}
+          </div>
         </form>
         <form action="{% url 'select_object' %}" method="post" id="command_form">
           {% csrf_token %}
+          <div class="buttons">
             {% for command in game.available_actions %}
-              <button type="submit" id="{{ command }}_button"
+              <button class="button" type="submit" id="{{ command }}_button"
                       name="command" value="{{ command }}">
                 {{ labels.imperative|dict_get:command|capfirst }}
               </button>
             {% endfor %}
+          </div>
         </form>
         <form action="{% url 'restart' %}" method="post" id="restart_form">
           {% csrf_token %}
-          <button type="submit" id="restart_button">Restartovat</button>
+          <button class="button" type="submit" id="restart_button">Restartovat</button>
         </form>
       </div>
     </div>
