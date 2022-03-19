@@ -60,11 +60,9 @@
           <button class="button" type="submit" id="restart_button">Restartovat</button>
         </form>
       </div>
-      {% if message %}
-        <div class="notification" id="message">
-          {{ message }}
-        </div>
-      {% endif %}
+      <div class="notification" id="message">
+        {% if message %}{{ message }}{% endif %}
+      </div>
     </div>
     <div class="column is-two-thirds">
       <div class="box" id="room_description">
@@ -73,14 +71,14 @@
       <div class="columns">
         <div class="column">
           {% if game.objects_in_room %}
-            <div class="box">
+            <div class="box" id="in_room">
               Vidím tady {{ game.objects_in_room|values_attr:"name"|listing_czech }}.
             </div>
           {% endif %}
         </div>
         <div class="column">
           {% if game.objects_in_inventory %}
-            <div class="box">
+            <div class="box" id="in_inventory">
               Mám u sebe {{ game.objects_in_inventory|values_attr:"name"|listing_czech }}.
             </div>
           {% endif %}

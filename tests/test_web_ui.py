@@ -4,9 +4,11 @@ import os
 from urllib.request import urlopen
 
 import pytest
-from selenium import webdriver
+from selenium.webdriver import Firefox, ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.support.expected_conditions import staleness_of
+from selenium.webdriver.support.wait import WebDriverWait
 
 URL = 'http://localhost:8000/'
 HEADLESS = not os.getenv('NO_HEADLESS')
@@ -17,11 +19,11 @@ except OSError:
     SERVER_RUNNING = False
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture
 def driver():
     options = Options()
     options.headless = HEADLESS
-    firefox_driver = webdriver.Firefox(options=options)
+    firefox_driver = Firefox(options=options)
     firefox_driver.implicitly_wait(5)
     firefox_driver.get(URL)
     yield firefox_driver
@@ -31,51 +33,48 @@ def driver():
 
 
 @pytest.mark.skipif(not SERVER_RUNNING, reason='requires local server running')
-@pytest.mark.parametrize(
-    'id_to_click, id_to_read, expected_text',
-    (
-        ('restart_button', 'room_description', '„Chodba“'),
-        ('north_button', 'room_description', '„Kancelář“'),
-        ('open_button', 'question', 'Co mám otevřít?'),
-        ('plechovka_button', 'message', 'jen dvě kancelářské sponky'),
-        ('take_button', 'question', 'Co mám vzít?'),
+def test_web_ui(driver):
 
-        # cancel object selection
-        ('back_home', 'room_description', '„Kancelář“'),
-        ('take_button', 'question', 'Co mám vzít?'),
-        ('sponky_button', 'message', 'OK'),
-        ('south_button', 'room_description', '„Chodba“'),
-        ('open_button', 'question', 'Co mám otevřít?'),
-        ('dvere_button', 'message', 'OK'),
+    def perform_and_wait(action, obj):
+        dropdown = driver.find_element(By.ID, f'{action}_dropdown')
+        button = driver.find_element(By.ID, f'{action}_{obj}_button')
+        condition = staleness_of(driver.find_element(By.ID, 'message'))
 
-        # restart
-        ('restart_button', 'room_description', '„Chodba“'),
-        ('north_button', 'room_description', '„Kancelář“'),
-        ('take_button', 'question', 'Co mám vzít?'),
-        ('plechovka_button', 'message', 'OK'),
-        ('south_button', 'room_description', '„Chodba“'),
-        ('open_button', 'question', 'Co mám otevřít?'),
-        ('plechovka_button', 'message', 'našel dvě kancelářské sponky'),
+        actions = ActionChains(driver).move_to_element(dropdown).click(button)
+        wait = WebDriverWait(driver, 5)
 
-        # use in a wrong room
-        ('use_button', 'question', 'Co mám použít?'),
-        ('sponky_button', 'message', 'Nevím jak.'),
+        actions.perform()
+        wait.until(condition)
 
-        ('open_button', 'question', 'Co mám otevřít?'),
-        ('dvere_button', 'message', 'OK'),
-        ('east_button', 'room_description', '„Sklad“'),
-        ('use_button', 'question', 'Co mám použít?'),
-        ('sponky_button', 'message', 'odemkl zámek mříže'),
-        ('take_button', 'question', 'Co mám vzít?'),
+    driver.find_element(By.ID, 'restart_button').click()
+    assert 'Chodba' in driver.find_element(By.ID, 'room_description').text
+    assert 'dveře' in driver.find_element(By.ID, 'in_room').text
+    assert 'minci' in driver.find_element(By.ID, 'in_inventory').text
 
-        # cancel object selection
-        ('back_home', 'room_description', '„Sklad“'),
-        ('open_button', 'question', 'Co mám otevřít?'),
-        ('mriz_button', 'message', 'OK'),
-    )
-)
-def test_web_ui(driver, id_to_click, id_to_read, expected_text):
-    element_to_click = driver.find_element(By.ID, id_to_click)
-    element_to_click.click()
-    element_to_read = driver.find_element(By.ID, id_to_read)
-    assert expected_text in element_to_read.text
+    driver.find_element(By.ID, 'north_button').click()
+    assert 'Kancelář' in driver.find_element(By.ID, 'room_description').text
+    assert 'plechovku' in driver.find_element(By.ID, 'in_room').text
+
+    perform_and_wait('open', 'plechovka')
+    assert 'jen dvě kancelářské sponky' in driver.find_element(By.ID, 'message').text
+    assert 'sponky' in driver.find_element(By.ID, 'in_room').text
+
+    perform_and_wait('take', 'sponky')
+    assert 'OK' in driver.find_element(By.ID, 'message').text
+    assert 'sponky' in driver.find_element(By.ID, 'in_inventory').text
+
+    driver.find_element(By.ID, 'restart_button').click()
+    assert 'Chodba' in driver.find_element(By.ID, 'room_description').text
+    assert 'sponky' not in driver.find_element(By.ID, 'in_inventory').text
+
+    perform_and_wait('open', 'dvere')
+    assert 'OK' in driver.find_element(By.ID, 'message').text
+
+    driver.find_element(By.ID, 'east_button').click()
+    assert 'Sklad' in driver.find_element(By.ID, 'room_description').text
+    assert 'krabici hřebíků' in driver.find_element(By.ID, 'in_room').text
+
+    perform_and_wait('take', 'krabice')
+    assert 'Jeden bude stačit' in driver.find_element(By.ID, 'message').text
+    assert 'krabici hřebíků' in driver.find_element(By.ID, 'in_room').text
+    assert 'hřebík' in driver.find_element(By.ID, 'in_inventory').text
