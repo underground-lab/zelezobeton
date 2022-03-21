@@ -51,7 +51,7 @@ def test_web_ui(driver):
     assert 'dveře' in driver.find_element(By.ID, 'in_room').text
     assert 'minci' in driver.find_element(By.ID, 'in_inventory').text
 
-    driver.find_element(By.ID, 'north_button').click()
+    perform_and_wait('go', 'north')
     assert 'Kancelář' in driver.find_element(By.ID, 'room_description').text
     assert 'plechovku' in driver.find_element(By.ID, 'in_room').text
 
@@ -70,7 +70,7 @@ def test_web_ui(driver):
     perform_and_wait('open', 'dvere')
     assert 'OK' in driver.find_element(By.ID, 'message').text
 
-    driver.find_element(By.ID, 'east_button').click()
+    perform_and_wait('go', 'east')
     assert 'Sklad' in driver.find_element(By.ID, 'room_description').text
     assert 'krabici hřebíků' in driver.find_element(By.ID, 'in_room').text
 

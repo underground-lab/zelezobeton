@@ -14,20 +14,32 @@
     <div class="column">
       <div class="box bg-solarized-base03 base01-border">
         <div class="block">
-          <form action="{% url 'home' %}" method="post" id="exit_form">
-            {% csrf_token %}
-            <div class="buttons">
-              {% for exit in game.current_room.exits %}
-                <button class="button bg-solarized-cyan no-border" type="submit" id="{{ exit }}_button"
-                        name="command" value="{{ exit }}">
-                  Jdi {{ labels.exits|dict_get:exit }}
-                </button>
-              {% endfor %}
-            </div>
-          </form>
-        </div>
-        <div class="block">
           <div class="field is-grouped is-grouped-multiline">
+            <div class="control dropdown is-hoverable">
+              <div class="dropdown-trigger">
+                <button class="button bg-solarized-cyan no-border" id="go_dropdown"
+                        aria-haspopup="true" aria-controls="exits_dropdown_menu">
+                  Jdi...
+                </button>
+              </div>
+              <div class="dropdown-menu" id="exits_dropdown_menu" role="menu">
+                <div class="dropdown-content bg-solarized-base02 base01-border">
+                  <form action="{% url 'home' %}" method="post" id="exits_form">
+                    {% csrf_token %}
+                    <div class="buttons">
+                      {% for exit in game.current_room.exits %}
+                        <div class="dropdown-item">
+                          <button class="button bg-solarized-green no-border" type="submit" id="go_{{ exit }}_button"
+                                  name="command" value="{{ exit }}">
+                            {{ labels.exits|dict_get:exit }}
+                          </button>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
             {% for command, objects in game.available_actions.items %}
               <div class="control dropdown is-hoverable">
                 <div class="dropdown-trigger">
