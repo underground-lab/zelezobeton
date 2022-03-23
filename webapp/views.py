@@ -3,8 +3,8 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from engine.classes import Game
+from game import labels
 from game.data import room_data, object_data
-from . import czech
 
 
 def home(request):
@@ -20,7 +20,7 @@ def home(request):
     # store game state
     session['game'] = game
 
-    context = dict(game=game, labels=czech, message=response)
+    context = dict(game=game, labels=labels, message=response)
     return render(request, 'home.html', context)
 
 
