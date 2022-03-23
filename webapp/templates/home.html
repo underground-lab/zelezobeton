@@ -8,17 +8,17 @@
   <link rel="stylesheet" type="text/css" href="{% static 'game-styles.css' %}">
   <title>{{ labels.title }}</title>
 </head>
-<body class="p-3 bg-solarized-base02">
+<body class="p-3 bg-solarized-base02 fill-viewport-height">
   {% load webapp_extras %}
   <div class="columns">
     <div class="column">
-      <div class="box bg-solarized-base03">
+      <div class="box bg-solarized-base03 base01-border">
         <div class="block">
           <form action="{% url 'home' %}" method="post" id="exit_form">
             {% csrf_token %}
             <div class="buttons">
               {% for exit in game.current_room.exits %}
-                <button class="button bg-solarized-cyan" type="submit" id="{{ exit }}_button"
+                <button class="button bg-solarized-cyan no-border" type="submit" id="{{ exit }}_button"
                         name="command" value="{{ exit }}">
                   Jdi {{ labels.exits|dict_get:exit }}
                 </button>
@@ -31,19 +31,20 @@
             {% for command, objects in game.available_actions.items %}
               <div class="control dropdown is-hoverable">
                 <div class="dropdown-trigger">
-                  <button class="button bg-solarized-yellow" id="{{ command }}_dropdown"
+                  <button class="button bg-solarized-yellow no-border" id="{{ command }}_dropdown"
                           aria-haspopup="true" aria-controls="{{ command }}_dropdown_menu">
                     {{ labels.imperative|dict_get:command|capfirst }}...
                   </button>
                 </div>
                 <div class="dropdown-menu" id="{{ command }}_dropdown_menu" role="menu">
-                  <div class="dropdown-content bg-solarized-base02">
+                  <div class="dropdown-content bg-solarized-base02 base01-border">
                     <form action="{% url 'home' %}" method="post" id="{{ command }}_form">
                       {% csrf_token %}
                       <div class="buttons">
                         {% for obj_key, obj in objects.items %}
                           <div class="dropdown-item">
-                            <button class="button bg-solarized-green" type="submit" id="{{ command }}_{{ obj_key }}_button"
+                            <button class="button bg-solarized-green no-border"
+                                    type="submit" id="{{ command }}_{{ obj_key }}_button"
                                     name="command" value="{{ command }} {{ obj_key }}">
                               {{ obj.name }}
                             </button>
@@ -59,28 +60,28 @@
         </div>
         <form action="{% url 'restart' %}" method="post" id="restart_form">
           {% csrf_token %}
-          <button class="button bg-solarized-base01" type="submit" id="restart_button">Restartovat</button>
+          <button class="button bg-solarized-base01 no-border" type="submit" id="restart_button">Restartovat</button>
         </form>
       </div>
-      <div class="notification fg-solarized-base2 bg-solarized-base03" id="message">
+      <div class="notification fg-solarized-base2 bg-solarized-base03 base01-border" id="message">
         {% if message %}{{ message }}{% endif %}&nbsp;
       </div>
     </div>
     <div class="column is-two-thirds">
-      <div class="box fg-solarized-cyan bg-solarized-base03" id="room_description">
+      <div class="box fg-solarized-cyan bg-solarized-base03 base01-border" id="room_description">
         {{ game.current_room.description }}
       </div>
       <div class="columns">
         <div class="column">
           {% if game.objects_in_room %}
-            <div class="box fg-solarized-yellow bg-solarized-base03" id="in_room">
+            <div class="box fg-solarized-yellow bg-solarized-base03 base01-border" id="in_room">
               Vidím tady {{ game.objects_in_room|values_attr:"name"|listing_czech }}.
             </div>
           {% endif %}
         </div>
         <div class="column">
           {% if game.objects_in_inventory %}
-            <div class="box fg-solarized-green bg-solarized-base03" id="in_inventory">
+            <div class="box fg-solarized-green bg-solarized-base03 base01-border" id="in_inventory">
               Mám u sebe {{ game.objects_in_inventory|values_attr:"name"|listing_czech }}.
             </div>
           {% endif %}
