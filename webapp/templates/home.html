@@ -15,58 +15,9 @@
       <div class="box bg-solarized-base03 base01-border">
         <div class="block">
           <div class="field is-grouped is-grouped-multiline">
-            <div class="control dropdown is-hoverable">
-              <div class="dropdown-trigger">
-                <button class="button bg-solarized-cyan no-border" id="go_dropdown"
-                        aria-haspopup="true" aria-controls="exits_dropdown_menu">
-                  Jdi...
-                </button>
-              </div>
-              <div class="dropdown-menu" id="exits_dropdown_menu" role="menu">
-                <div class="dropdown-content bg-solarized-base02 base01-border">
-                  <form action="{% url 'home' %}" method="post" id="exits_form">
-                    {% csrf_token %}
-                    <div class="buttons">
-                      {% for exit in game.current_room.exits %}
-                        <div class="dropdown-item">
-                          <button class="button bg-solarized-green no-border" type="submit" id="go_{{ exit }}_button"
-                                  name="command" value="{{ exit }}">
-                            {{ labels.exits|dict_get:exit }}
-                          </button>
-                        </div>
-                      {% endfor %}
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
+            {% include "go_dropdown.html" %}
             {% for command, objects in game.available_actions.items %}
-              <div class="control dropdown is-hoverable">
-                <div class="dropdown-trigger">
-                  <button class="button bg-solarized-yellow no-border" id="{{ command }}_dropdown"
-                          aria-haspopup="true" aria-controls="{{ command }}_dropdown_menu">
-                    {{ labels.imperative|dict_get:command|capfirst }}...
-                  </button>
-                </div>
-                <div class="dropdown-menu" id="{{ command }}_dropdown_menu" role="menu">
-                  <div class="dropdown-content bg-solarized-base02 base01-border">
-                    <form action="{% url 'home' %}" method="post" id="{{ command }}_form">
-                      {% csrf_token %}
-                      <div class="buttons">
-                        {% for obj_key, obj in objects.items %}
-                          <div class="dropdown-item">
-                            <button class="button bg-solarized-green no-border"
-                                    type="submit" id="{{ command }}_{{ obj_key }}_button"
-                                    name="command" value="{{ command }} {{ obj_key }}">
-                              {{ obj.name }}
-                            </button>
-                          </div>
-                        {% endfor %}
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
+              {% include "action_dropdown.html" %}
             {% endfor %}
           </div>
         </div>

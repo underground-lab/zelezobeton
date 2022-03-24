@@ -1,0 +1,27 @@
+{% load webapp_extras %}
+<div class="control dropdown is-hoverable">
+  <div class="dropdown-trigger">
+    <button class="button bg-solarized-cyan no-border" id="go_dropdown"
+            aria-haspopup="true" aria-controls="go_dropdown_menu">
+      Jdi...
+    </button>
+  </div>
+  <div class="dropdown-menu" id="go_dropdown_menu" role="menu">
+    <div class="dropdown-content bg-solarized-base02 base01-border">
+      <form action="{% url 'home' %}" method="post" id="go_form">
+        {% csrf_token %}
+        <div class="buttons">
+          {% for exit in game.current_room.exits %}
+            <div class="dropdown-item">
+              <button class="button bg-solarized-green no-border"
+                      type="submit" id="go_{{ exit }}_button"
+                      name="command" value="{{ exit }}">
+                {{ labels.exits|dict_get:exit }}
+              </button>
+            </div>
+          {% endfor %}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
