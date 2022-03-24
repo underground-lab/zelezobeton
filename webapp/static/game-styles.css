@@ -19,7 +19,8 @@
 
 .bg-solarized-base03 { background-color: #002b36; }
 .bg-solarized-base02 { background-color: #073642; }
-.bg-solarized-base01 { background-color: #586e75; }
+.bg-solarized-base01 { background-color: hsl(194, 14%, 40%); }
+.bg-solarized-base01:hover { background-color: hsl(194, 14%, 48%); }  /* lightness +20% */
 .bg-solarized-base00 { background-color: #657b83; }
 .bg-solarized-base0 { background-color: #839496; }
 .bg-solarized-base1 { background-color: #93a1a1; }
@@ -37,5 +38,5 @@
 .bg-solarized-green { background-color: hsl(68, 100%, 30%); }
 .bg-solarized-green:hover { background-color: hsl(68, 100%, 36%); }  /* lightness +20% */
 
-.base01-border { border: solid #586e75 1px;}
-.no-border { border: none;}
+.base01-border { border: solid #586e75 1px; }
+.no-border { border: none; }

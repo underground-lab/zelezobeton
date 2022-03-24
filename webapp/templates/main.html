@@ -4,6 +4,7 @@
   {% load static %}
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
   <link rel="stylesheet" type="text/css" href="{% static 'game-styles.css' %}">
   <title>{{ labels.title }}</title>
@@ -16,7 +17,9 @@
         <div class="field is-grouped is-grouped-multiline">
           <div class="control">
             <a class="button bg-solarized-base01 no-border" id="home"
-               href="{% url 'home' %}">Domů</a>
+               href="{% url 'home' %}" title="zpět na domovskou stránku">
+              <span class="fa fa-home" aria-label="home"></span>
+            </a>
           </div>
           {% include "go_dropdown.html" %}
           {% for command, objects in game.available_actions.items %}
