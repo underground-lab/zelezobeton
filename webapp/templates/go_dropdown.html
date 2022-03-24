@@ -8,7 +8,7 @@
   </div>
   <div class="dropdown-menu" id="go_dropdown_menu" role="menu">
     <div class="dropdown-content bg-solarized-base02 base01-border">
-      <form action="{% url 'home' %}" method="post" id="go_form">
+      <form action="{% url 'main' %}" method="post" id="go_form">
         {% csrf_token %}
         <div class="buttons">
           {% for exit in game.current_room.exits %}

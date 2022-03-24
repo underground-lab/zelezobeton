@@ -7,7 +7,7 @@ from game import labels
 from game.data import room_data, object_data
 
 
-def home(request):
+def main(request):
     session = request.session
 
     # retrieve stored game state or create new
@@ -21,11 +21,11 @@ def home(request):
     session['game'] = game
 
     context = dict(game=game, labels=labels, message=response)
-    return render(request, 'home.html', context)
+    return render(request, 'main.html', context)
 
 
 def restart(request):
     if request.method == 'POST':
         session = request.session
         session.flush()
-    return HttpResponseRedirect(reverse('home'))
+    return HttpResponseRedirect(reverse('main'))

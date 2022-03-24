@@ -8,7 +8,7 @@
   </div>
   <div class="dropdown-menu" id="{{ command }}_dropdown_menu" role="menu">
     <div class="dropdown-content bg-solarized-base02 base01-border">
-      <form action="{% url 'home' %}" method="post" id="{{ command }}_form">
+      <form action="{% url 'main' %}" method="post" id="{{ command }}_form">
         {% csrf_token %}
         <div class="buttons">
           {% for obj_key, obj in objects.items %}
