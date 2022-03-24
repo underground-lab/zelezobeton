@@ -46,14 +46,17 @@ def test_web_ui(driver):
         actions.perform()
         wait.until(condition)
 
-    driver.find_element(By.ID, 'restart_button').click()
+    # start a new game
+    driver.find_element(By.ID, 'new_game').click()
     assert 'Chodba' in driver.find_element(By.ID, 'room_description').text
+    assert driver.find_element(By.ID, 'open_dropdown')
     assert 'dveře' in driver.find_element(By.ID, 'in_room').text
     assert 'minci' in driver.find_element(By.ID, 'in_inventory').text
 
     perform_and_wait('go', 'north')
     assert 'Kancelář' in driver.find_element(By.ID, 'room_description').text
     assert 'plechovku' in driver.find_element(By.ID, 'in_room').text
+    assert driver.find_element(By.ID, 'open_dropdown')
 
     perform_and_wait('open', 'plechovka')
     assert 'jen dvě kancelářské sponky' in driver.find_element(By.ID, 'message').text
@@ -62,16 +65,46 @@ def test_web_ui(driver):
     perform_and_wait('take', 'sponky')
     assert 'OK' in driver.find_element(By.ID, 'message').text
     assert 'sponky' in driver.find_element(By.ID, 'in_inventory').text
+    assert driver.find_element(By.ID, 'use_dropdown')
 
-    driver.find_element(By.ID, 'restart_button').click()
+    # go to homepage
+    driver.find_element(By.ID, 'home').click()
+
+    # continue game
+    driver.find_element(By.ID, 'continue_game').click()
+    assert 'Kancelář' in driver.find_element(By.ID, 'room_description').text
+    assert 'sponky' in driver.find_element(By.ID, 'in_inventory').text
+
+    perform_and_wait('go', 'south')
     assert 'Chodba' in driver.find_element(By.ID, 'room_description').text
-    assert 'sponky' not in driver.find_element(By.ID, 'in_inventory').text
 
     perform_and_wait('open', 'dvere')
     assert 'OK' in driver.find_element(By.ID, 'message').text
 
     perform_and_wait('go', 'east')
     assert 'Sklad' in driver.find_element(By.ID, 'room_description').text
+    assert 'smeták' in driver.find_element(By.ID, 'in_room').text
+
+    perform_and_wait('take', 'smetak')
+    assert 'OK' in driver.find_element(By.ID, 'message').text
+    assert 'smeták' in driver.find_element(By.ID, 'in_inventory').text
+
+    # go to homepage
+    driver.find_element(By.ID, 'home').click()
+
+    # start a new game
+    driver.find_element(By.ID, 'new_game').click()
+    assert 'Chodba' in driver.find_element(By.ID, 'room_description').text
+    assert driver.find_element(By.ID, 'open_dropdown')
+    assert 'sponky' not in driver.find_element(By.ID, 'in_inventory').text
+    assert 'smeták' not in driver.find_element(By.ID, 'in_inventory').text
+
+    perform_and_wait('open', 'dvere')
+    assert 'OK' in driver.find_element(By.ID, 'message').text
+
+    perform_and_wait('go', 'east')
+    assert 'Sklad' in driver.find_element(By.ID, 'room_description').text
+    assert 'smeták' in driver.find_element(By.ID, 'in_room').text
     assert 'krabici hřebíků' in driver.find_element(By.ID, 'in_room').text
 
     perform_and_wait('take', 'krabice')

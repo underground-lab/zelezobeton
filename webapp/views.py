@@ -7,6 +7,12 @@ from game import labels
 from game.data import room_data, object_data
 
 
+def home(request):
+    game = request.session.get('game')
+    context = dict(game=game)
+    return render(request, 'home.html', context)
+
+
 def main(request):
     session = request.session
 
@@ -25,7 +31,5 @@ def main(request):
 
 
 def restart(request):
-    if request.method == 'POST':
-        session = request.session
-        session.flush()
+    request.session.flush()
     return HttpResponseRedirect(reverse('main'))

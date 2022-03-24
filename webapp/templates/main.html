@@ -13,18 +13,16 @@
   <div class="columns">
     <div class="column">
       <div class="box bg-solarized-base03 base01-border">
-        <div class="block">
-          <div class="field is-grouped is-grouped-multiline">
-            {% include "go_dropdown.html" %}
-            {% for command, objects in game.available_actions.items %}
-              {% include "action_dropdown.html" %}
-            {% endfor %}
+        <div class="field is-grouped is-grouped-multiline">
+          <div class="control">
+            <a class="button bg-solarized-base01 no-border" id="home"
+               href="{% url 'home' %}">Domů</a>
           </div>
+          {% include "go_dropdown.html" %}
+          {% for command, objects in game.available_actions.items %}
+            {% include "action_dropdown.html" %}
+          {% endfor %}
         </div>
-        <form action="{% url 'restart' %}" method="post" id="restart_form">
-          {% csrf_token %}
-          <button class="button bg-solarized-base01 no-border" type="submit" id="restart_button">Restartovat</button>
-        </form>
       </div>
       <div class="notification fg-solarized-base2 bg-solarized-base03 base01-border" id="message">
         {% if message %}{{ message }}{% endif %}&nbsp;
