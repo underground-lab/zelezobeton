@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'game-styles.css' %}">
+  <title>{{ labels.title }}</title>
+</head>
+<body class="p-3 bg-solarized-base02 fill-viewport-height">
+  <div class="container is-max-desktop">
+  {% block main_menu %}{% endblock %}
+  {% block game_ui %}{% endblock %}
+  </div>
+</body>
+</html>

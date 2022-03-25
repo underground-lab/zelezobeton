@@ -1,57 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  {% load static %}
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-  <link rel="stylesheet" type="text/css" href="{% static 'game-styles.css' %}">
-  <title>{{ labels.title }}</title>
-</head>
-<body class="p-3 bg-solarized-base02 fill-viewport-height">
-  {% load webapp_extras %}
-  <div class="columns">
-    <div class="column">
-      <div class="box bg-solarized-base03 base01-border">
-        <div class="field is-grouped is-grouped-multiline">
-          <div class="control">
-            <a class="button bg-solarized-base01 no-border" id="home"
-               href="{% url 'home' %}" title="zpět na domovskou stránku">
-              <span class="fa fa-home" aria-label="home"></span>
-            </a>
-          </div>
-          {% include "go_dropdown.html" %}
-          {% for command, objects in game.available_actions.items %}
-            {% include "action_dropdown.html" %}
-          {% endfor %}
+{% extends "base.html" %}
+{% load webapp_extras %}
+{% block game_ui %}
+<div class="columns">
+  <div class="column">
+    <div class="box bg-solarized-base03 base01-border">
+      <div class="field is-grouped is-grouped-multiline">
+        <div class="control">
+          <a class="button bg-solarized-base01 no-border" id="home"
+             href="{% url 'home' %}" title="zpět na domovskou stránku">
+            <span class="fa fa-home" aria-label="home"></span>
+          </a>
         </div>
-      </div>
-      <div class="notification fg-solarized-base2 bg-solarized-base03 base01-border" id="message">
-        {% if message %}{{ message }}{% endif %}&nbsp;
+        {% include "go_dropdown.html" %}
+        {% for command, objects in game.available_actions.items %}
+          {% include "action_dropdown.html" %}
+        {% endfor %}
       </div>
     </div>
-    <div class="column is-two-thirds">
-      <div class="box fg-solarized-cyan bg-solarized-base03 base01-border" id="room_description">
-        {{ game.current_room.description }}
+    <div class="notification fg-solarized-base2 bg-solarized-base03 base01-border" id="message">
+      {% if message %}{{ message }}{% endif %}&nbsp;
+    </div>
+  </div>
+  <div class="column is-two-thirds">
+    <div class="box fg-solarized-cyan bg-solarized-base03 base01-border" id="room_description">
+      {{ game.current_room.description }}
+    </div>
+    <div class="columns">
+      <div class="column">
+        {% if game.objects_in_room %}
+          <div class="box fg-solarized-yellow bg-solarized-base03 base01-border" id="in_room">
+            Vidím tady {{ game.objects_in_room|values_attr:"name"|listing_czech }}.
+          </div>
+        {% endif %}
       </div>
-      <div class="columns">
-        <div class="column">
-          {% if game.objects_in_room %}
-            <div class="box fg-solarized-yellow bg-solarized-base03 base01-border" id="in_room">
-              Vidím tady {{ game.objects_in_room|values_attr:"name"|listing_czech }}.
-            </div>
-          {% endif %}
-        </div>
-        <div class="column">
-          {% if game.objects_in_inventory %}
-            <div class="box fg-solarized-green bg-solarized-base03 base01-border" id="in_inventory">
-              Mám u sebe {{ game.objects_in_inventory|values_attr:"name"|listing_czech }}.
-            </div>
-          {% endif %}
-        </div>
+      <div class="column">
+        {% if game.objects_in_inventory %}
+          <div class="box fg-solarized-green bg-solarized-base03 base01-border" id="in_inventory">
+            Mám u sebe {{ game.objects_in_inventory|values_attr:"name"|listing_czech }}.
+          </div>
+        {% endif %}
       </div>
     </div>
   </div>
-</body>
-</html>
+</div>
+{% endblock %}

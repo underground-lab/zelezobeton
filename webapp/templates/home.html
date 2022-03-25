@@ -1,26 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  {% load static %}
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-  <link rel="stylesheet" type="text/css" href="{% static 'game-styles.css' %}">
-  <title>{{ labels.title }}</title>
-</head>
-<body class="p-3 bg-solarized-base02 fill-viewport-height">
-  {% load webapp_extras %}
-  <div class="container">
-    <div class="box bg-solarized-base03 base01-border has-text-centered">
-      {% if game %}
-        <div class="block">
-          <a class="button bg-solarized-yellow no-border" id="continue_game"
-             href="{% url 'main' %}">Pokračovat v rozehrané hře</a>
-        </div>
-      {% endif %}
-      <a class="button bg-solarized-cyan no-border" id="new_game"
-         href="{% url 'restart' %}">Začít novou hru</a>
+{% extends "base.html" %}
+{% block main_menu %}
+<div class="box bg-solarized-base03 base01-border has-text-centered">
+  {% if game %}
+    <div class="block">
+      <a class="button bg-solarized-yellow no-border" id="continue_game"
+         href="{% url 'main' %}">Pokračovat v rozehrané hře</a>
     </div>
-  </div>
-</body>
-</html>
+  {% endif %}
+  <a class="button bg-solarized-cyan no-border" id="new_game"
+     href="{% url 'restart' %}">Začít novou hru</a>
+</div>
+{% endblock %}
