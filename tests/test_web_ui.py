@@ -38,7 +38,7 @@ def test_web_ui(driver):
     def perform_and_wait(action, obj):
         dropdown = driver.find_element(By.ID, f'{action}_dropdown')
         button = driver.find_element(By.ID, f'{action}_{obj}_button')
-        condition = staleness_of(driver.find_element(By.ID, 'message'))
+        condition = staleness_of(driver.find_element(By.ID, 'room_description'))
 
         actions = ActionChains(driver).move_to_element(dropdown).click(button)
         wait = WebDriverWait(driver, 5)

@@ -23,6 +23,7 @@ def main(request):
     # modify game state
     command = request.POST.get('command')
     context['message'] = game.process_command(*command.split()) if command else None
+    context['last_command'] = request.POST.get('command_text')
 
     # store game state
     session['game'] = game

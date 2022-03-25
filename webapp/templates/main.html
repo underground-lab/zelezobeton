@@ -17,8 +17,13 @@
         {% endfor %}
       </div>
     </div>
-    <div class="notification fg-solarized-base2 bg-solarized-base03 base01-border" id="message">
-      {% if message %}{{ message }}{% endif %}&nbsp;
+    <div class="notification bg-solarized-base03 base01-border">
+      {% if last_command %}
+        <p class="fg-solarized-base01">{{ last_command }}</p>
+      {% endif %}
+      {% if message %}
+        <span class="fg-solarized-base2" id="message">{{ message }}</span>
+      {% endif %}&nbsp;
     </div>
   </div>
   <div class="column is-two-thirds">
