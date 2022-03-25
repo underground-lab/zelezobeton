@@ -12,5 +12,4 @@ exits = {
 }
 
 commands = ('examine', 'take', 'open', 'use')
-infinitive = dict(zip(commands, ('prozkoumat', 'vzít', 'otevřít', 'použít')))
 imperative = dict(zip(commands, ('prozkoumej', 'vezmi', 'otevři', 'použij')))
