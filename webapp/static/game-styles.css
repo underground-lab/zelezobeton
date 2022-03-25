@@ -1,10 +1,10 @@
 .fill-viewport-height { min-height: 100vh; }
 
 .fg-solarized-base01 { color: #586e75; }
-.fg-solarized-base0 { color: #839496; }
+.fg-solarized-base0, .footer-link { color: #839496; }
 .fg-solarized-base2 { color: #eee8d5; }
 .fg-solarized-yellow { color: #b58900; }
-.fg-solarized-cyan { color: #2aa198; }
+.fg-solarized-cyan, .footer-link:hover { color: #2aa198; }
 .fg-solarized-green { color: #859900; }
 
 .bg-solarized-base03 { background-color: #002b36; }
@@ -20,3 +20,4 @@
 
 .base01-border { border: solid #586e75 1px; }
 .no-border { border: none; }
+.page-footer { position: fixed; bottom: 10px; }
