@@ -3,11 +3,13 @@
 <div class="box bg-solarized-base03 base01-border has-text-centered">
   {% if game %}
     <div class="block">
-      <a class="button bg-solarized-yellow no-border" id="continue_game"
-         href="{% url 'main' %}">Pokračovat v rozehrané hře</a>
+      <a class="button bg-solarized-yellow no-border" id="continue_game" href="{% url 'main' %}">
+        <i class="fa fa-file-text-o fa-pull-left"></i>Pokračovat v rozehrané hře
+      </a>
     </div>
   {% endif %}
-  <a class="button bg-solarized-cyan no-border" id="new_game"
-     href="{% url 'restart' %}">Začít novou hru</a>
+  <a class="button bg-solarized-cyan no-border" id="new_game" href="{% url 'restart' %}">
+    <i class="fa fa-file-o fa-pull-left"></i>Začít novou hru
+  </a>
 </div>
 {% endblock %}
