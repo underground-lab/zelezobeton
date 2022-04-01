@@ -1,4 +1,5 @@
 .fill-viewport-height { min-height: 100vh; }
+.serif-font { font-family: 'Libre Baskerville', serif; }
 
 .fg-solarized-base01 { color: #586e75; }
 .fg-solarized-base0, .footer-link { color: #839496; }

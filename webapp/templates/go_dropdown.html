@@ -1,7 +1,7 @@
 {% load webapp_extras %}
 <div class="control dropdown is-hoverable">
   <div class="dropdown-trigger">
-    <button class="button bg-solarized-cyan no-border" id="go_dropdown"
+    <button class="button serif-font bg-solarized-cyan no-border" id="go_dropdown"
             aria-haspopup="true" aria-controls="go_dropdown_menu">
       Jdi<i class="fa fa-angle-down fa-pull-right"></i>
     </button>
@@ -14,7 +14,7 @@
             <form action="{% url 'main' %}" method="post" id="go_form">
               {% csrf_token %}
 {% with direction=labels.exits|dict_get:exit %}
-              <button class="button bg-solarized-green no-border"
+              <button class="button serif-font bg-solarized-green no-border"
                       type="submit" id="go_{{ exit }}_button"
                       name="command" value="{{ exit }}">
                 {{ direction }}

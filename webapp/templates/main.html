@@ -17,7 +17,7 @@
         {% endfor %}
       </div>
     </div>
-    <div class="notification bg-solarized-base03 base01-border">
+    <div class="box serif-font bg-solarized-base03 base01-border">
       {% if last_command %}
         <p class="fg-solarized-base01">{{ last_command }}</p>
       {% endif %}
@@ -27,20 +27,20 @@
     </div>
   </div>
   <div class="column is-two-thirds">
-    <div class="box fg-solarized-cyan bg-solarized-base03 base01-border" id="room_description">
+    <div class="box serif-font fg-solarized-cyan bg-solarized-base03 base01-border" id="room_description">
       {{ game.current_room.description }}
     </div>
     <div class="columns">
       <div class="column">
         {% if game.objects_in_room %}
-          <div class="box fg-solarized-yellow bg-solarized-base03 base01-border" id="in_room">
+          <div class="box serif-font fg-solarized-yellow bg-solarized-base03 base01-border" id="in_room">
             Vidím tady {{ game.objects_in_room|values_attr:"name"|listing_czech }}.
           </div>
         {% endif %}
       </div>
       <div class="column">
         {% if game.objects_in_inventory %}
-          <div class="box fg-solarized-green bg-solarized-base03 base01-border" id="in_inventory">
+          <div class="box serif-font fg-solarized-green bg-solarized-base03 base01-border" id="in_inventory">
             Mám u sebe {{ game.objects_in_inventory|values_attr:"name"|listing_czech }}.
           </div>
         {% endif %}

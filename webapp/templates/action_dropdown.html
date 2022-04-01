@@ -2,7 +2,7 @@
 <div class="control dropdown is-hoverable">
 {% with verb=labels.imperative|dict_get:command|capfirst %}
   <div class="dropdown-trigger">
-    <button class="button bg-solarized-yellow no-border" id="{{ command }}_dropdown"
+    <button class="button serif-font bg-solarized-yellow no-border" id="{{ command }}_dropdown"
             aria-haspopup="true" aria-controls="{{ command }}_dropdown_menu">
       {{ verb }}<i class="fa fa-angle-down fa-pull-right"></i>
     </button>
@@ -15,7 +15,7 @@
             <form action="{% url 'main' %}" method="post" id="{{ command }}_{{ obj_key }}_form">
               {% csrf_token %}
 {% with noun=obj.name %}
-              <button class="button bg-solarized-green no-border"
+              <button class="button serif-font bg-solarized-green no-border"
                       type="submit" id="{{ command }}_{{ obj_key }}_button"
                       name="command" value="{{ command }} {{ obj_key }}">
                 {{ noun }}
