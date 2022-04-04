@@ -23,3 +23,8 @@ def listing_czech(strings):
         return last
     leading = ', '.join(leading)
     return f'{leading} a {last}'
+
+
+@register.filter
+def sort_by_index(iterable, sort_order):
+    return sorted(iterable, key=sort_order.index)

@@ -9,7 +9,7 @@
   <div class="dropdown-menu" id="go_dropdown_menu" role="menu">
     <div class="dropdown-content bg-solarized-base02 base01-border">
       <div class="buttons">
-        {% for exit in game.current_room.exits %}
+        {% for exit in game.current_room.exits|sort_by_index:labels.exit_keys %}
           <div class="dropdown-item">
             <form action="{% url 'main' %}" method="post" id="go_form">
               {% csrf_token %}
