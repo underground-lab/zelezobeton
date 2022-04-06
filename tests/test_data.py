@@ -1,6 +1,3 @@
-from handpick import values_for_key
-import pytest
-
 from engine.classes import Game
 from game.data import room_data, object_data
 
@@ -37,15 +34,6 @@ def test_all_object_locations_exist():
         location = obj['location']
         assert location in room_data or location == 'inventory', \
             f'Unknown location {location!r} of object {obj_key!r}'
-
-
-@pytest.fixture
-def callback_specs():
-    return [
-        spec
-        for spec_list in values_for_key(object_data, ['condition', 'impact'])
-        for spec in spec_list
-    ]
 
 
 def test_callback_specs_use_existing_callback_names(callback_specs):

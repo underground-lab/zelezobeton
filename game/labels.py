@@ -10,5 +10,10 @@ exits = dict(
     )
 )
 
-commands = ('examine', 'take', 'open', 'use')
-imperative = dict(zip(commands, ('prozkoumej', 'vezmi', 'otevři', 'použij')))
+action_keys = ('examine', 'take', 'open', 'use')
+imperative = dict(
+    zip(
+        action_keys,
+        ('prozkoumej', 'vezmi', 'otevři', 'použij')
+    )
+)
