@@ -1,3 +1,5 @@
+import inspect
+
 from engine.classes import Game
 from game.data import room_data, object_data
 
@@ -38,8 +40,8 @@ def test_all_object_locations_exist():
 
 def test_callback_specs_use_existing_callback_names(callback_specs):
     for spec in callback_specs:
-        callback_name = spec[0]
-        assert hasattr(Game, callback_name), f'Unknown callback {callback_name!r}'
+        method_name = spec[0]
+        assert hasattr(Game, method_name), f'Unknown callback {method_name!r}'
 
 
 def test_callback_specs_use_existing_room_keys(callback_specs):
@@ -59,3 +61,12 @@ def test_callback_specs_use_existing_object_keys(callback_specs):
         if 'obj' in kwargs:
             obj_key = kwargs['obj']
             assert obj_key in object_data, f'Unknown object {obj_key!r} in {kwargs}'
+
+
+def test_callback_specs_use_correct_kwargs(callback_specs):
+    for method_name, kwargs in callback_specs:
+        method_params = inspect.signature(getattr(Game, method_name)).parameters
+        expected_kws = method_params.keys() - {'self'}
+        given_kws = kwargs.keys()
+        assert given_kws == expected_kws, \
+            f'Incorrect kwargs {given_kws} for {method_name!r}: expected {expected_kws}'
