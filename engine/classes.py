@@ -17,6 +17,9 @@ class Object:
         # set additional instance variables
         vars(self).update(kwargs)
 
+    def __eq__(self, other):
+        return type(self) is type(other) and vars(self) == vars(other)
+
 
 @dataclass
 class Action:
@@ -181,6 +184,9 @@ class Game:
 
     def set_true(self, obj, attr):
         setattr(self.objects[obj], attr, True)
+
+    def __eq__(self, other):
+        return type(self) is type(other) and vars(self) == vars(other)
 
 
 class InvalidCommand(NotImplementedError):

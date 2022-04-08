@@ -23,15 +23,11 @@ def test_loads_room(serializer, dummy_room_json, dummy_room):
 
 
 def test_loads_object(serializer, dummy_object_json, dummy_object):
-    decoded = serializer.loads(dummy_object_json.encode())
-    assert type(decoded) is type(dummy_object)
-    assert vars(decoded) == vars(dummy_object)
+    assert serializer.loads(dummy_object_json.encode()) == dummy_object
 
 
 def test_loads_object_with_additional_attr(serializer, dummy_obj_with_attr_json, dummy_obj_with_attr):
-    decoded = serializer.loads(dummy_obj_with_attr_json.encode())
-    assert type(decoded) is type(dummy_obj_with_attr)
-    assert vars(decoded) == vars(dummy_obj_with_attr)
+    assert serializer.loads(dummy_obj_with_attr_json.encode()) == dummy_obj_with_attr
 
 
 def test_loads_action(serializer, dummy_action_json, dummy_action):
@@ -39,13 +35,7 @@ def test_loads_action(serializer, dummy_action_json, dummy_action):
 
 
 def test_loads_game(serializer, dummy_game_json, dummy_game):
-    decoded = serializer.loads(dummy_game_json.encode())
-    assert type(decoded) is type(dummy_game)
-    decoded_obj = decoded.objects.pop('b')
-    dummy_obj = dummy_game.objects.pop('b')
-    assert vars(decoded) == vars(dummy_game)
-    assert type(decoded_obj) is type(dummy_obj)
-    assert vars(decoded_obj) == vars(dummy_obj)
+    assert serializer.loads(dummy_game_json.encode()) == dummy_game
 
 
 def test_roundtrip_no_error(serializer, game):
