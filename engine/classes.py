@@ -9,11 +9,13 @@ class Room:
     exits: dict = field(default_factory=dict)
 
 
-@dataclass
 class Object:
-    name: str
-    location: str = 'undiscovered'
-    actions: dict = field(default_factory=dict)
+    def __init__(self, name, location='undiscovered', actions=None, **kwargs):
+        self.name = name
+        self.location = location
+        self.actions = actions or {}
+        # set additional instance variables
+        vars(self).update(kwargs)
 
 
 @dataclass

@@ -16,24 +16,12 @@ encoder = GameJSONEncoder(ensure_ascii=False)
 
 
 def custom_class_hook(obj):
-    if '_class' not in obj:
+    if '_class' not in obj or '_vars' not in obj:
         return obj
     cls = globals()[obj['_class']]
     if cls not in SUPPORTED_CLASSES:
         return obj
-    _vars = obj['_vars']
-    if cls is Game:
-        return Game(**_vars)
-    # for dataclasses, separate dataclass fields from additional attributes
-    field_kwargs = {
-        key: _vars.pop(key)
-        for key in _vars.copy()
-        if key in cls.__dataclass_fields__
-    }
-    # construct with dataclass fields, then apply additional attributes
-    instance = cls(**field_kwargs)
-    vars(instance).update(_vars)
-    return instance
+    return cls(**obj['_vars'])
 
 
 decoder = json.JSONDecoder(object_hook=custom_class_hook)

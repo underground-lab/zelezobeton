@@ -57,19 +57,21 @@ def test_loads_action(serializer):
 
 
 def test_loads_object(serializer):
-    assert serializer.loads(
-        b'{"_class": "Object", "_vars": {"name": "a",'
-        b' "location": "b", "actions": {"use": [{"_class": "Action",'
-        b' "_vars": {}}]}}}'
-    ) == Object('a', 'b', {'use': [Action()]})
+    decoded = serializer.loads(
+        b'{"_class": "Object", "_vars": {"name": "a", "location": "b",'
+        b' "actions": {"use": [{"_class": "Action", "_vars": {}}]}}}'
+    )
+    assert isinstance(decoded, Object)
+    assert vars(decoded) == dict(name='a', location='b', actions={'use': [Action()]})
 
 
 def test_loads_object_with_additional_attribute(serializer):
     decoded = serializer.loads(
-        b'{"_class": "Object", "_vars": {"name": "a", "description": "b",'
-        b' "location": "c", "actions": {}, "unlocked": true}}'
+        b'{"_class": "Object", "_vars": {"name": "a", "location": "b", "actions": {},'
+        b' "unlocked": true}}'
     )
-    assert decoded.unlocked is True
+    assert isinstance(decoded, Object)
+    assert vars(decoded) == dict(name='a', location='b', actions={}, unlocked=True)
 
 
 def test_roundtrip_no_error(game, serializer):
