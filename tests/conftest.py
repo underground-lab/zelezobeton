@@ -1,7 +1,7 @@
 from handpick import values_for_key
 import pytest
 
-from engine.classes import Game
+from engine.classes import Room, Object, Action, Game
 from engine.serializer import GameJSONSerializer
 from game.data import room_data, object_data
 
@@ -60,3 +60,74 @@ def actions_from_object_data():
         for obj in object_data.values()
         for action_key in obj.get('actions', {})
     }
+
+
+@pytest.fixture
+def dummy_room():
+    return Room('a', {'north': 'b'})
+
+
+@pytest.fixture
+def dummy_room_json():
+    return '{"_class": "Room", "_vars": {"description": "a", "exits": {"north": "b"}}}'
+
+
+@pytest.fixture
+def dummy_object(dummy_action):
+    return Object('a', 'b', {'take': [dummy_action]})
+
+
+@pytest.fixture
+def dummy_object_json(dummy_action_json):
+    return (
+        '{"_class": "Object", "_vars": {"name": "a", "location": "b", "actions":'
+        ' {"take": ['
+        f'{dummy_action_json}'
+        ']}}}'
+    )
+
+
+@pytest.fixture
+def dummy_obj_with_attr(dummy_action):
+    obj = Object('a', 'b', {'take': [dummy_action]})
+    obj.unlocked = True
+    return obj
+
+
+@pytest.fixture
+def dummy_obj_with_attr_json(dummy_action_json):
+    return (
+        '{"_class": "Object", "_vars": {"name": "a", "location": "b", "actions":'
+        ' {"take": ['
+        f'{dummy_action_json}'
+        ']}, "unlocked": true}}'
+    )
+
+
+@pytest.fixture
+def dummy_action():
+    return Action([['a', {'b': 'c'}]], [['d', {'e': 'f'}]], 'OK')
+
+
+@pytest.fixture
+def dummy_action_json():
+    return (
+        '{"_class": "Action", "_vars": {"condition": [["a", {"b": "c"}]],'
+        ' "impact": [["d", {"e": "f"}]], "message": "OK"}}'
+    )
+
+
+@pytest.fixture
+def dummy_game(dummy_room, dummy_object):
+    return Game({'a': dummy_room}, {'b': dummy_object}, 'a')
+
+
+@pytest.fixture
+def dummy_game_json(dummy_room_json, dummy_object_json):
+    return (
+        '{"_class": "Game", "_vars": {"rooms": {"a":'
+        f' {dummy_room_json}'
+        '}, "objects": {"b":'
+        f' {dummy_object_json}'
+        '}, "current_room_key": "a"}}'
+    )

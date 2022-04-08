@@ -1,78 +1,52 @@
-# coding: utf-8
-
-from engine.classes import Room, Object, Action
-
-
-def test_dumps_room(game, serializer):
-    room = game.rooms['start']
-    assert serializer.dumps(room) == (
-        '{"_class": "Room", "_vars": {"description": "Popis místnosti „Chodba“.",'
-        ' "exits": {"north": "kancelar"}}}'
-    ).encode()
+def test_dumps_room(serializer, dummy_room, dummy_room_json):
+    assert serializer.dumps(dummy_room).decode() == dummy_room_json
 
 
-def test_dumps_action(game, serializer):
-    action = game.objects['klicek'].actions['take'][0]
-    assert serializer.dumps(action) == (
-        b'{"_class": "Action", "_vars": {"condition": [["in_room", {"obj": "klicek"}]'
-        b'], "impact": [["move_to_inventory", {"obj": "klicek"}]], "message": null}}'
-    )
+def test_dumps_object(serializer, dummy_object, dummy_object_json):
+    assert serializer.dumps(dummy_object).decode() == dummy_object_json
 
 
-def test_dumps_object(game, serializer):
-    obj = game.objects['dvere']
-    encoded = serializer.dumps(obj)
-    assert encoded.startswith(b'{"_class": "Object", "_vars": {"')
-    assert b'"open": [{"_class": "Action", "_vars": {"' in encoded
+def test_dumps_object_with_additional_attr(serializer, dummy_obj_with_attr, dummy_obj_with_attr_json):
+    assert serializer.dumps(dummy_obj_with_attr).decode() == dummy_obj_with_attr_json
 
 
-def test_dumps_object_with_additional_attribute(game, serializer):
-    obj = game.objects['mriz']
-    obj.unlocked = True
-    encoded = serializer.dumps(obj)
-    assert encoded.startswith(b'{"_class": "Object", "_vars": {"')
-    assert b'"unlocked": true' in encoded
+def test_dumps_action(serializer, dummy_action, dummy_action_json):
+    assert serializer.dumps(dummy_action).decode() == dummy_action_json
 
 
-def test_dumps_game(game, serializer):
-    encoded = serializer.dumps(game)
-    assert encoded.startswith(b'{"_class": "Game", "_vars": {"')
-    assert b'"start": {"_class": "Room", "_vars": {"' in encoded
-    assert b'"klicek": {"_class": "Object", "_vars": {"' in encoded
-    assert b'"use": [{"_class": "Action", "_vars": {"' in encoded
+def test_dumps_game(serializer, dummy_game, dummy_game_json):
+    assert serializer.dumps(dummy_game).decode() == dummy_game_json
 
 
-def test_loads_room(serializer):
-    assert serializer.loads(
-        b'{"_class": "Room", "_vars": {"description": "a",'
-        b' "exits": {"north": "b"}}}'
-    ) == Room('a', {'north': 'b'})
+def test_loads_room(serializer, dummy_room_json, dummy_room):
+    assert serializer.loads(dummy_room_json.encode()) == dummy_room
 
 
-def test_loads_action(serializer):
-    assert serializer.loads(
-        b'{"_class": "Action", "_vars": {"condition": [["a", {"b": "c"}]],'
-        b' "impact": [["d", {"e": "f"}]], "message": "OK"}}'
-    ) == Action([['a', {'b': 'c'}]], [['d', {'e': 'f'}]], 'OK')
+def test_loads_object(serializer, dummy_object_json, dummy_object):
+    decoded = serializer.loads(dummy_object_json.encode())
+    assert type(decoded) is type(dummy_object)
+    assert vars(decoded) == vars(dummy_object)
 
 
-def test_loads_object(serializer):
-    decoded = serializer.loads(
-        b'{"_class": "Object", "_vars": {"name": "a", "location": "b",'
-        b' "actions": {"use": [{"_class": "Action", "_vars": {}}]}}}'
-    )
-    assert isinstance(decoded, Object)
-    assert vars(decoded) == dict(name='a', location='b', actions={'use': [Action()]})
+def test_loads_object_with_additional_attr(serializer, dummy_obj_with_attr_json, dummy_obj_with_attr):
+    decoded = serializer.loads(dummy_obj_with_attr_json.encode())
+    assert type(decoded) is type(dummy_obj_with_attr)
+    assert vars(decoded) == vars(dummy_obj_with_attr)
 
 
-def test_loads_object_with_additional_attribute(serializer):
-    decoded = serializer.loads(
-        b'{"_class": "Object", "_vars": {"name": "a", "location": "b", "actions": {},'
-        b' "unlocked": true}}'
-    )
-    assert isinstance(decoded, Object)
-    assert vars(decoded) == dict(name='a', location='b', actions={}, unlocked=True)
+def test_loads_action(serializer, dummy_action_json, dummy_action):
+    assert serializer.loads(dummy_action_json.encode()) == dummy_action
 
 
-def test_roundtrip_no_error(game, serializer):
+def test_loads_game(serializer, dummy_game_json, dummy_game):
+    decoded = serializer.loads(dummy_game_json.encode())
+    assert type(decoded) is type(dummy_game)
+    decoded_obj = decoded.objects.pop('b')
+    dummy_obj = dummy_game.objects.pop('b')
+    assert vars(decoded) == vars(dummy_game)
+    assert type(decoded_obj) is type(dummy_obj)
+    assert vars(decoded_obj) == vars(dummy_obj)
+
+
+def test_roundtrip_no_error(serializer, game):
     serializer.loads(serializer.dumps(game))
