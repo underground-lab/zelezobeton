@@ -131,14 +131,14 @@ class Game:
         return result
 
     # callbacks that don't modify game state
-    def is_visible(self, obj):
-        return obj in self.visible_objects
-
     def in_room(self, obj):
-        return obj in self.objects_in_room
+        return self.objects[obj].location == self.current_room_key
 
     def in_inventory(self, obj):
         return self.objects[obj].location == 'inventory'
+
+    def is_visible(self, obj):
+        return self.in_room(obj) or self.in_inventory(obj)
 
     def is_undiscovered(self, obj):
         return self.objects[obj].location == 'undiscovered'
@@ -156,7 +156,7 @@ class Game:
         return getattr(self.objects[obj], attr, None) is True
 
     def not_true(self, obj, attr):
-        return not getattr(self.objects[obj], attr, None)
+        return not self.is_true(obj, attr)
 
     # callbacks that modify game state
     def move_to_room(self, obj, room):
