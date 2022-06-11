@@ -4,7 +4,7 @@
   <div class="dropdown-trigger">
     <button class="button serif-font bg-solarized-yellow no-border" id="{{ command }}_dropdown"
             aria-haspopup="true" aria-controls="{{ command }}_dropdown_menu">
-      {{ verb }}<i class="fa fa-angle-down fa-pull-right"></i>
+      {{ verb }}{% include "chevron-down_icon.html" %}
     </button>
   </div>
   <div class="dropdown-menu" id="{{ command }}_dropdown_menu" role="menu">
