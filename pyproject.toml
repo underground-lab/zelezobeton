@@ -12,12 +12,12 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.8"
-Django = "^4.0.2"
+django = "^4.0.5"
 
 [tool.poetry.dev-dependencies]
-pytest = "^7.0.1"
-selenium = "^4.1.2"
-jsonschema = "^4.4.0"
+pytest = "^7.1.2"
+selenium = "^4.2.0"
+jsonschema = "^4.6.0"
 handpick = "^0.10.0"
 toml = "^0.10.2"
 
