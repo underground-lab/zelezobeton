@@ -11,7 +11,7 @@ except IndexError:
     rule = 'patch'
 
 # bump with poetry
-subprocess.run(f'poetry version {rule}', shell=True)
+subprocess.run(f'poetry version {rule}'.split())
 
 # write new version to VERSION
 version = toml.load('pyproject.toml')['tool']['poetry']['version']
@@ -20,5 +20,5 @@ with open('VERSION', 'w') as f:
     print(version, file=f)
 
 # commit & tag
-subprocess.run(f'git commit -a -m "Bump version to {version}"', shell=True)
-subprocess.run(f'git tag {version}', shell=True)
+subprocess.run(['git', 'commit', '-a', '-m', f'Bump version to {version}'])
+subprocess.run(f'git tag {version}'.split())
