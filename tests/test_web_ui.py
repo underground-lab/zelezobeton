@@ -1,6 +1,8 @@
 # coding: utf-8
 
 import os
+from pathlib import Path
+from tempfile import TemporaryDirectory
 from urllib.request import urlopen
 
 import pytest
@@ -20,7 +22,15 @@ except OSError:
 
 
 @pytest.fixture
-def driver():
+def temp_dir():
+    tests_dir = Path(__file__).parent
+    with TemporaryDirectory(dir=tests_dir) as temp:
+        yield temp
+
+
+@pytest.fixture
+def driver(temp_dir):
+    os.environ['TMPDIR'] = temp_dir
     options = Options()
     options.headless = HEADLESS
     firefox_driver = Firefox(options=options)
