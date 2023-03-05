@@ -28,7 +28,7 @@ CustomArrayValidator = extend(
     )
 )
 def test_data_schema(data, schema_file):
-    with open(SCHEMAS_DIR / schema_file) as f:
+    with (SCHEMAS_DIR / schema_file).open(encoding='utf-8') as f:
         schema = json.load(f)
     validator = CustomArrayValidator(schema)
     for item in data.values():

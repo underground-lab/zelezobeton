@@ -16,7 +16,7 @@ subprocess.run(f'poetry version {rule}'.split())
 # write new version to VERSION
 version = toml.load('pyproject.toml')['tool']['poetry']['version']
 print('Updating VERSION')
-with open('VERSION', 'w') as f:
+with open('VERSION', 'w', encoding='utf-8') as f:
     print(version, file=f)
 
 # commit & tag
