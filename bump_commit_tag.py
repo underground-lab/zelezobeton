@@ -3,7 +3,7 @@
 import subprocess
 import sys
 
-import toml
+import tomllib
 
 try:
     rule = sys.argv[1]
@@ -13,7 +13,8 @@ except IndexError:
 # bump with poetry
 subprocess.run(f'poetry version {rule}'.split())
 
-version = toml.load('pyproject.toml')['tool']['poetry']['version']
+with open('pyproject.toml', 'rb') as f:
+    version = tomllib.load(f)['tool']['poetry']['version']
 
 # commit & tag
 subprocess.run(['git', 'commit', '-a', '-m', f'Bump version to {version}'])
