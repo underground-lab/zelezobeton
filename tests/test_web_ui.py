@@ -32,7 +32,8 @@ def temp_dir():
 def driver(temp_dir):
     os.environ['TMPDIR'] = temp_dir
     options = Options()
-    options.headless = HEADLESS
+    if HEADLESS:
+        options.add_argument('-headless')
     firefox_driver = Firefox(options=options)
     firefox_driver.implicitly_wait(5)
     firefox_driver.get(URL)
