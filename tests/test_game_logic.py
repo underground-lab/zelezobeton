@@ -213,8 +213,17 @@ def test_invalid_commands(game_in_progress, command, obj_key):
 
 
 def test_available_actions(game):
-    assert list(game.available_actions()) == ['open']
+    available = game.available_actions()
+    assert list(available) == ['open']
+    assert list(available['open']) == ['dvere']
+
     game.process_command('north')
-    assert list(game.available_actions()) == ['take', 'open']
+    available = game.available_actions()
+    assert list(available) == ['take', 'open']
+    assert list(available['take']) == ['plechovka', 'vaza']
+    assert list(available['open']) == ['plechovka']
+
     game.process_command('open', 'plechovka')
-    assert list(game.available_actions()) == ['take']
+    available = game.available_actions()
+    assert list(available) == ['take']
+    assert list(available['take']) == ['plechovka', 'sponky', 'vaza']

@@ -127,10 +127,10 @@ class Game:
 
     def available_actions(self):
         result = {}
-        for action_name in ('examine', 'take', 'open', 'use'):
-            objects = self.objects_with_action(action_name)
-            if objects:
-                result[action_name] = objects
+        for obj_key, obj in self.visible_objects.items():
+            for action_key, actions in obj.actions.items():
+                if any(self._conditions_met(action) for action in actions):
+                    result.setdefault(action_key, {})[obj_key] = obj
         return result
 
     # callbacks that don't modify game state
