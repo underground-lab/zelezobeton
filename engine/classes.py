@@ -119,13 +119,6 @@ class Game:
     def visible_objects(self):
         return self.objects_in_room | self.objects_in_inventory
 
-    def objects_with_action(self, action_name):
-        return {
-            obj_key: obj for obj_key, obj in self.visible_objects.items()
-            if action_name in obj.actions
-            and any(self._conditions_met(action) for action in obj.actions[action_name])
-        }
-
     def available_actions(self):
         result = {}
         for obj_key, obj in self.visible_objects.items():

@@ -5,15 +5,26 @@ import pytest
 from engine.classes import InvalidCommand
 
 
+def objects_with_action(game, action_key):
+    return {
+        obj_key: obj
+        for obj_key, obj in game.visible_objects.items()
+        if any(
+            game._conditions_met(action)
+            for action in obj.actions.get(action_key, [])
+        )
+    }
+
+
 def test_game_walk_through(game):
     assert game.current_room is game.rooms['start']
-    assert list(game.objects_with_action('open')) == ['dvere']
+    assert list(objects_with_action(game, 'open')) == ['dvere']
 
     response = game.process_command('open', 'dvere')
     assert response is game.message_ok
     assert game.current_room.exits['east'] == 'sklad'
     assert game.rooms['sklad'].exits['west'] == game.current_room_key
-    assert not game.objects_with_action('open')
+    assert not objects_with_action(game, 'open')
 
     response = game.process_command('east')
     assert response is game.message_ok
@@ -43,12 +54,12 @@ def test_game_walk_through(game):
     response = game.process_command('north')
     assert response is game.message_ok
     assert game.current_room is game.rooms['kancelar']
-    assert list(game.objects_with_action('open')) == ['plechovka']
+    assert list(objects_with_action(game, 'open')) == ['plechovka']
 
     response = game.process_command('open', 'plechovka')
     assert 'dvě kancelářské sponky' in response
-    assert not game.objects_with_action('open')
-    assert set(game.objects_with_action('take')) == {'plechovka', 'sponky', 'vaza'}
+    assert not objects_with_action(game, 'open')
+    assert set(objects_with_action(game, 'take')) == {'plechovka', 'sponky', 'vaza'}
 
     # cannot be used before taken
     with pytest.raises(InvalidCommand):
@@ -65,7 +76,7 @@ def test_game_walk_through(game):
     response = game.process_command('use', 'smetak')
     assert 'rozbila na kousky' in response
     assert 'vaza' not in game.visible_objects
-    assert 'strepy' in game.objects_with_action('examine')
+    assert 'strepy' in objects_with_action(game, 'examine')
 
     # use again
     response = game.process_command('use', 'smetak')
@@ -73,7 +84,7 @@ def test_game_walk_through(game):
 
     response = game.process_command('examine', 'strepy')
     assert 'našel malý klíček' in response
-    assert not game.objects_with_action('examine')
+    assert not objects_with_action(game, 'examine')
 
     # cannot be used before taken
     with pytest.raises(InvalidCommand):
@@ -109,7 +120,7 @@ def test_game_walk_through(game):
     response = game.process_command('use', 'sponky')
     assert 'odemkl zámek mříže' in response
     assert game.objects['mriz'].unlocked is True
-    assert list(game.objects_with_action('open')) == ['mriz']
+    assert list(objects_with_action(game, 'open')) == ['mriz']
 
     # use again
     response = game.process_command('use', 'sponky')
@@ -119,7 +130,7 @@ def test_game_walk_through(game):
     assert response is game.message_ok
     assert game.current_room.exits['south'] == 'vyklenek'
     assert game.rooms['vyklenek'].exits['north'] == game.current_room_key
-    assert not game.objects_with_action('open')
+    assert not objects_with_action(game, 'open')
 
     response = game.process_command('south')
     assert response is game.message_ok
@@ -131,7 +142,7 @@ def test_game_walk_through(game):
     response = game.process_command('use', 'klicek')
     assert 'odemkl trezor' in response
     assert game.objects['trezor'].unlocked is True
-    assert list(game.objects_with_action('open')) == ['trezor']
+    assert list(objects_with_action(game, 'open')) == ['trezor']
 
     # use again
     response = game.process_command('use', 'klicek')
@@ -139,7 +150,7 @@ def test_game_walk_through(game):
 
     response = game.process_command('open', 'trezor')
     assert 'našel obálku' in response
-    assert not game.objects_with_action('open')
+    assert not objects_with_action(game, 'open')
 
     response = game.process_command('take', 'obalka')
     assert response is game.message_ok
@@ -178,9 +189,9 @@ def test_portable_container_opened_before_taken(game):
     game.process_command('open', 'plechovka')
     assert game.objects['sponky'].location == game.current_room_key
     game.process_command('take', 'plechovka')
-    assert 'sponky' in game.objects_with_action('take')
-    assert not game.objects_with_action('open')
-    assert not game.objects_with_action('use')
+    assert 'sponky' in objects_with_action(game, 'take')
+    assert not objects_with_action(game, 'open')
+    assert not objects_with_action(game, 'use')
 
 
 def test_portable_container_opened_after_taken(game):
@@ -188,9 +199,9 @@ def test_portable_container_opened_after_taken(game):
     game.process_command('take', 'plechovka')
     game.process_command('open', 'plechovka')
     assert 'sponky' in game.objects_in_inventory
-    assert 'sponky' not in game.objects_with_action('take')
-    assert not game.objects_with_action('open')
-    assert list(game.objects_with_action('use')) == ['sponky']
+    assert 'sponky' not in objects_with_action(game, 'take')
+    assert not objects_with_action(game, 'open')
+    assert list(objects_with_action(game, 'use')) == ['sponky']
 
 
 @pytest.mark.parametrize(
