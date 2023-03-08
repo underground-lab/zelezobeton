@@ -1,6 +1,5 @@
 from copy import deepcopy
 from dataclasses import dataclass, field
-from typing import Optional
 
 
 @dataclass
@@ -25,7 +24,7 @@ class Object:
 class Action:
     condition: list = field(default_factory=list)
     impact: list = field(default_factory=list)
-    message: Optional[str] = None
+    message: str | None = None
 
 
 class Game:
@@ -118,7 +117,7 @@ class Game:
 
     @property
     def visible_objects(self):
-        return {**self.objects_in_room, **self.objects_in_inventory}
+        return self.objects_in_room | self.objects_in_inventory
 
     def objects_with_action(self, action_name):
         return {
