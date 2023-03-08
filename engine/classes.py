@@ -78,11 +78,13 @@ class Game:
             raise InvalidCommand(command)
 
         obj_key = params[0]
-        if obj_key in self.objects_with_action(command):
-            for action in self.objects[obj_key].actions[command]:
-                if self._conditions_met(action):
-                    self._apply_impact(action)
-                    return action.message or self.message_ok
+        if not self.is_visible(obj_key):
+            raise InvalidCommand(command, obj_key)
+
+        for action in self.objects[obj_key].actions.get(command, []):
+            if self._conditions_met(action):
+                self._apply_impact(action)
+                return action.message or self.message_ok
 
         raise InvalidCommand(command, obj_key)
 
