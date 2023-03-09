@@ -1,6 +1,6 @@
 # Železo, beton
 
-Textová adventura ve webovém prohlížeči.
+Textová hra běžící ve webovém prohlížeči.
 
 ## Pro vývojáře
 
@@ -16,7 +16,7 @@ Textová adventura ve webovém prohlížeči.
 
 ### Instalace
 
-Naklonujte repozitář a nainstalujte knihovny:
+Naklonujte repozitář a nainstalujte závislosti:
 
 ```
 git clone https://github.com/underground-lab/zelezobeton.git
