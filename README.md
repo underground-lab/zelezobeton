@@ -7,7 +7,7 @@ Textová adventura ve webovém prohlížeči.
 ### Požadavky
 
 - Git
-- Python 3.8+
+- Python 3.10+
 - [Poetry](https://github.com/python-poetry/poetry)
   (návod na instalaci [zde](https://python-poetry.org/docs/master/#installation))
 - Firefox
