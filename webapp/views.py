@@ -18,23 +18,24 @@ def main(request):
     session = request.session
 
     # retrieve stored game state or create new
-    game = session.get('game', Game(room_data, object_data))
-    context = dict(
-        game=game,
-        title=title,
-        exits=exit_labels,
-        exit_sort_key=list(exit_labels),
-        actions=action_labels,
-    )
+    current_game = session.get('game', Game(room_data, object_data))
 
     # modify game state
     command = request.POST.get('command')
-    context['message'] = game.process_command(*command.split()) if command else None
-    context['last_command'] = request.POST.get('command_text')
+    message = current_game.process_command(*command.split()) if command else None
 
     # store game state
-    session['game'] = game
+    session['game'] = current_game
 
+    context = {
+        'game': current_game,
+        'title': title,
+        'exits': exit_labels,
+        'exit_sort_key': list(exit_labels),
+        'actions': action_labels,
+        'message': message,
+        'last_command': request.POST.get('command_text'),
+    }
     return render(request, 'main.html', context)
 
 
