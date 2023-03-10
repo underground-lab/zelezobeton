@@ -3,13 +3,12 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from engine.classes import Game
-from game import labels
-from game.data import title, exit_labels, room_data, object_data
+from game.data import title, exit_labels, action_labels, room_data, object_data
 
 
 def home(request):
     game = request.session.get('game')
-    context = dict(game=game, labels=labels, title=title)
+    context = dict(game=game, title=title)
     return render(request, 'home.html', context)
 
 
@@ -20,10 +19,10 @@ def main(request):
     game = session.get('game', Game(room_data, object_data))
     context = dict(
         game=game,
-        labels=labels,
         title=title,
         exits=exit_labels,
         exit_sort_key=list(exit_labels),
+        actions=action_labels,
     )
 
     # modify game state

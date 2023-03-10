@@ -1,6 +1,6 @@
 {% load webapp_extras %}
 <div class="control dropdown is-hoverable">
-{% with verb=labels.imperative|dict_get:command|capfirst %}
+{% with verb=actions|dict_get:command|capfirst %}
   <div class="dropdown-trigger">
     <button class="button serif-font bg-solarized-yellow no-border" id="{{ command }}_dropdown"
             aria-haspopup="true" aria-controls="{{ command }}_dropdown_menu">

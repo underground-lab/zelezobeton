@@ -11,6 +11,14 @@ exit_labels = {
     'down': 'dolů',
 }
 
+action_labels = {
+    'examine': 'prozkoumej',
+    'take': 'vezmi',
+    'open': 'otevři',
+    'use': 'použij',
+}
+
+
 room_data = {
     'start': {
         'description': 'Popis místnosti „Chodba“.',
