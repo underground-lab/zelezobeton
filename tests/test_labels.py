@@ -1,9 +1,10 @@
-from game.labels import exits, imperative
+from game.data import exit_labels
+from game.labels import imperative
 
 
 def test_all_exits_have_a_label(exits_from_callback_specs, exits_from_room_data):
     for exit_key in exits_from_callback_specs | exits_from_room_data:
-        assert exit_key in exits, f'No label found for {exit_key!r} exit key'
+        assert exit_key in exit_labels, f'No label found for {exit_key!r} exit key'
 
 
 def test_all_actions_have_a_label(actions_from_object_data):
