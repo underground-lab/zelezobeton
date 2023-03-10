@@ -1,5 +1,7 @@
 # coding: utf-8
 
+title = 'Železo, beton'
+
 room_data = {
     'start': {
         'description': 'Popis místnosti „Chodba“.',

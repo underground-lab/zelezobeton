@@ -4,12 +4,12 @@ from django.urls import reverse
 
 from engine.classes import Game
 from game import labels
-from game.data import room_data, object_data
+from game.data import title, room_data, object_data
 
 
 def home(request):
     game = request.session.get('game')
-    context = dict(game=game, labels=labels)
+    context = dict(game=game, labels=labels, title=title)
     return render(request, 'home.html', context)
 
 
@@ -18,7 +18,7 @@ def main(request):
 
     # retrieve stored game state or create new
     game = session.get('game', Game(room_data, object_data))
-    context = dict(game=game, labels=labels)
+    context = dict(game=game, labels=labels, title=title)
 
     # modify game state
     command = request.POST.get('command')

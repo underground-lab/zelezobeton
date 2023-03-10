@@ -1,7 +1,5 @@
 # coding: utf-8
 
-title = 'Železo, beton'
-
 exit_keys = ('north', 'south', 'west', 'east', 'up', 'down')
 exits = dict(
     zip(

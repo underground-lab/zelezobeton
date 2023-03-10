@@ -57,8 +57,11 @@ def test_web_ui(driver):
         actions.perform()
         wait.until(condition)
 
+    assert driver.title == 'Železo, beton'
+
     # start a new game
     driver.find_element(By.ID, 'new_game').click()
+    assert driver.title == 'Železo, beton'
     assert 'Chodba' in driver.find_element(By.ID, 'room_description').text
     assert driver.find_element(By.ID, 'open_dropdown')
     assert 'dveře' in driver.find_element(By.ID, 'in_room').text
