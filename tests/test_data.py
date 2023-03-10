@@ -1,7 +1,7 @@
 import inspect
 
 from engine.classes import Game
-from game.data import room_data, object_data
+from games.default import room_data, object_data
 
 
 def test_all_exits_exist():

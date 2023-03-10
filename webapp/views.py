@@ -2,14 +2,14 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
+import games.default as game
 from engine.classes import Game
-from game.data import title, exit_labels, action_labels, room_data, object_data
 
 
 def home(request):
     context = {
         'game_in_progress': request.session.get('game') is not None,
-        'title': title,
+        'title': game.title,
     }
     return render(request, 'home.html', context)
 
@@ -18,7 +18,7 @@ def main(request):
     session = request.session
 
     # retrieve stored game state or create new
-    current_game = session.get('game', Game(room_data, object_data))
+    current_game = session.get('game', Game(game.room_data, game.object_data))
 
     # modify game state
     command = request.POST.get('command')
@@ -29,10 +29,10 @@ def main(request):
 
     context = {
         'game': current_game,
-        'title': title,
-        'exits': exit_labels,
-        'exit_sort_key': list(exit_labels),
-        'actions': action_labels,
+        'title': game.title,
+        'exits': game.exit_labels,
+        'exit_sort_key': list(game.exit_labels),
+        'actions': game.action_labels,
         'message': message,
         'last_command': request.POST.get('command_text'),
     }

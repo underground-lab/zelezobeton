@@ -3,7 +3,7 @@ import pytest
 
 from engine.classes import Room, Object, Action, Game
 from engine.serializer import GameJSONSerializer
-from game.data import room_data, object_data
+from games.default import room_data, object_data
 
 
 @pytest.fixture

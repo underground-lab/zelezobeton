@@ -4,7 +4,7 @@ from pathlib import Path
 from jsonschema.validators import Draft202012Validator, extend
 import pytest
 
-from game.data import room_data, object_data
+from games.default import room_data, object_data
 
 SCHEMAS_DIR = Path(__file__).parent / 'schemas'
 

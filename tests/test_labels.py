@@ -1,4 +1,4 @@
-from game.data import exit_labels, action_labels
+from games.default import exit_labels, action_labels
 
 
 def test_all_exits_have_a_label(exits_from_callback_specs, exits_from_room_data):
