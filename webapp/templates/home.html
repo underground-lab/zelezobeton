@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 {% block main_menu %}
 <div class="box bg-solarized-base03 base01-border has-text-centered">
-  {% if game %}
-    <div class="block">
-      <a class="button serif-font bg-solarized-yellow no-border" id="continue_game" href="{% url 'main' %}">
-        {% include "flask-outline_icon.html" %}Pokračovat v rozehrané hře
-      </a>
-    </div>
+  <div class="block">
+    <a class="button serif-font bg-solarized-cyan no-border" id="new_game" href="{% url 'restart' %}">
+      {% include "flask-empty-outline_icon.html" %}Začít novou hru
+    </a>
+  </div>
+  {% if game_in_progress %}
+    <a class="button serif-font bg-solarized-yellow no-border" id="continue_game" href="{% url 'main' %}">
+      {% include "flask-outline_icon.html" %}Pokračovat v rozehrané hře
+    </a>
   {% endif %}
-  <a class="button serif-font bg-solarized-cyan no-border" id="new_game" href="{% url 'restart' %}">
-    {% include "flask-empty-outline_icon.html" %}Začít novou hru
-  </a>
 </div>
 {% endblock %}
 {% block footer %}

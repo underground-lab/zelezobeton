@@ -7,8 +7,10 @@ from game.data import title, exit_labels, action_labels, room_data, object_data
 
 
 def home(request):
-    game = request.session.get('game')
-    context = dict(game=game, title=title)
+    context = {
+        'game_in_progress': request.session.get('game') is not None,
+        'title': title,
+    }
     return render(request, 'home.html', context)
 
 
