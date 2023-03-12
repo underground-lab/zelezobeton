@@ -13,7 +13,6 @@ exit_labels = {
 
 action_labels = {
     'examine': 'prozkoumej',
-    'take': 'vezmi',
     'open': 'otevři',
     'use': 'použij',
 }
@@ -49,7 +48,7 @@ object_data = {
         'name': 'plechovku',
         'location': 'kancelar',
         'actions': {
-            'take': {
+            'vezmi': {
                 'condition': [
                     ('in_room', dict(obj='plechovka')),
                 ],
@@ -85,7 +84,7 @@ object_data = {
     'klicek': {
         'name': 'klíček',
         'actions': {
-            'take': {
+            'vezmi': {
                 'condition': [
                     ('in_room', dict(obj='klicek')),
                 ],
@@ -160,7 +159,7 @@ object_data = {
     'sponky': {
         'name': 'sponky',
         'actions': {
-            'take': {
+            'vezmi': {
                 'condition': [
                     ('in_room', dict(obj='sponky')),
                 ],
@@ -192,7 +191,7 @@ object_data = {
     'obalka': {
         'name': 'obálku',
         'actions': {
-            'take': {
+            'vezmi': {
                 'condition': [
                     ('in_room', dict(obj='obalka')),
                 ],
@@ -207,7 +206,7 @@ object_data = {
         'name': 'smeták',
         'location': 'sklad',
         'actions': {
-            'take': {
+            'vezmi': {
                 'condition': [
                     ('in_room', dict(obj='smetak')),
                 ],
@@ -238,12 +237,12 @@ object_data = {
         },
     },
 
-    # Předmět s nestandardní akcí vezmi/take.
+    # Předmět s nestandardní akcí vezmi.
     'vaza': {
         'name': 'vázu',
         'location': 'kancelar',
         'actions': {
-            'take': {
+            'vezmi': {
                 'message': 'Nedosáhnu na ni. Stojí na vysoké knihovně.',
             },
         },
@@ -265,12 +264,12 @@ object_data = {
         },
     },
 
-    # Předmět s nestandardní akcí vezmi/take.
+    # Předmět s nestandardní akcí vezmi.
     'krabice': {
         'name': 'krabici hřebíků',
         'location': 'sklad',
         'actions': {
-            'take': {
+            'vezmi': {
                 'condition': [
                     ('is_undiscovered', dict(obj='hrebik')),
                 ],

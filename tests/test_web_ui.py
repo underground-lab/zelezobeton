@@ -76,7 +76,7 @@ def test_web_ui(driver):
     assert 'jen dvě kancelářské sponky' in driver.find_element(By.ID, 'message').text
     assert 'sponky' in driver.find_element(By.ID, 'in_room').text
 
-    perform_and_wait('take', 'sponky')
+    perform_and_wait('vezmi', 'sponky')
     assert 'OK' in driver.find_element(By.ID, 'message').text
     assert 'sponky' in driver.find_element(By.ID, 'in_inventory').text
     assert driver.find_element(By.ID, 'use_dropdown')
@@ -99,7 +99,7 @@ def test_web_ui(driver):
     assert 'Sklad' in driver.find_element(By.ID, 'room_description').text
     assert 'smeták' in driver.find_element(By.ID, 'in_room').text
 
-    perform_and_wait('take', 'smetak')
+    perform_and_wait('vezmi', 'smetak')
     assert 'OK' in driver.find_element(By.ID, 'message').text
     assert 'smeták' in driver.find_element(By.ID, 'in_inventory').text
 
@@ -121,7 +121,7 @@ def test_web_ui(driver):
     assert 'smeták' in driver.find_element(By.ID, 'in_room').text
     assert 'krabici hřebíků' in driver.find_element(By.ID, 'in_room').text
 
-    perform_and_wait('take', 'krabice')
+    perform_and_wait('vezmi', 'krabice')
     assert 'Jeden bude stačit' in driver.find_element(By.ID, 'message').text
     assert 'krabici hřebíků' in driver.find_element(By.ID, 'in_room').text
     assert 'hřebík' in driver.find_element(By.ID, 'in_inventory').text

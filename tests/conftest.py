@@ -15,7 +15,7 @@ def game():
 def game_in_progress(game):
     game.process_command('north')
     game.process_command('open', 'plechovka')
-    game.process_command('take', 'sponky')
+    game.process_command('vezmi', 'sponky')
     game.process_command('south')
     game.process_command('open', 'dvere')
     return game
