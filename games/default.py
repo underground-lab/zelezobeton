@@ -12,7 +12,6 @@ exit_labels = {
 }
 
 action_labels = {
-    'examine': 'prozkoumej',
     'open': 'otevři',
     'use': 'použij',
 }
@@ -248,11 +247,11 @@ object_data = {
         },
     },
 
-    # Předmět s jednorázovou akcí prozkoumej/examine.
+    # Předmět s jednorázovou akcí prozkoumej.
     'strepy': {
         'name': 'střepy',
         'actions': {
-            'examine': {
+            'prozkoumej': {
                 'condition': [
                     ('is_undiscovered', dict(obj='klicek')),
                 ],

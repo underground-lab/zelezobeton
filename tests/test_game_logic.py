@@ -76,15 +76,15 @@ def test_game_walk_through(game):
     response = game.process_command('use', 'smetak')
     assert 'rozbila na kousky' in response
     assert 'vaza' not in game.visible_objects
-    assert 'strepy' in objects_with_action(game, 'examine')
+    assert 'strepy' in objects_with_action(game, 'prozkoumej')
 
     # use again
     response = game.process_command('use', 'smetak')
     assert 'Nevím jak' in response
 
-    response = game.process_command('examine', 'strepy')
+    response = game.process_command('prozkoumej', 'strepy')
     assert 'našel malý klíček' in response
-    assert not objects_with_action(game, 'examine')
+    assert not objects_with_action(game, 'prozkoumej')
 
     # cannot be used before taken
     with pytest.raises(InvalidCommand):
@@ -173,7 +173,7 @@ def test_straightforward_walk_through(game):
     game.process_command('west')
     game.process_command('north')
     game.process_command('use', 'smetak')
-    game.process_command('examine', 'strepy')
+    game.process_command('prozkoumej', 'strepy')
     game.process_command('vezmi', 'klicek')
     game.process_command('south')
     game.process_command('east')
@@ -207,7 +207,7 @@ def test_portable_container_opened_after_taken(game):
 @pytest.mark.parametrize(
     'command, obj_key',
     (
-        ('examine', 'plechovka'),    # examine invisible object
+        ('prozkoumej', 'plechovka'),    # examine invisible object
         ('vezmi', 'plechovka'),    # take invisible object
         ('vezmi', 'sponky'),    # take already taken object
         ('vezmi', 'dvere'),    # take unexpected object
