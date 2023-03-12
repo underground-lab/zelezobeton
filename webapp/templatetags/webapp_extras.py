@@ -5,7 +5,7 @@ register = template.Library()
 
 @register.filter
 def dict_get(mapping, key):
-    return mapping.get(key)
+    return mapping.get(key, key)
 
 
 @register.filter

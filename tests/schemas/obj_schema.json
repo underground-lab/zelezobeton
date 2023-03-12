@@ -11,7 +11,7 @@
         "actions": {
             "type": "object",
             "patternProperties": {
-                "^(examine|take|open|use)$": {
+                ".": {
                     "oneOf": [
                         {
                             "$ref": "#/$defs/actions"
