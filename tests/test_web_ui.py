@@ -63,14 +63,18 @@ def test_web_ui(driver):
     driver.find_element(By.ID, 'new_game').click()
     assert driver.title == 'Železo, beton'
     assert 'Chodba' in driver.find_element(By.ID, 'room_description').text
-    assert driver.find_element(By.ID, 'open_dropdown')
     assert 'dveře' in driver.find_element(By.ID, 'in_room').text
     assert 'minci' in driver.find_element(By.ID, 'in_inventory').text
+
+    # verb with a specified display text (open -> Otevři)
+    assert driver.find_element(By.ID, 'open_dropdown').text == 'Otevři'
 
     perform_and_wait('go', 'north')
     assert 'Kancelář' in driver.find_element(By.ID, 'room_description').text
     assert 'plechovku' in driver.find_element(By.ID, 'in_room').text
-    assert driver.find_element(By.ID, 'open_dropdown')
+
+    # verb displayed as is (vezmi -> Vezmi)
+    assert driver.find_element(By.ID, 'vezmi_dropdown').text == 'Vezmi'
 
     perform_and_wait('open', 'plechovka')
     assert 'jen dvě kancelářské sponky' in driver.find_element(By.ID, 'message').text
@@ -79,7 +83,9 @@ def test_web_ui(driver):
     perform_and_wait('vezmi', 'sponky')
     assert 'OK' in driver.find_element(By.ID, 'message').text
     assert 'sponky' in driver.find_element(By.ID, 'in_inventory').text
-    assert driver.find_element(By.ID, 'use_dropdown')
+
+    # verb with a specified display text (use -> Použij)
+    assert driver.find_element(By.ID, 'use_dropdown').text == 'Použij'
 
     # go to homepage
     driver.find_element(By.ID, 'home').click()
@@ -109,7 +115,6 @@ def test_web_ui(driver):
     # start a new game
     driver.find_element(By.ID, 'new_game').click()
     assert 'Chodba' in driver.find_element(By.ID, 'room_description').text
-    assert driver.find_element(By.ID, 'open_dropdown')
     assert 'sponky' not in driver.find_element(By.ID, 'in_inventory').text
     assert 'smeták' not in driver.find_element(By.ID, 'in_inventory').text
 
