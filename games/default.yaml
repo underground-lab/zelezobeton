@@ -1,0 +1,314 @@
+---  # title
+
+Železo, beton
+
+---  # exit labels
+
+north: na sever
+south: na jih
+west: na západ
+east: na východ
+up: nahoru
+down: dolů
+
+---  # action labels
+
+open: otevři
+use: použij
+
+---  # room data
+
+start:
+    description: Popis místnosti „Chodba“.
+    exits:
+        north: kancelar
+
+kancelar:
+    description: Popis místnosti „Kancelář“.
+    exits:
+        south: start
+
+sklad:
+    description: Popis místnosti „Sklad“.
+
+vyklenek:
+    description: Popis místnosti „Výklenek“.
+
+---  # object data
+
+mince:  # předmět, který je na začátku hry v inventáři
+    name: minci
+    location: inventory
+
+plechovka:  # předmět typu `přenosný kontejner`
+    name: plechovku
+    location: kancelar
+    actions:
+        vezmi:
+            condition:
+              -
+                  - in_room
+                  - obj: plechovka
+            impact:
+              -
+                  - move_to_inventory
+                  - obj: plechovka
+        open:
+          - condition:
+              -
+                  - in_room
+                  - obj: plechovka
+              -
+                  - is_undiscovered
+                  - obj: sponky
+            impact:
+              -
+                  - move_to_current_room
+                  - obj: sponky
+            message: V plechovce jsou jen dvě kancelářské sponky.
+          - condition:
+              -
+                  - in_inventory
+                  - obj: plechovka
+              -
+                  - is_undiscovered
+                  - obj: sponky
+            impact:
+              -
+                  - move_to_inventory
+                  - obj: sponky
+            message: V plechovce jsem našel dvě kancelářské sponky.
+
+klicek:
+    name: klíček
+    actions:
+        vezmi:
+            condition:
+              -
+                  - in_room
+                  - obj: klicek
+            impact:
+              -
+                  - move_to_inventory
+                  - obj: klicek
+        use:
+          - condition:
+              -
+                  - current_room_is
+                  - room: vyklenek
+              -
+                  - not_true
+                  - obj: trezor
+                    attr: unlocked
+            impact:
+              -
+                  - set_true
+                  - obj: trezor
+                    attr: unlocked
+            message: Klíčkem jsem odemkl trezor.
+          - condition:
+              -
+                  - in_inventory
+                  - obj: klicek
+            message: Nevím jak.
+
+trezor:  # předmět typu `nepřenosný kontejner`
+    name: trezor
+    location: vyklenek
+    actions:
+        open:
+          - condition:
+              -
+                  - is_true
+                  - obj: trezor
+                    attr: unlocked
+              -
+                  - is_undiscovered
+                  - obj: obalka
+            impact:
+              -
+                  - move_to_current_room
+                  - obj: obalka
+            message: V trezoru jsem našel obálku.
+          - condition:
+              -
+                  - not_true
+                  - obj: trezor
+                    attr: unlocked
+            message: Je zamčený.
+
+dvere:  # předmět typu `odemčené dveře`
+    name: dveře
+    location: start
+    actions:
+        open:
+            condition:
+              -
+                  - exit_closed
+                  - room: start
+                    direction: east
+            impact:
+              -
+                  - open_exit
+                  - room: start
+                    direction: east
+                    room_2: sklad
+              -
+                  - open_exit
+                  - room: sklad
+                    direction: west
+                    room_2: start
+
+sponky:
+    name: sponky
+    actions:
+        vezmi:
+            condition:
+              -
+                  - in_room
+                  - obj: sponky
+            impact:
+              -
+                  - move_to_inventory
+                  - obj: sponky
+        use:
+          - condition:
+              -
+                  - current_room_is
+                  - room: sklad
+              -
+                  - not_true
+                  - obj: mriz
+                    attr: unlocked
+            impact:
+              -
+                  - set_true
+                  - obj: mriz
+                    attr: unlocked
+            message: Pomocí kancelářských sponek jsem odemkl zámek mříže.
+          - condition:
+              -
+                  - in_inventory
+                  - obj: sponky
+            message: Nevím jak.
+
+obalka:
+    name: obálku
+    actions:
+        vezmi:
+            condition:
+              -
+                  - in_room
+                  - obj: obalka
+            impact:
+              -
+                  - move_to_inventory
+                  - obj: obalka
+
+smetak:
+    name: smeták
+    location: sklad
+    actions:
+        vezmi:
+            condition:
+              -
+                  - in_room
+                  - obj: smetak
+            impact:
+              -
+                  - move_to_inventory
+                  - obj: smetak
+        use:
+          - condition:
+              -
+                  - is_undiscovered
+                  - obj: strepy
+              -
+                  - is_visible
+                  - obj: vaza
+            impact:
+              -
+                  - move_to_current_room
+                  - obj: strepy
+              -
+                  - remove_object
+                  - obj: vaza
+            message:
+                Smetl jsem z knihovny vázu, která se po dopadu na zem rozbila
+                na kousky.
+          - condition:
+              -
+                  - in_inventory
+                  - obj: smetak
+            message: Nevím jak.
+
+vaza:  # předmět s nestandardní akcí `vezmi`
+    name: vázu
+    location: kancelar
+    actions:
+        vezmi:
+            message: Nedosáhnu na ni. Stojí na vysoké knihovně.
+
+strepy:  # předmět s jednorázovou akcí `prozkoumej`
+    name: střepy
+    actions:
+        prozkoumej:
+            condition:
+              -
+                  - is_undiscovered
+                  - obj: klicek
+            impact:
+              -
+                  - move_to_current_room
+                  - obj: klicek
+            message: Mezi střepy jsem našel malý klíček.
+
+krabice:  # předmět s nestandardní akcí `vezmi`
+    name: krabici hřebíků
+    location: sklad
+    actions:
+        vezmi:
+            condition:
+              -
+                  - is_undiscovered
+                  - obj: hrebik
+            impact:
+              -
+                  - move_to_inventory
+                  - obj: hrebik
+            message: Jeden bude stačit.
+
+hrebik:
+    name: hřebík
+
+mriz:  # předmět typu `zamčené dveře`
+    name: mříž
+    location: sklad
+    actions:
+        open:
+          - condition:
+              -
+                  - is_true
+                  - obj: mriz
+                    attr: unlocked
+              -
+                  - exit_closed
+                  - room: sklad
+                    direction: south
+            impact:
+              -
+                  - open_exit
+                  - room: sklad
+                    direction: south
+                    room_2: vyklenek
+              -
+                  - open_exit
+                  - room: vyklenek
+                    direction: north
+                    room_2: sklad
+          - condition:
+              -
+                  - not_true
+                  - obj: mriz
+                    attr: unlocked
+            message: Je zamčená.
