@@ -4,7 +4,7 @@ from pathlib import Path
 from jsonschema.validators import Draft202012Validator, extend
 import pytest
 
-from games.default import room_data, object_data
+from games import game_data
 
 SCHEMAS_DIR = Path(__file__).parent / 'schemas'
 
@@ -23,8 +23,8 @@ CustomArrayValidator = extend(
 @pytest.mark.parametrize(
     'data, schema_file',
     (
-        (room_data, 'room_schema.json'),
-        (object_data, 'obj_schema.json'),
+        (game_data.room_data, 'room_schema.json'),
+        (game_data.object_data, 'obj_schema.json'),
     )
 )
 def test_data_schema(data, schema_file):

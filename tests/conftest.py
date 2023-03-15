@@ -3,12 +3,12 @@ import pytest
 
 from engine.classes import Room, Object, Action, Game
 from engine.serializer import GameJSONSerializer
-from games.default import room_data, object_data
+from games import game_data
 
 
 @pytest.fixture
 def game():
-    return Game(room_data, object_data)
+    return Game(game_data.room_data, game_data.object_data)
 
 
 @pytest.fixture
@@ -30,7 +30,7 @@ def serializer():
 def callback_specs():
     return [
         spec
-        for spec_list in values_for_key(object_data, ['condition', 'impact'])
+        for spec_list in values_for_key(game_data.object_data, ['condition', 'impact'])
         for spec in spec_list
     ]
 
@@ -48,7 +48,7 @@ def exits_from_callback_specs(callback_specs):
 def exits_from_room_data():
     return {
         exit_key
-        for room in room_data.values()
+        for room in game_data.room_data.values()
         for exit_key in room.get('exits', {})
     }
 
@@ -57,7 +57,7 @@ def exits_from_room_data():
 def actions_from_object_data():
     return {
         action_key
-        for obj in object_data.values()
+        for obj in game_data.object_data.values()
         for action_key in obj.get('actions', {})
     }
 
