@@ -152,12 +152,12 @@ dvere:  # předmět typu `odemčené dveře`
                   - open_exit
                   - room: start
                     direction: east
-                    room_2: sklad
+                    target: sklad
               -
                   - open_exit
                   - room: sklad
                     direction: west
-                    room_2: start
+                    target: start
 
 sponky:
     name: sponky
@@ -300,12 +300,12 @@ mriz:  # předmět typu `zamčené dveře`
                   - open_exit
                   - room: sklad
                     direction: south
-                    room_2: vyklenek
+                    target: vyklenek
               -
                   - open_exit
                   - room: vyklenek
                     direction: north
-                    room_2: sklad
+                    target: sklad
           - condition:
               -
                   - not_true

@@ -51,8 +51,8 @@ def test_callback_specs_use_existing_room_keys(callback_specs):
             room_key = kwargs['room']
             assert room_key in game_data.room_data, \
                 f'Unknown room {room_key!r} in {kwargs}'
-        if 'room_2' in kwargs:
-            room_key = kwargs['room_2']
+        if 'target' in kwargs:
+            room_key = kwargs['target']
             assert room_key in game_data.room_data, \
                 f'Unknown room {room_key!r} in {kwargs}'
 

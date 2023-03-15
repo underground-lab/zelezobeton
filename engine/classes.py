@@ -168,8 +168,8 @@ class Game:
     def remove_object(self, obj):
         self.objects[obj].location = 'gone'
 
-    def open_exit(self, room, direction, room_2):
-        self.rooms[room].exits[direction] = room_2
+    def open_exit(self, room, direction, target):
+        self.rooms[room].exits[direction] = target
 
     def close_exit(self, room, direction):
         exits = self.rooms[room].exits
