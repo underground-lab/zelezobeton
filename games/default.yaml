@@ -113,7 +113,6 @@ klicek:
             message: Nevím jak.
 
 trezor:  # předmět typu `nepřenosný kontejner`
-    name: trezor
     location: vyklenek
     actions:
         open:
@@ -160,7 +159,6 @@ dvere:  # předmět typu `odemčené dveře`
                     target: start
 
 sponky:
-    name: sponky
     actions:
         vezmi:
             condition:
@@ -277,6 +275,8 @@ krabice:  # předmět s nestandardní akcí `vezmi`
                   - move_to_inventory
                   - obj: hrebik
             message: Jeden bude stačit.
+
+kladivo: {}
 
 hrebik:
     name: hřebík

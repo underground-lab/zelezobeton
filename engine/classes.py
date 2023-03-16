@@ -44,6 +44,8 @@ class Game:
     def _objects_from_data(self, data):
         result = {}
         for key, item in deepcopy(data).items():
+            if isinstance(item, dict) and 'name' not in item:
+                item['name'] = key
             obj = self._ensure_class(item, Object)
             # replace action specs with Action instances
             obj.actions = {

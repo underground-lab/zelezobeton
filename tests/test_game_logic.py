@@ -238,3 +238,8 @@ def test_available_actions(game):
     available = game.available_actions()
     assert list(available) == ['vezmi']
     assert list(available['vezmi']) == ['plechovka', 'sponky', 'vaza']
+
+
+def test_default_object_name(game):
+    assert game.objects['trezor'].name == 'trezor'
+    assert game.objects['kladivo'].name == 'kladivo'
