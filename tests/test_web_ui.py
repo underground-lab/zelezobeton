@@ -46,15 +46,15 @@ def driver(temp_dir):
 @pytest.mark.skipif(not SERVER_RUNNING, reason='requires local server running')
 def test_web_ui(driver):
 
-    def perform_and_wait(action, obj):
+    def button_under_dropdown(action, obj):
         dropdown = driver.find_element(By.ID, f'{action}_dropdown')
-        button = driver.find_element(By.ID, f'{action}_{obj}_button')
+        ActionChains(driver).move_to_element(dropdown).perform()
+        return driver.find_element(By.ID, f'{action}_{obj}_button')
+
+    def perform_and_wait(action, obj):
         condition = staleness_of(driver.find_element(By.ID, 'room_description'))
-
-        actions = ActionChains(driver).move_to_element(dropdown).click(button)
         wait = WebDriverWait(driver, 5)
-
-        actions.perform()
+        button_under_dropdown(action, obj).click()
         wait.until(condition)
 
     assert driver.title == 'Železo, beton'
@@ -76,21 +76,15 @@ def test_web_ui(driver):
     # verb displayed as is (vezmi -> Vezmi)
     assert driver.find_element(By.ID, 'vezmi_dropdown').text == 'Vezmi'
 
-    # hover dropdown to show button
-    dropdown = driver.find_element(By.ID, 'open_dropdown')
-    ActionChains(driver).move_to_element(dropdown).perform()
     # object with `name` specified in data (plechovka -> plechovku)
-    assert driver.find_element(By.ID, 'open_plechovka_button').text == 'plechovku'
+    assert button_under_dropdown('open', 'plechovka').text == 'plechovku'
 
     perform_and_wait('open', 'plechovka')
     assert 'jen dvě kancelářské sponky' in driver.find_element(By.ID, 'message').text
     assert 'sponky' in driver.find_element(By.ID, 'in_room').text
 
-    # hover dropdown to show button
-    dropdown = driver.find_element(By.ID, 'vezmi_dropdown')
-    ActionChains(driver).move_to_element(dropdown).perform()
     # object without `name` specified in data
-    assert driver.find_element(By.ID, 'vezmi_sponky_button').text == 'sponky'
+    assert button_under_dropdown('vezmi', 'sponky').text == 'sponky'
 
     perform_and_wait('vezmi', 'sponky')
     assert 'OK' in driver.find_element(By.ID, 'message').text
