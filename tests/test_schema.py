@@ -24,7 +24,7 @@ CustomArrayValidator = extend(
     'data, schema_file',
     (
         (game_data.room_data, 'room_schema.json'),
-        (game_data.object_data, 'obj_schema.json'),
+        (game_data.objects, 'obj_schema.json'),
     )
 )
 def test_data_schema(data, schema_file):

@@ -30,7 +30,7 @@ def test_no_room_has_exit_to_itself():
 
 
 def test_all_object_locations_exist():
-    for obj_key, obj in game_data.object_data.items():
+    for obj_key, obj in game_data.objects.items():
         if 'location' not in obj:
             continue
         location = obj['location']
@@ -62,7 +62,7 @@ def test_callback_specs_use_existing_object_keys(callback_specs):
         kwargs = spec[1]
         if 'obj' in kwargs:
             obj_key = kwargs['obj']
-            assert obj_key in game_data.object_data, \
+            assert obj_key in game_data.objects, \
                 f'Unknown object {obj_key!r} in {kwargs}'
 
 

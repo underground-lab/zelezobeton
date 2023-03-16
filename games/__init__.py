@@ -11,7 +11,7 @@ def _import_games():
         if all(
             hasattr(module, attr_name)
             for attr_name in (
-                'title', 'exit_labels', 'room_data', 'object_data'
+                'title', 'exit_labels', 'room_data', 'objects'
             )
         ):
             yield short_name, module
