@@ -10,9 +10,7 @@ def _import_games():
         module = import_module(f'.{short_name}', __name__)
         if all(
             hasattr(module, attr_name)
-            for attr_name in (
-                'title', 'exit_labels', 'room_data', 'objects'
-            )
+            for attr_name in ('title', 'exit_labels', 'rooms', 'objects')
         ):
             yield short_name, module
 

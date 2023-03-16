@@ -8,7 +8,7 @@ from games import game_data
 
 @pytest.fixture
 def game():
-    return Game(game_data.room_data, game_data.objects)
+    return Game(game_data.rooms, game_data.objects)
 
 
 @pytest.fixture
@@ -48,7 +48,7 @@ def exits_from_callback_specs(callback_specs):
 def exits_from_room_data():
     return {
         exit_key
-        for room in game_data.room_data.values()
+        for room in game_data.rooms.values()
         for exit_key in room.get('exits', {})
     }
 

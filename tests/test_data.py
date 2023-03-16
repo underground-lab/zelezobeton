@@ -5,9 +5,9 @@ from games import game_data
 
 
 def test_all_exits_exist():
-    for room_key, room in game_data.room_data.items():
+    for room_key, room in game_data.rooms.items():
         for target_room_key in room.get('exits', {}).values():
-            assert target_room_key in game_data.room_data, \
+            assert target_room_key in game_data.rooms, \
                 f'Unknown room {target_room_key!r} in exits of room {room_key!r}'
 
 
@@ -15,16 +15,16 @@ def test_all_exit_relations_are_symmetric():
     opposites = dict(
         north='south', south='north', west='east', east='west', up='down', down='up'
     )
-    for room_key, room in game_data.room_data.items():
+    for room_key, room in game_data.rooms.items():
         for direction, target_room_key in room.get('exits', {}).items():
-            target_room = game_data.room_data[target_room_key]
+            target_room = game_data.rooms[target_room_key]
             opposite_direction = opposites[direction]
             assert target_room.get('exits', {}).get(opposite_direction) == room_key, \
                 f'Asymmetric exits between rooms {room_key!r} and {target_room_key!r}'
 
 
 def test_no_room_has_exit_to_itself():
-    for room_key, room in game_data.room_data.items():
+    for room_key, room in game_data.rooms.items():
         assert room_key not in room.get('exits', {}).values(), \
             f'Room {room_key!r} has an exit to itself'
 
@@ -34,7 +34,7 @@ def test_all_object_locations_exist():
         if 'location' not in obj:
             continue
         location = obj['location']
-        assert location in game_data.room_data or location == 'inventory', \
+        assert location in game_data.rooms or location == 'inventory', \
             f'Unknown location {location!r} of object {obj_key!r}'
 
 
@@ -49,12 +49,10 @@ def test_callback_specs_use_existing_room_keys(callback_specs):
         kwargs = spec[1]
         if 'room' in kwargs:
             room_key = kwargs['room']
-            assert room_key in game_data.room_data, \
-                f'Unknown room {room_key!r} in {kwargs}'
+            assert room_key in game_data.rooms, f'Unknown room {room_key!r} in {kwargs}'
         if 'target' in kwargs:
             room_key = kwargs['target']
-            assert room_key in game_data.room_data, \
-                f'Unknown room {room_key!r} in {kwargs}'
+            assert room_key in game_data.rooms, f'Unknown room {room_key!r} in {kwargs}'
 
 
 def test_callback_specs_use_existing_object_keys(callback_specs):

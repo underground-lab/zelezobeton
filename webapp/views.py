@@ -18,7 +18,7 @@ def main(request):
     session = request.session
 
     # retrieve stored game state or create new
-    current_game = session.get('game', Game(game_data.room_data, game_data.objects))
+    current_game = session.get('game', Game(game_data.rooms, game_data.objects))
 
     # modify game state
     command = request.POST.get('command')

@@ -23,7 +23,7 @@ CustomArrayValidator = extend(
 @pytest.mark.parametrize(
     'data, schema_file',
     (
-        (game_data.room_data, 'room_schema.json'),
+        (game_data.rooms, 'room_schema.json'),
         (game_data.objects, 'obj_schema.json'),
     )
 )
