@@ -1,6 +1,4 @@
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
-from django.urls import reverse
+from django.shortcuts import render, redirect
 
 from engine.classes import Game
 from games import game_data
@@ -41,4 +39,4 @@ def main(request):
 
 def restart(request):
     request.session.flush()
-    return HttpResponseRedirect(reverse('main'))
+    return redirect('main')
