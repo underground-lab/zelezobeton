@@ -7,8 +7,6 @@ import pytest
 from selenium.webdriver import Firefox, ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.support.expected_conditions import staleness_of
-from selenium.webdriver.support.wait import WebDriverWait
 
 URL = 'http://localhost:8000/'
 HEADLESS = not os.getenv('NO_HEADLESS')
@@ -33,7 +31,6 @@ def driver(temp_dir):
     if HEADLESS:
         options.add_argument('-headless')
     firefox_driver = Firefox(options=options)
-    firefox_driver.implicitly_wait(5)
     firefox_driver.get(URL)
     yield firefox_driver
 
@@ -49,12 +46,6 @@ def test_web_ui(driver):
         ActionChains(driver).move_to_element(dropdown).perform()
         return driver.find_element(By.ID, f'{action}_{obj}_button')
 
-    def perform_and_wait(action, obj):
-        condition = staleness_of(driver.find_element(By.ID, 'room_description'))
-        wait = WebDriverWait(driver, 5)
-        button_under_dropdown(action, obj).click()
-        wait.until(condition)
-
     assert driver.title == 'Železo, beton'
 
     # start a new game
@@ -67,7 +58,7 @@ def test_web_ui(driver):
     # verb with a specified display text (open -> Otevři)
     assert driver.find_element(By.ID, 'open_dropdown').text == 'Otevři'
 
-    perform_and_wait('go', 'north')
+    button_under_dropdown('go', 'north').click()
     assert 'Kancelář' in driver.find_element(By.ID, 'room_description').text
     assert 'plechovku' in driver.find_element(By.ID, 'in_room').text
 
@@ -77,14 +68,14 @@ def test_web_ui(driver):
     # object with `name` specified in data (plechovka -> plechovku)
     assert button_under_dropdown('open', 'plechovka').text == 'plechovku'
 
-    perform_and_wait('open', 'plechovka')
+    button_under_dropdown('open', 'plechovka').click()
     assert 'jen dvě kancelářské sponky' in driver.find_element(By.ID, 'message').text
     assert 'sponky' in driver.find_element(By.ID, 'in_room').text
 
     # object without `name` specified in data
     assert button_under_dropdown('vezmi', 'sponky').text == 'sponky'
 
-    perform_and_wait('vezmi', 'sponky')
+    button_under_dropdown('vezmi', 'sponky').click()
     assert 'OK' in driver.find_element(By.ID, 'message').text
     assert 'sponky' in driver.find_element(By.ID, 'in_inventory').text
 
@@ -99,17 +90,17 @@ def test_web_ui(driver):
     assert 'Kancelář' in driver.find_element(By.ID, 'room_description').text
     assert 'sponky' in driver.find_element(By.ID, 'in_inventory').text
 
-    perform_and_wait('go', 'south')
+    button_under_dropdown('go', 'south').click()
     assert 'Chodba' in driver.find_element(By.ID, 'room_description').text
 
-    perform_and_wait('open', 'dvere')
+    button_under_dropdown('open', 'dvere').click()
     assert 'OK' in driver.find_element(By.ID, 'message').text
 
-    perform_and_wait('go', 'east')
+    button_under_dropdown('go', 'east').click()
     assert 'Sklad' in driver.find_element(By.ID, 'room_description').text
     assert 'smeták' in driver.find_element(By.ID, 'in_room').text
 
-    perform_and_wait('vezmi', 'smetak')
+    button_under_dropdown('vezmi', 'smetak').click()
     assert 'OK' in driver.find_element(By.ID, 'message').text
     assert 'smeták' in driver.find_element(By.ID, 'in_inventory').text
 
@@ -122,15 +113,15 @@ def test_web_ui(driver):
     assert 'sponky' not in driver.find_element(By.ID, 'in_inventory').text
     assert 'smeták' not in driver.find_element(By.ID, 'in_inventory').text
 
-    perform_and_wait('open', 'dvere')
+    button_under_dropdown('open', 'dvere').click()
     assert 'OK' in driver.find_element(By.ID, 'message').text
 
-    perform_and_wait('go', 'east')
+    button_under_dropdown('go', 'east').click()
     assert 'Sklad' in driver.find_element(By.ID, 'room_description').text
     assert 'smeták' in driver.find_element(By.ID, 'in_room').text
     assert 'krabici hřebíků' in driver.find_element(By.ID, 'in_room').text
 
-    perform_and_wait('vezmi', 'krabice')
+    button_under_dropdown('vezmi', 'krabice').click()
     assert 'Jeden bude stačit' in driver.find_element(By.ID, 'message').text
     assert 'krabici hřebíků' in driver.find_element(By.ID, 'in_room').text
     assert 'hřebík' in driver.find_element(By.ID, 'in_inventory').text
