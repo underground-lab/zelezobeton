@@ -1,4 +1,5 @@
 [tool.poetry]
+package-mode = false
 name = "zelezobeton"
 version = "0.4.0"
 description = "Textová hra."
